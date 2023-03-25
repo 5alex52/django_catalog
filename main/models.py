@@ -7,8 +7,11 @@ from django.utils.html import mark_safe
 def product_directory_path(instance, filename):
     return 'category_{0}/product_{1}/{2}'.format(instance.category.slug, instance.slug, filename)
 
+def image_directory_path(instance, filename):
+    return 'category_{0}/product_{1}/{2}'.format(instance.product.category.slug, instance.product.slug, filename)
+
 def collection_directory_path(instance, filename):
-    return 'collection_{0}/{2}'.format(instance.slug, filename)
+    return 'collection_{0}/{1}'.format(instance.slug, filename)
 
 
 
@@ -35,7 +38,13 @@ class Collection(models.Model):
 
     def __str__(self):
         return self.name
-    
+
+    @property
+    def image_preview(self):
+        if self.image:
+            return mark_safe('<img src="{}" width="250" height="250" />'.format(self.image.url))
+        return ""
+
     class Meta:
         verbose_name = 'Коллекция'
         verbose_name_plural = 'Коллекции'
@@ -52,13 +61,13 @@ class Product(models.Model):
             MinValueValidator(1)
         ],default=random.randint(1, 1001))
     mainImage = models.ImageField('Главное фото', upload_to=product_directory_path)
-    slug = models.SlugField(default="", null=False, unique=True)
+    slug = models.SlugField('Ссылка',default="", null=False, unique=True)
     date = models.DateTimeField('Дата добавления', default = timezone.now())
     
     @property
     def mainImage_preview(self):
         if self.mainImage:
-            return mark_safe('<img src="{}" width="250" height="250" />'.format(self.cover.url))
+            return mark_safe('<img src="{}" width="250" height="250" />'.format(self.mainImage.url))
         return ""
 
     def __str__(self):
@@ -70,11 +79,17 @@ class Product(models.Model):
 
 
 class ProductImage(models.Model):
-    image = models.ImageField('Фото', upload_to=product_directory_path)
+    image = models.ImageField('Фото', upload_to=image_directory_path)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
     def __str__(self):
         return f'Фото {self.product.name}'
+
+    @property
+    def image_preview(self):
+        if self.image:
+            return mark_safe('<img src="{}" width="250" height="250" />'.format(self.image.url))
+        return ""
 
     class Meta:
         verbose_name = 'Фото'
@@ -103,8 +118,8 @@ class Specs(models.Model):
     unit = models.CharField('Ед. измерения', max_length = 10, blank=True, null=True)
 
     def __str__(self):
-        return f'Характеристики {self.product.name}'
+        return f'{self.product.name}'
 
     class Meta:
-        verbose_name = 'Характеристики'
+        verbose_name = 'Характеристика'
         verbose_name_plural = 'Характеристики'
