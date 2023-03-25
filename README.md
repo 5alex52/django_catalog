@@ -6,7 +6,7 @@ Implementing a product catalog in django
 
 This is a project for a chain of furniture stores. All fields and models were made according to the technical specifications of the customer. The model diagram looks like this:
 
-![structure image](./main/static/img/model_structure.png)
+![structure image](./main/static/img/model_structure.jpg)
 
 
 ## Running this project
