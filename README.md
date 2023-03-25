@@ -2,7 +2,11 @@
 
 Implementing a product catalog in django
 
-Project under development
+## About
+
+This is a project for a chain of furniture stores. All fields and models were made according to the technical specifications of the customer. The model diagram looks like this:
+
+![structure image](./main/static/img/model_structure.png)
 
 
 ## Running this project
@@ -35,4 +39,23 @@ Now you can run the project with this command
 
 ```
 python manage.py runserver
+```
+
+## Create postgresql db
+
+### Mac Instructions
+
+Instructions for Russian localization.\
+Execute commands sequentially.
+
+```
+brew install postgres
+brew services start postgresql
+
+sudo psql -U *your_device_name* -d postgres
+
+CREATE USER django_user WITH PASSWORD 'dbpass';
+ALTER ROLE django_user SET client_encoding TO 'utf8';
+CREATE DATABASE mebel_tut TEMPLATE=template0 ENCODING 'UTF-8' LC_COLLATE 'ru_RU.UTF-8' LC_CTYPE 'ru_RU.UTF-8';
+GRANT ALL PRIVILEGES ON DATABASE mebel_tut TO django_user;
 ```

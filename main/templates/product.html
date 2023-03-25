@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name=”viewport” content=”user-scalable=no” />
+    <link rel="stylesheet" href="./static/css/product.css">
+    <link rel="stylesheet" href="./static/css/category.css">
+    <link rel="stylesheet" href="./static/css/base.css">
+    <link rel="stylesheet" href="./static/css/left_menu.css">
+    <link rel="stylesheet" href="./static/css/media.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Comfortaa&family=Montserrat:wght@300;700&family=Poppins:wght@200&family=Russo+One&display=swap"
+        rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+    <title>Мебель тут</title>
+</head>
+
+<body>
+
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <div class="vertmenu">
+            <h1>Каталог:</h1>
+            <hr>
+            <ul id="menu_left">
+                <li>
+                    <a class="active" href="#">Мягкая мебель</a>
+                    <input type="checkbox" class="subCat" id="1" checked="checked" />
+                    <label class="chka" for="1"></label>
+                    <ul style="display:none">
+                        <li>
+                            <a class="active" href="#">Прямые диваны</a>
+                        </li>
+                        <li>
+                            <a href="#">Угловые диваны</a>
+                        </li>
+                        <li>
+                            <a href="#">Модульные диваны</a>
+                        </li>
+                        <li>
+                            <a href="#">Тахты</a>
+                        </li>
+                        <li>
+                            <a href="#">Кресла и банкетки</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">Корпусная мебель</a>
+                    <input type="checkbox" class="subCat" id="2" />
+                    <label class="chka" for="2"></label>
+                    <ul style="display:none">
+                        <li>
+                            <a href="#">Гостинные</a>
+                            <input type="checkbox" class="subCat" id="2.1" checked="checked" />
+                            <label class="chka" for="2.1"></label>
+                            <ul style="display:none">
+                                <li>
+                                    <a href="#">Пункт меню 1.1.1</a>
+                                </li>
+                                <li>
+                                    <a href="#">Пункт меню 1.1.2</a>
+                                </li>
+                                <li>
+                                    <a href="#">Пункт меню 1.1.3</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#">Детские</a>
+                        </li>
+                        <li>
+                            <a href="#">Спальни</a>
+                        </li>
+                        <li>
+                            <a href="#">Прихожие</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">Кухни</a>
+                </li>
+                <li>
+                    <a href="#">Столы</a>
+                    <input type="checkbox" class="subCat" id="4" />
+                    <label class="chka" for="4"></label>
+                    <ul style="display:none">
+                        <li>
+                            <a href="#">Обеденные</a>
+                        </li>
+                        <li>
+                            <a href="#">Журнальные</a>
+                        </li>
+                        <li>
+                            <a href="#">Письменные</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">Стулья</a>
+                    <input type="checkbox" class="subCat" id="5" />
+                    <label class="chka" for="5"></label>
+                    <ul style="display:none">
+                        <li>
+                            <a href="#">Стулья для столовой</a>
+                        </li>
+                        <li>
+                            <a href="#">Офисные стулья</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="wrapper" id="wrapper">
+        <header class="header fixed">
+            <div class="header_container">
+                <a href="index.html">
+                    <h1 class="header_item logo">Мебель<br>тут</h1>
+                </a>
+                <input type="checkbox" id="menuToggle">
+                <label for="menuToggle" class="menu-icon"><img src="./static/img/list.svg" alt="меню"></label>
+                <ul id="menu_header">
+                    
+                    <li class="list_header"><a class="header_item" href="catalog.html">КАТАЛОГ</a>
+                        <ul class="menu">
+                            <li><a href="#">Мягкая мебель</a>
+                                <ul class="inside_menu">
+                                    <li><a href="#">Прямые диваны</a></li>
+                                    <li><a href="#">Угловые диваны</a></li>
+                                    <li><a href="#">Модульные диваны</a></li>
+                                    <li><a href="#">Тахты</a></li>
+                                    <li><a href="#">Кресла и банкетки</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#">Корпусная мебель</a>
+                                <ul class="inside_menu">
+                                    <li><a href="#">Гостиные</a></li>
+                                    <li><a href="#">Детские</a></li>
+                                    <li><a href="#">Спальни</a></li>
+                                    <li><a href="#">Прихожие</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#">Кухни</a></li>
+                            <li><a href="#">Столы</a>
+                                <ul class="inside_menu">
+                                    <li><a href="#">Обеденные</a></li>
+                                    <li><a href="#">Журнальные</a></li>
+                                    <li><a href="#">Письменные</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#">Стулья</a>
+                                <ul class="inside_menu">
+                                    <li><a href="#">Стулья для столовой</a></li>
+                                    <li><a href="#">Офисные стулья</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a class="header_item" href="#">АКЦИИ</a></li>
+                    <li><a class="header_item" href="contacts.html">КОНТАКТЫ</a></li>
+                </ul>
+            </div>
+            <div class="header_container">
+                <a class="header_item inst" href="https://www.instagram.com/mebeltutbaranovichi/"><img
+                        src="./static/img/instagram.svg" alt="Инстаграм"></a>
+                <a class="header_item tel" href="tel:+375445557574">+375 (33) 376-06-77</a>
+                <div class="header_item search">
+                    <img src="./static/img/search.svg" alt="Поиск">
+                </div>
+            </div>
+        </header>
+        <div class="content2">
+            <div class="items_list" id="main">
+                <span onclick="navHandler()"><img src="./static/img/chevron-right.svg" alt="меню" id="menu_btn"></span>
+                <div class="product">
+                    <h1>Парма<div>Акция!</div>
+                    </h1>
+                    <div class="swiper-container">
+                        <div class="swiper mySwiper2">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide"><img src="./static/img/parma.jpeg" alt=""></div>
+                                <div class="swiper-slide"><img src="./static/img/parma2.jpeg" alt=""></div>
+                                <div class="swiper-slide"><img src="./static/img/parma3.jpeg" alt=""></div>
+                            </div>
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                        </div>
+                        <div thumbsSlider="" class="swiper mySwiper">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide"><img src="./static/img/parma.jpeg" alt=""></div>
+                                <div class="swiper-slide"><img src="./static/img/parma2.jpeg" alt=""></div>
+                                <div class="swiper-slide"><img src="./static/img/parma3.jpeg" alt=""></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info_container">
+                        <hr>
+                        <div class="info">
+                            <h2>Характеристики:</h2>
+                            <p><span>Длина, мм</span><span>2330</span></p>
+                            <p><span>Ширина, мм</span><span>1010</span></p>
+                            <p><span>Высота, мм</span><span>930</span></p>
+                            <p><span>Длина спального места (места для отдыха), мм</span><span>1960</span></p>
+                            <p><span>Ширина спального места (места для отдыха), мм</span><span>1450</span></p>
+                            <p><span>Механизм трансформации</span><span>ТИК-ТАК</span></p>
+                            <p><span>Наличие ящиков для белья</span><span>Да</span></p>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer>
+            <div>
+                <h1>Реквизиты</h1>
+                <h2>ООО «МЕХО-М»</h2>
+                <p>УНП 290327381, ОКПО 292130241000</p>
+                <h2>Банковские реквизиты:</h2>
+                <p>Расчетный счет № BY30 PJCB 3012 5301 2510 0000 0933 в ОАО «Приорбанк»</p>
+                <h2>Адрес банка:</h2>
+                <p>220002, г. Минск, ул. В. Хоружей, 31а. BIC банка PJCBBY2X</p>
+            </div>
+            <div>
+                <h1>Каталог</h1>
+                <ul>
+                    <li><a href="">Мягкая мебель</a></li>
+                    <li><a href="">Корпусная мебель</a></li>
+                    <li><a href="">Кухни</a></li>
+                    <li><a href="">Столы</a></li>
+                    <li><a href="">Стулья</a></li>
+                </ul>
+            </div>
+            <div>
+                <h1>Контакты</h1>
+                <h2>Адреса:</h2>
+                <p>г. Барановичи</p>
+                <ul class="small">
+                    <li>ул. Брестская 270Д</li>
+                    <li>ул. Пролетарская 48А</li>
+                </ul>
+                <h2>Телефоны:</h2>
+                <p>+375-33-376-06-77 (Брестская)<img src="./static/img/viber.svg" alt=""></p>
+                <p>+375-33-322-61-15 (Пролетарская)</p>
+                <h2>Email:</h2>
+                <p>uma-mebel@list.ru</p>
+                <h2>Instagram:</h2>
+                <p><a href="https://www.instagram.com/mebeltutbaranovichi/">@mebeltutbaranovichi</a></p>
+            </div>
+        </footer>
+    </div>
+    <script src="https://kit.fontawesome.com/406fbec51e.js" crossorigin="anonymous"></script>
+    <script src="./static/js/left.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+    <script>
+        let swiper = new Swiper(".mySwiper", {
+            spaceBetween: 10,
+            slidesPerView: 4,
+            freeMode: true,
+            watchSlidesProgress: true,
+            loop: true,
+        });
+
+
+        let swiper2 = new Swiper(".mySwiper2", {
+            spaceBetween: 10,
+            loop: true,
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+            thumbs: {
+                swiper: swiper,
+            },
+        });
+    </script>
+</body>
+
+</html>
