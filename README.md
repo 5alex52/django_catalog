@@ -52,7 +52,7 @@ Execute commands sequentially.
 brew install postgres
 brew services start postgresql
 
-sudo psql -U *your_device_name* -d postgres
+sudo psql -U *your_username* -d postgres
 
 CREATE USER django_user WITH PASSWORD 'dbpass';
 ALTER ROLE django_user SET client_encoding TO 'utf8';

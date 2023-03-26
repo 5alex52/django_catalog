@@ -163,7 +163,7 @@
 }
 
 .index_categories div:nth-child(1) div:nth-child(2) {
-    background-image: url('../../static/img/bedroom.jpg');
+    background-image: url('../../main/img/bedroom.jpg');
     background-size: cover;
     background-position: center;
     background-origin: border-box;
@@ -175,7 +175,7 @@
 }
 
 .index_categories div:nth-child(2) div:nth-child(2) {
-    background-image: url('../../static/img/livingroom.jpg');
+    background-image: url('../../main/img/livingroom.jpg');
     background-size: cover;
     background-position: bottom;
     background-origin: border-box;
@@ -187,7 +187,7 @@
 }
 
 .index_categories div:nth-child(3) div:nth-child(2){
-    background-image: url('../../static/img/kitchen.jpg');
+    background-image: url('../../main/img/kitchen.jpg');
     background-size: cover;
     background-position: right;
     background-origin: border-box;
@@ -201,7 +201,7 @@
 }
 
 .index_categories div:nth-child(4) div:nth-child(2) {
-    background-image: url('../../static/img//modular.jpg');
+    background-image: url('../../main/img//modular.jpg');
     background-size: cover;
     background-position: center;
     background-origin: border-box;
@@ -213,7 +213,7 @@
 }
 
 .index_categories div:nth-child(5) div:nth-child(2) {
-    background-image: url('../../static/img/strait_sofa.jpg');
+    background-image: url('../../main/img/strait_sofa.jpg');
     background-size: cover;
     background-position: center;
     background-origin: border-box;
@@ -225,7 +225,7 @@
 }
 
 .index_categories div:nth-child(6) div:nth-child(2) {
-    background-image: url('../../static/img/corner_sofa.jpg');
+    background-image: url('../../main/img/corner_sofa.jpg');
     background-size: cover;
     background-position: center;
     background-origin: border-box;
@@ -239,7 +239,7 @@
 }
 
 .index_categories div:nth-child(7) div:nth-child(2) {
-    background-image: url('../../static/img/hallway.jpeg');
+    background-image: url('../../main/img/hallway.jpeg');
     background-size: cover;
     background-position: center;
     background-origin: border-box;
@@ -251,7 +251,7 @@
 }
 
 .index_categories div:nth-child(8) div:nth-child(2) {
-    background-image: url('../../static/img/astrid.jpeg');
+    background-image: url('../../main/img/astrid.jpeg');
     background-size: cover;
     background-position: center;
     background-origin: border-box;

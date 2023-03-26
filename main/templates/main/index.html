@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ru">
 
@@ -5,10 +6,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./static/css/products.css">
-    <link rel="stylesheet" href="./static/css/base.css">
-    <link rel="stylesheet" href="./static/css/index.css">
-    <link rel="stylesheet" href="./static/css/media.css">
+    <link rel="stylesheet" href="{% static 'main/css/products.css'%}">
+    <link rel="stylesheet" href="{% static 'main/css/base.css'%}">
+    <link rel="stylesheet" href="{% static 'main/css/index.css'%}">
+    <link rel="stylesheet" href="{% static 'main/css/media.css'%}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -27,7 +28,7 @@
                     <h1 class="header_item logo">Мебель<br>тут</h1>
                 </a>
                 <input type="checkbox" id="menuToggle">
-                <label for="menuToggle" class="menu-icon"><img src="./static/img/list.svg" alt="меню"></label>
+                <label for="menuToggle" class="menu-icon"><img src="{% static 'main/img/list.svg'%}" alt="меню"></label>
                 <ul id="menu_header">
 
                     <li class="list_header"><a class="header_item" href="catalog.html">КАТАЛОГ</a>
@@ -59,10 +60,10 @@
             </div>
             <div class="header_container">
                 <a class="header_item inst" href="https://www.instagram.com/mebeltutbaranovichi/"><img
-                        src="./static/img/instagram.svg" alt="Инстаграм"></a>
+                        src="{% static 'main/img/instagram.svg'%}" alt="Инстаграм"></a>
                 <a class="header_item tel" href="tel:+375445557574">+375 (33) 376-06-77</a>
                 <div class="header_item search">
-                    <img src="./static/img/search.svg" alt="Поиск">
+                    <img src="{% static 'main/img/search.svg'%}" alt="Поиск">
                 </div>
             </div>
         </header>
@@ -70,9 +71,9 @@
         <div class="content">
             <div class="swiper mySwiper_index">
                 <div class="swiper-wrapper">
-                    <div class="swiper-slide"><img src="./static/img/mortiz.jpeg" alt=""></div>
-                    <div class="swiper-slide"><img src="./static/img/verona.jpeg" alt=""></div>
-                    <div class="swiper-slide"><img src="./static/img/astrid.jpeg" alt=""></div>
+                    <div class="swiper-slide"><img src="{% static 'main/img/mortiz.jpeg'%}" alt=""></div>
+                    <div class="swiper-slide"><img src="{% static 'main/img/verona.jpeg'%}" alt=""></div>
+                    <div class="swiper-slide"><img src="{% static 'main/img/astrid.jpeg'%}" alt=""></div>
                 </div>
                 <div class="swiper_text">
                     <h1>Мебель тут</h1>
@@ -89,7 +90,7 @@
                         <p>Любовь и трепетное отношение к своему ремеслу вдохновляет нас создавать современные диваны,
                             рождённые в творческом изобилии. Всегда оригинально, тонко, изысканно. </p>
                     </div>
-                    <img src="./static/img/sofa.avif" alt="Диваны">
+                    <img src="{% static 'main/img/sofa.avif'%}" alt="Диваны">
                 </div>
                 <div class="info_item">
                     <div id="second_info">
@@ -204,28 +205,28 @@
             <h1 id="last">Популярные товары:</h1>
             <div class="popular_product">
                 <div class="popular_item">
-                    <img src="./static/img/parma.jpeg" alt="">
+                    <img src="{% static 'main/img/parma.jpeg'%}" alt="">
                     <h3>Парма</h3>
                     <h4>Диван прямой Парма</h4>
                     <a href="#" class="more">ПОДРОБНЕЕ</a>
                 </div>
                 <div class="popular_item">
                     <div class="new">Новинка</div>
-                    <img src="./static/img/parma.jpeg" alt="">
+                    <img src="{% static 'main/img/parma.jpeg'%}" alt="">
                     <h3>Парма</h3>
                     <h4>Диван прямой Парма</h4>
                     <a href="#" class="more">ПОДРОБНЕЕ</a>
                 </div>
                 <div class="popular_item">
                     <div class="bestseller">Хит продаж</div>
-                    <img src="./static/img/parma.jpeg" alt="">
+                    <img src="{% static 'main/img/parma.jpeg'%}" alt="">
                     <h3>Парма</h3>
                     <h4>Диван прямой Парма</h4>
                     <a href="#" class="more">ПОДРОБНЕЕ</a>
                 </div>
                 <div class="popular_item">
                     <div class="sale">Акция</div>
-                    <img src="./static/img/parma.jpeg" alt="">
+                    <img src="{% static 'main/img/parma.jpeg'%}" alt="">
                     <h3>Парма</h3>
                     <h4>Диван прямой Парма</h4>
                     <a href="#" class="more more_sale">ПОДРОБНЕЕ</a>
@@ -261,7 +262,7 @@
                     <li>ул. Пролетарская 48А</li>
                 </ul>
                 <h2>Телефоны:</h2>
-                <p>+375-33-376-06-77 (Брестская)<img src="./static/img/viber.svg" alt=""></p>
+                <p>+375-33-376-06-77 (Брестская)<img src="{% static 'main/img/viber.svg'%}" alt=""></p>
                 <p>+375-33-322-61-15 (Пролетарская)</p>
                 <h2>Email:</h2>
                 <p>uma-mebel@list.ru</p>
@@ -270,7 +271,7 @@
             </div>
         </footer>
     </div>
-    <script src="./static/js/header.js"></script>
+    <script src="{% static 'main/js/header.js'%}"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
     <script>
         const swiper = new Swiper('.swiper', {
