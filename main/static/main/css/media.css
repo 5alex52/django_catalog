@@ -294,6 +294,11 @@
         font-size: 10px;
     }
 
+    .list_header{
+        display: block;
+        height: fit-content;
+    }
+
     .mySwiper_index{
         --swiper-navigation-size: 0px;
         z-index: -1;

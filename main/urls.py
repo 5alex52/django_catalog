@@ -1,12 +1,12 @@
 from django.urls import path
-from django.conf.urls.static import static
-from django.conf import settings
-from .views import home
+from .views import *
 
 
 urlpatterns = [
     path('', home, name='home'),
+    path('catalog', catalog, name='catalog'),
+    path('product/<str:slug>/', currentProduct, name='current-product'),
+    path('catalog/<str:slug>', currentCategory, name='current-category'),
+    path('catalog/<str:slug>/collections', currentCategory, name='collections'),
+    path('catalog/collections/<str:slug>', currentCategory, name='current-collection'),
 ]
-
-
-urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

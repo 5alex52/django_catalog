@@ -4,6 +4,7 @@ import random
 from django.utils import timezone
 from django.utils.html import mark_safe
 from django.contrib import messages
+from django.urls import reverse
 
 
 def product_directory_path(instance, filename):
@@ -29,6 +30,9 @@ class Category(models.Model):
     class Meta:
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
+
+    def get_absolute_url(self):
+        return reverse('current-category', kwargs={'slug': self.slug})
 
 
 class Manufacturer(models.Model):
@@ -68,6 +72,9 @@ class Collection(models.Model):
         verbose_name = 'Коллекция'
         verbose_name_plural = 'Коллекции'
 
+    def get_absolute_url(self):
+        return reverse('current-collection', kwargs={'slug': self.slug})
+
 
 class Product(models.Model):
     name = models.CharField('Название', max_length=100,
@@ -101,6 +108,9 @@ class Product(models.Model):
         verbose_name = 'Товар'
         verbose_name_plural = 'Товары'
 
+    def get_absolute_url(self):
+        return reverse('current-product', kwargs={'slug': self.slug})
+
 
 class ProductImage(models.Model):
     image = models.ImageField('Фото', upload_to=image_directory_path)
@@ -126,7 +136,7 @@ class Specs(models.Model):
         Product, verbose_name='Товар', on_delete=models.CASCADE)
 
     SPECS_CHOICES = (
-        ('Length', 'Длинна'),
+        ('Length', 'Длина'),
         ('Width', 'Ширина'),
         ('Height', 'Высота'),
         ('Weight', 'Вес'),
@@ -174,6 +184,8 @@ class Specs(models.Model):
 class Phone(models.Model):
     phone = models.CharField('Номер', max_length=20, blank=False, null=False)
     isMain = models.BooleanField('Основной', unique=True)
+    isViber = models.BooleanField('Viber', unique=True)
+    store = models.CharField('Магазин', max_length=20, blank=False, null=False)
 
     class Meta:
         verbose_name = 'Телефон'
