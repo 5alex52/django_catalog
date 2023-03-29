@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.utils.html import mark_safe
 from django.contrib import messages
 from django.urls import reverse
+from .utils import unique_slugify, image_compress
 
 
 def product_directory_path(instance, filename):
@@ -22,7 +23,10 @@ def collection_directory_path(instance, filename):
 class Category(models.Model):
     name = models.CharField('Категория', max_length=100,
                             blank=False, null=False)
-    slug = models.SlugField('Ссылка', default="", null=False, unique=True)
+    slug = models.SlugField('Ссылка', default="", unique=True)
+    number = models.IntegerField(
+        'Номер в списке', blank=True, unique=True)
+    isCabinet = models.BooleanField('Корпусная мебель?', default=False)
 
     def __str__(self):
         return self.name
@@ -32,12 +36,26 @@ class Category(models.Model):
         verbose_name_plural = 'Категории'
 
     def get_absolute_url(self):
-        return reverse('current-category', kwargs={'slug': self.slug})
+        if self.isCabinet:
+            return reverse('current-collections', kwargs={'slug': self.slug})
+        else:
+            return reverse('current-category', kwargs={'slug': self.slug})
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = unique_slugify(self, self.name)
+        
+        if not self.number:
+            self.number = Category.objects.count() + 1 
+
+        super().save(*args, **kwargs)
 
 
 class Manufacturer(models.Model):
     name = models.CharField(
         'Производитель', max_length=100, blank=False, null=False)
+    slug = models.SlugField('Ссылка',
+                            null=False, blank=False, unique=True)
 
     def __str__(self):
         return self.name
@@ -46,14 +64,22 @@ class Manufacturer(models.Model):
         verbose_name = 'Производитель'
         verbose_name_plural = 'Производители'
 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = unique_slugify(self, self.name)
+        super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse('current-manufacturer', kwargs={'slug': self.slug})
+
 
 class Collection(models.Model):
     name = models.CharField('Коллекция', max_length=100,
                             blank=False, null=False)
     manufacturer = models.ForeignKey(
         Manufacturer, verbose_name='Производитель', on_delete=models.CASCADE)
-    category = models.ForeignKey(
-        Category, verbose_name='Категория', on_delete=models.CASCADE)
+    category = models.ManyToManyField(
+        Category, verbose_name='Категория')
     image = models.ImageField(
         'Фото категории', upload_to=collection_directory_path)
     slug = models.SlugField('Ссылка', default="",
@@ -75,12 +101,17 @@ class Collection(models.Model):
     def get_absolute_url(self):
         return reverse('current-collection', kwargs={'slug': self.slug})
 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = unique_slugify(self, self.name)
+        super().save(*args, **kwargs)
+
 
 class Product(models.Model):
     name = models.CharField('Название', max_length=100,
                             blank=False, null=False)
     manufacturer = models.ForeignKey(
-        Manufacturer, verbose_name='Производитель',  on_delete=models.CASCADE, blank=False, null=False)
+        Manufacturer, verbose_name='Производитель', on_delete=models.CASCADE)
     category = models.ForeignKey(
         Category, verbose_name='Категория',  on_delete=models.CASCADE)
     collection = models.ForeignKey(
@@ -92,8 +123,10 @@ class Product(models.Model):
     ], default=random.randint(1, 1001))
     mainImage = models.ImageField(
         'Главное фото', upload_to=product_directory_path)
-    slug = models.SlugField('Ссылка', default="", null=False, unique=True)
+    slug = models.SlugField('Ссылка', default="",
+                            null=False, blank=False, unique=True)
     date = models.DateTimeField('Дата добавления', default=timezone.now())
+    price = models.DecimalField('Цена', decimal_places=2, max_digits=7, default=100, blank=False, null = False)
 
     @property
     def mainImage_preview(self):
@@ -110,6 +143,22 @@ class Product(models.Model):
 
     def get_absolute_url(self):
         return reverse('current-product', kwargs={'slug': self.slug})
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = unique_slugify(self, self.name)
+        super().save(*args, **kwargs)
+
+        """
+        Compression
+        """
+
+    #     if self.__mainImage != self.mainImage and self.mainImage:
+    #         image_compress(self.mainImage.path, width=800, height=800)
+
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     self.__mainImage = self.mainImage if self.pk else None
 
 
 class ProductImage(models.Model):

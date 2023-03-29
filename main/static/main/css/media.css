@@ -482,6 +482,11 @@
         padding: 20px;
     }
 
+    .select_container {
+        top: 20px;
+        right: 20px;
+    }
+
 }
 
 @media (max-width: 490px) {

@@ -149,7 +149,7 @@
     position: relative;
 }
 
-.pagination{
+.pagination {
     margin-left: auto;
     margin-right: auto;
     width: fit-content;
@@ -178,25 +178,93 @@
     background-color: #ddd;
 }
 
-.catalog_image_container h1{
-    text-align: left;
-    font-family: var(--Montserrat);
-    font-size: 3rem ;
-    padding: 60px;
-    padding-bottom: 0px;
+.catalog_image_container a {
+    color: #000000;
+    transition: all .3s ease-in-out;
+    -webkit-transition: all .3s ease-in-out;
+    -moz-transition: all .3s ease-in-out;
+    -ms-transition: all .3s ease-in-out;
+    -o-transition: all .3s ease-in-out;
 }
 
-.catalog_image_container img{
+.catalog_image_container a:hover {
+    color: var(--bestseller_color);
+}
+
+.catalog_image_container h1 {
+    margin-right: 0;
+    font-family: var(--Montserrat);
+    font-size: 4rem;
+    padding: 60px;
+    padding-bottom: 0px;
+    width: fit-content;
+}
+
+.catalog_image_container img {
     width: 100%;
     height: 500px;
     padding: 60px;
     object-fit: cover;
 }
 
-#empty{
+#empty {
     width: 100%;
     height: 40vh;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+
+
+.select_container {
+    position: absolute;
+    top: 35px;
+    right: 80px;
+}
+
+.dropbtn {
+    background-color: var(--footer_color);
+    color: rgb(0, 0, 0);
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    width: 160px;
+    font-family: var(--Montserrat);
+}
+
+.dropbtn:hover, .dropbtn:focus {
+    opacity: 80%;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    width: 160px;
+    font-family: var(--Montserrat);
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {background-color: #ddd}
+
+.show {display:block;}
+
+#category_name{
+    font-family: var(--Montserrat);
 }

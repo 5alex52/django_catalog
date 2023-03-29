@@ -33,8 +33,17 @@
 
 .product_item h4 {
     margin-top: 10px;
-    margin-bottom: 30px;
+    margin-bottom: 5px;
     font-size: 1rem;
+}
+
+.product_item h4 span {
+    font-size: .6rem;
+}
+
+#price_h4{
+    text-align: center;
+    margin-bottom: 25px;
 }
 
 .product_item .more {

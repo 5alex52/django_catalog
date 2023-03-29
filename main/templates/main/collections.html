@@ -1,0 +1,43 @@
+{% extends 'main/base.html'%}
+{% load static %}
+
+{% block head %}
+{% endblock %}
+
+{% block title %}
+{{title}}
+{% endblock %}
+
+{% block body %}
+{% include "main/nav.html" %} 
+{% endblock %}
+
+{% block content %}
+<div class="content2">
+    <div class="items_list" id="main">
+        <span onclick="navHandler()"><img src="{% static 'main/img/chevron-right.svg' %}" alt="меню" id="menu_btn"></span>
+        <div class="collection">
+        {% if page_obj %}
+                {% for x in page_obj %}
+                    <div class="catalog_image_container">
+                        <a href="{{ x.get_absolute_url }}">
+                            <h1>{{x.name}}</h1></a>
+                        <a href="{{ x.get_absolute_url }}"><img src="{{ x.image.url }}" alt=""></a>
+                    </div>
+                {% endfor %}
+                {% else %}
+                <div id="empty">
+                    <h1>Нет коллекций</h1>
+                </div>
+        {% endif %}
+        </div>
+        {% include "main/pagination.html" %} 
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block script %}
+<script src="https://kit.fontawesome.com/406fbec51e.js" crossorigin="anonymous"></script>
+{% endblock %}

@@ -6,7 +6,9 @@
         <ul id="menu_left">
             {% for x in categories %}
             <li>
-                <a href="{{ x.get_absolute_url }}">{{ x.name }}</a>
+                <a  {% if x == findCategory %}
+                        class="active"
+                    {% endif%} href="{{ x.get_absolute_url }}">{{ x.name }}</a>
             <li>
                 {% endfor %}
         </ul>

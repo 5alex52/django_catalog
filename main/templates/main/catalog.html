@@ -2,7 +2,10 @@
 {% load static %}
 
 {% block head %}
+{% endblock %}
 
+{% block title %}
+{{title}}
 {% endblock %}
 
 {% block body %}
@@ -13,15 +16,40 @@
 <div class="content2">
     <div class="items_list" id="main">
         <span onclick="navHandler()"><img src="{% static 'main/img/chevron-right.svg' %}" alt="меню" id="menu_btn" ></span>
-    
+        <div class="select_container">
+
+            <form action="{% url 'catalog' %}" method="get" id="sortProductByDate">
+                <input type="hidden" name="orderby" value="-date" />
+            </form>
+            <form action="{% url 'catalog' %}" method="get" id="sortProductByRating">
+                <input type="hidden" name="orderby" value="-rating"/>
+            </form>
+                                            
+            <div class="dropdown">
+                <button onclick="myFunction()" class="dropbtn">Сортировка: </button>
+                <div id="myDropdown" class="dropdown-content">
+                    <a href="#" onclick="document.getElementById('sortProductByDate').submit();">По дате</a>
+                    <a href="#" onclick="document.getElementById('sortProductByRating').submit();">По рейтингу</a>
+                </div>
+            </div>
+
+        </div>
+        <h1 id="category_name">{{ findCategory.name }}
+            {% if findCollection %}
+                {{findCollection}}
+            {% endif %}
+            {% if findManufacturer %}
+                {{findManufacturer}}
+            {% endif %}
+        </h1>
         <div class="products">
             {% if page_obj %}
                 {% for x in page_obj %}
                 <div class="product_item">
-                    {% if x.rating >= 900 %}
-                        <div class="bestseller">Хит продаж</div>
-                    {% elif x.isOnSale %}
+                    {% if x.isOnSale %}
                         <div class="sale">Акция</div>
+                    {% elif x.rating >= 900 %}
+                        <div class="bestseller">Хит продаж</div>
                     {% else %}
                         {% for key, value in new.items %}
                             {% if key == x.name %}
@@ -33,7 +61,12 @@
                     {% endif %}
                     <img src="{{ x.mainImage.url }}" alt="">
                     <h3>{{ x.name }}</h3>
-                    <h4>{{ x.manufacturer.name}}</h4>
+                    <h4>{{ x.manufacturer.name}} 
+                        {% if x.collection%}
+                        | {{ x.collection.name }}
+                        {% endif %}
+                    </h4>
+                    <h4 id="price_h4">{{ x.price}} <span>BYN</span></h4>
                     <a href="{{ x.get_absolute_url }}" class="more">ПОДРОБНЕЕ</a>
                 </div>
                 {% endfor %}
@@ -51,4 +84,5 @@
 
 {% block script %}
 <script src="https://kit.fontawesome.com/406fbec51e.js" crossorigin="anonymous"></script>
+<script src="{% static 'main/js/select.js' %}"></script>
 {% endblock %}

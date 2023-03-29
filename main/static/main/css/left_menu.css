@@ -1,17 +1,16 @@
-/* Боковое меню навигации */
 .sidenav {
   margin-top: 110px;
-  height: 86vh; /* 100% Полный рост */
-  width: 0; /* 0 ширина - измените это с помощью JavaScript */
-  position: fixed; /* Оставаться на месте */
-  z-index: 8; /* Оставайтесь на вершине */
+  height: 86vh; 
+  width: 0; 
+  position: fixed; 
+  z-index: 8; 
   top: 0;
   left: 0;
-  background-color: #ffffff; /* Черный */
+  background-color: #ffffff; 
   overflow-y: scroll;
-  overflow-x: hidden; /* Отключить горизонтальную прокрутку */
-  padding-top: 60px; /* Поместите содержимое 60px сверху */
-  transition: 0.5s; /* 0.5 секунд эффект перехода, чтобы скользить в sidenav */
+  overflow-x: hidden; 
+  padding-top: 20px; 
+  transition: 0.5s; 
   border-right: 2px solid var(--footer_color);
 }
 

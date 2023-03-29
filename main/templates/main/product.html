@@ -5,6 +5,10 @@
 <link rel="stylesheet" href="{% static 'main/css/product.css'%}">
 {% endblock %}
 
+{% block title %}
+{{title}}
+{% endblock %}
+
 {% block body %}
 {% include "main/nav.html" %} 
 {% endblock %}
@@ -44,13 +48,14 @@
                 </div>
             </div>
             <div class="info_container">
+                <h1 id="price">Цена: {{current.price}} <span>BYN</span></h1>
+                <p id="manufacturer">Производитель: <a href="{{current.manufacturer.get_absolute_url}}">{{current.manufacturer}}</a></p>
+                {% if current.collection %}
+                        <p id="collection">Коллекция: <a href="{{current.collection.get_absolute_url}}">{{current.collection}}</a></p>
+                {% endif %}
                 <hr>
                 <div class="info">
                     <h2>Характеристики:</h2>
-                    <p><span>Производитель</span><span>{{current.manufacturer}}</span></p>
-                    {% if current.collection %}
-                        <p><span>Коллекция</span><span><a href="{{current.collection.get_absolute_url}}">{{current.collection}}</a></span></p>
-                    {% endif %}
                     {% for x in currentSpecs %}
                         <p><span>{{ x.get_param_display }} {%if x.unit %}, {{x.get_unit_display}} {% endif %}</span><span>{{ x.value }}</span></p>
                     {% endfor %}

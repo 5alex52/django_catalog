@@ -1,144 +1,36 @@
-<!DOCTYPE html>
-<html lang="ru">
+{% extends 'main/base.html'%}
+{% load static %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./static/css/contacts.css">
-    <link rel="stylesheet" href="./static/css/base.css">
-    <link rel="stylesheet" href="./static/css/index.css">
-    <link rel="stylesheet" href="./static/css/media.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Comfortaa&family=Montserrat:wght@300;700&family=Poppins:wght@200&family=Russo+One&display=swap"
-        rel="stylesheet">
-    <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
-    <title>Мебель тут</title>
-</head>
+{% block title %}
+Контакты
+{% endblock %}
 
-<body>
-    <div class="wrapper">
-        <header class="header">
-            <div class="header_container">
-                <a href="index.html">
-                    <h1 class="header_item logo">Мебель<br>тут</h1>
-                </a>
-                <input type="checkbox" id="menuToggle">
-                <label for="menuToggle" class="menu-icon"><img src="./static/img/list.svg" alt="меню"></label>
-                <ul id="menu_header">
-                    
-                    <li class="list_header"><a class="header_item" href="catalog.html">КАТАЛОГ</a>
-                        <ul class="menu">
-                            <li><a href="#">Мягкая мебель</a>
-                                <ul class="inside_menu">
-                                    <li><a href="#">Прямые диваны</a></li>
-                                    <li><a href="#">Угловые диваны</a></li>
-                                    <li><a href="#">Модульные диваны</a></li>
-                                    <li><a href="#">Тахты</a></li>
-                                    <li><a href="#">Кресла и банкетки</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="#">Корпусная мебель</a>
-                                <ul class="inside_menu">
-                                    <li><a href="#">Гостиные</a></li>
-                                    <li><a href="#">Детские</a></li>
-                                    <li><a href="#">Спальни</a></li>
-                                    <li><a href="#">Прихожие</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="#">Кухни</a></li>
-                            <li><a href="#">Столы</a>
-                                <ul class="inside_menu">
-                                    <li><a href="#">Обеденные</a></li>
-                                    <li><a href="#">Журнальные</a></li>
-                                    <li><a href="#">Письменные</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="#">Стулья</a>
-                                <ul class="inside_menu">
-                                    <li><a href="#">Стулья для столовой</a></li>
-                                    <li><a href="#">Офисные стулья</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                    <li><a class="header_item" href="#">АКЦИИ</a></li>
-                    <li><a class="header_item" href="contacts.html">КОНТАКТЫ</a></li>
-                </ul>
-            </div>
-            <div class="header_container">
-                <a class="header_item inst" href="https://www.instagram.com/mebeltutbaranovichi/"><img
-                        src="./static/img/instagram.svg" alt="Инстаграм"></a>
-                <a class="header_item tel" href="tel:+375445557574">+375 (33) 376-06-77</a>
-                <div class="header_item search">
-                    <img src="./static/img/search.svg" alt="Поиск" id="search">
-                </div>
-            </div>
-        </header>
-        <div class="content">
-            <div class="contacts_body">
-                <div>
-                    <h1>Контакты</h1>
-                    <h2>Адреса:</h2>
-                    <p>г. Барановичи</p>
-                    <ul class="small">
-                        <li>ул. Брестская 270Д</li>
-                        <li>ул. Пролетарская 48А</li>
-                    </ul>
-                    <h2>Телефоны:</h2>
-                    <p>+375-33-376-06-77 (Брестская)<img src="./static/img/viber.svg" alt=""></p>
-                    <p>+375-33-322-61-15 (Пролетарская)</p>
-                    <h2>Email:</h2>
-                    <p>uma-mebel@list.ru</p>
-                    <h2>Instagram:</h2>
-                    <p><a href="https://www.instagram.com/mebeltutbaranovichi/">@mebeltutbaranovichi</a></p>
-                </div>
-                <div id="map_container">
-                    Поле для Яндекс карт
-                </div>
-            </div>
+{% block content %}
+<div class="content">
+    <div class="contacts_body">
+        <div>
+            <h1>Контакты</h1>
+            <h2>Адреса:</h2>
+            <p>г. Барановичи</p>
+            <ul class="small">
+                <li>ул. Брестская 270Д</li>
+                <li>ул. Пролетарская 48А</li>
+            </ul>
+            <h2>Телефоны:</h2>
+            {% for x in phones%}
+                <p>{{x.phone}} {{x.store}} {% if x.isViber %}<img src="{% static 'main/img/viber.svg'%}" alt="">{% endif %}</p>
+            {% endfor %}
+            <p>uma-mebel@list.ru</p>
+            <h2>Instagram:</h2>
+            <p><a href="https://www.instagram.com/mebeltutbaranovichi/">@mebeltutbaranovichi</a></p>
         </div>
-        <footer>
-            <div>
-                <h1>Реквизиты</h1>
-                <h2>ООО «МЕХО-М»</h2>
-                <p>УНП 290327381, ОКПО 292130241000</p>
-                <h2>Банковские реквизиты:</h2>
-                <p>Расчетный счет № BY30 PJCB 3012 5301 2510 0000 0933 в ОАО «Приорбанк»</p>
-                <h2>Адрес банка:</h2>
-                <p>220002, г. Минск, ул. В. Хоружей, 31а. BIC банка PJCBBY2X</p>
-            </div>
-            <div>
-                <h1>Каталог</h1>
-                <ul>
-                    <li><a href="">Мягкая мебель</a></li>
-                    <li><a href="">Корпусная мебель</a></li>
-                    <li><a href="">Кухни</a></li>
-                    <li><a href="">Столы</a></li>
-                    <li><a href="">Стулья</a></li>
-                </ul>
-            </div>
-            <div>
-                <h1>Контакты</h1>
-                <h2>Адреса:</h2>
-                <p>г. Барановичи</p>
-                <ul class="small">
-                    <li>ул. Брестская 270Д</li>
-                    <li>ул. Пролетарская 48А</li>
-                </ul>
-                <h2>Телефоны:</h2>
-                <p>+375-33-376-06-77 (Брестская)<img src="./static/img/viber.svg" alt=""></p>
-                <p>+375-33-322-61-15 (Пролетарская)</p>
-                <h2>Email:</h2>
-                <p>uma-mebel@list.ru</p>
-                <h2>Instagram:</h2>
-                <p><a href="https://www.instagram.com/mebeltutbaranovichi/">@mebeltutbaranovichi</a></p>
-            </div>
-        </footer>
+        <div id="map_container">
+            Поле для Яндекс карт
+        </div>
     </div>
-</body>
+</div>
+{% endblock %}
 
-</html>
+
+{% block script %}
+{% endblock %}

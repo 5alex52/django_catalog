@@ -100,12 +100,12 @@ h1 .new_product{
     padding: 20px;
 }
 
-.info_container p {
+.info p {
     overflow: hidden;
     margin-top: 5px;
 }
 
-.info_container p:after {
+.info p:after {
     content: '....................................................................................................................................................................................';
     display: block;
     white-space: nowrap;
@@ -113,25 +113,14 @@ h1 .new_product{
     color: var(--footer_color);
 }
 
-.info_container p span:first-of-type {
+.info p span:first-of-type {
     float: left;
     margin-right: 10px;
 }
 
-.info_container p span:last-of-type {
+.info p span:last-of-type {
     float: right;
     margin-left: 10px;
-}
-
-.info_container p span a {
-    color: rgb(55, 55, 143);
-    font-weight: 600;
-    font-style: italic;
-    padding-right: 1px;
-}
-
-.info_container p span a:hover {
-    opacity: 80%;
 }
 
 .info_container hr {
@@ -197,4 +186,25 @@ div.swiper-container {
 
 .mySwiper .swiper-slide-thumb-active {
     opacity: 1;
+}
+
+#price, #manufacturer, #collection{
+    text-align: left;
+    margin: 10px;
+    display: block;
+}
+
+#manufacturer a, #collection a {
+    color: rgb(55, 55, 143);
+    font-weight: 600;
+    font-style: italic;
+    padding-right: 1px;
+}
+
+#manufacturer a:hover, #collection a:hover {
+    opacity: 80%;
+}
+
+#price span{
+    font-size: 2rem;
 }

@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Category, Collection, Product, ProductImage, Specs, Manufacturer, Phone
+from django import forms
 
 
 class ImageInline(admin.StackedInline):
@@ -22,7 +23,7 @@ class SpecsInline(admin.StackedInline):
 class ProductInline(admin.StackedInline):
     model = Product
     extra = 0
-    readonly_fields = ('date', 'mainImage_preview', 'slug')
+    readonly_fields = ('slug', 'date', 'mainImage_preview')
 
     def mainImage_preview(self, obj):
         return obj.mainImage_preview
@@ -31,26 +32,26 @@ class ProductInline(admin.StackedInline):
     mainImage_preview.allow_tags = True
 
 
-class CollectionInline(admin.StackedInline):
-    model = Collection
-    extra = 0
-    readonly_fields = ('image_preview', 'slug')
+@admin.register(Manufacturer)
+class Manufacturer(admin.ModelAdmin):
+    readonly_fields = ('slug',)
 
 
-admin.site.register(Manufacturer)
 @admin.register(Phone)
 class PhoneAdmin(admin.ModelAdmin):
     list_display = ('phone', 'isMain',)
     list_display_links = ('phone',)
     list_editable = ('isMain',)
 
+
 @admin.register(Collection)
 class CollectionAdmin(admin.ModelAdmin):
-    list_display = ('name', 'slug', 'manufacturer', 'category')
+    list_display = ('name', 'slug', 'manufacturer')
     list_display_links = ('name',)
     search_fields = ('name', 'manufacturer',)
-    list_filter = ('manufacturer__name', 'category__name')
-    readonly_fields = ('image_preview',)
+    list_filter = ('manufacturer__name',)
+    readonly_fields = ('slug', 'image_preview')
+    filter_horizontal = ('category',)
     inlines = [ProductInline, ]
 
     def image_preview(self, obj):
@@ -62,21 +63,24 @@ class CollectionAdmin(admin.ModelAdmin):
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'slug',)
+    list_display = ('name', 'slug', 'number', 'isCabinet')
     list_display_links = ('name',)
+    list_editable = ('number',)
+    readonly_fields = ('slug',)
 
-    inlines = [ProductInline, CollectionInline]
+    inlines = [ProductInline]
 
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'slug', 'manufacturer', 'category',
-                    'collection', 'rating', 'isOnSale')
+    list_display = ('name', 'manufacturer', 'category',
+                    'collection', 'price' ,'rating', 'isOnSale')
     list_display_links = ('name',)
     search_fields = ('name', 'manufacturer',)
-    list_editable = ('rating', 'isOnSale',)
+    list_editable = ('rating', 'isOnSale', 'price')
     list_filter = ('manufacturer__name', 'category__name', 'collection__name')
-    readonly_fields = ('date', 'mainImage_preview')
+
+    readonly_fields = ('slug', 'date', 'mainImage_preview',)
 
     inlines = [ImageInline, SpecsInline]
 

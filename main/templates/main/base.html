@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'main/css/contacts.css'%}">
     <link rel="stylesheet" href="{% static 'main/css/products.css'%}">
     <link rel="stylesheet" href="{% static 'main/css/category.css'%}">
     <link rel="stylesheet" href="{% static 'main/css/base.css'%}">
@@ -20,7 +21,7 @@
         rel="stylesheet">
     <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
-    <title>{% block titile %}{% endblock %}</title>
+    <title>{% block title %} {% endblock %}</title>
 </head>
 
 <body>
@@ -28,7 +29,7 @@
     <div class="wrapper">
         <header class="header fixed">
             <div class="header_container">
-                <a href="index.html">
+                <a href="/">
                     <h1 class="header_item logo">Мебель<br>тут</h1>
                 </a>
                 <input type="checkbox" id="menuToggle">
@@ -37,29 +38,13 @@
 
                     <li class="list_header"><a class="header_item" href="/catalog">КАТАЛОГ</a>
                         <ul class="menu">
-                            <ul>
-                                <li><a href="#">Диваны угловые</a></li>
-                                <li><a href="#">Гостиные</a></li>
-                                <li><a href="#">Спальни</a></li>
-                                <li><a href="#">Комоды и тумбы</a></li>
-                            </ul>
-                            <ul>
-                                <li><a href="#">Диваны прямые</a></li>
-                                <li><a href="#">Молодежные</a></li>
-                                <li><a href="#">Кухни</a></li>
-                                <li><a href="#">Столы</a></li>
-                            </ul>
-                            <ul>
-                                <li><a href="#">Диваны модульные</a></li>
-                                <li><a href="#">Прихожие</a></li>
-                                <li><a href="#">Кровати и матрацы</a></li>
-                                <li><a href="#">Кресла и стулья</a></li>
-                            </ul>
-
+                            {% for x in categories%}
+                                <li><a href="{{ x.get_absolute_url}}">{{ x.name }}</a></li>
+                            {% endfor %}
                         </ul>
                     </li>
-                    <li><a class="header_item" href="#">АКЦИИ</a></li>
-                    <li><a class="header_item" href="contacts.html">КОНТАКТЫ</a></li>
+                    <li><a class="header_item" href="/sales">АКЦИИ</a></li>
+                    <li><a class="header_item" href="/contacts">КОНТАКТЫ</a></li>
                 </ul>
             </div>
             <div class="header_container">
@@ -93,11 +78,9 @@
             <div>
                 <h1>Каталог</h1>
                 <ul>
-                    <li><a href="">Мягкая мебель</a></li>
-                    <li><a href="">Корпусная мебель</a></li>
-                    <li><a href="">Кухни</a></li>
-                    <li><a href="">Столы</a></li>
-                    <li><a href="">Стулья</a></li>
+                    {% for x in categories %}
+                        <li><a href="{{ x.get_absolute_url }}">{{ x.name }}</a></li>
+                    {% endfor %}
                 </ul>
             </div>
             <div>
