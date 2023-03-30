@@ -17,13 +17,23 @@
     <div class="items_list" id="main">
         <span onclick="navHandler()"><img src="{% static 'main/img/chevron-right.svg' %}" alt="меню" id="menu_btn" ></span>
         <div class="select_container">
-
-            <form action="{% url 'catalog' %}" method="get" id="sortProductByDate">
-                <input type="hidden" name="orderby" value="-date" />
-            </form>
-            <form action="{% url 'catalog' %}" method="get" id="sortProductByRating">
-                <input type="hidden" name="orderby" value="-rating"/>
-            </form>
+            {% if isSearch %}
+                <form action="{% url 'search' %}" method="get" id="sortProductByDate">
+                    <input type="hidden" name="orderby" value="-date" />
+                    <input type="hidden" name="search" value="{{ search_data }}"/>
+                </form>
+                <form action="{% url 'search' %}" method="get" id="sortProductByRating">
+                    <input type="hidden" name="orderby" value="-rating"/>
+                    <input type="hidden" name="search" value="{{ search_data }}"/>
+                </form>
+            {% else %}
+                <form action="{% url 'catalog' %}" method="get" id="sortProductByDate">
+                    <input type="hidden" name="orderby" value="-date" />
+                </form>
+                <form action="{% url 'catalog' %}" method="get" id="sortProductByRating">
+                    <input type="hidden" name="orderby" value="-rating"/>
+                </form>
+            {% endif %}
                                             
             <div class="dropdown">
                 <button onclick="myFunction()" class="dropbtn">Сортировка: </button>

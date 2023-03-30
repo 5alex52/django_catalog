@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Collection, Product, ProductImage, Specs, Manufacturer, Phone
+from .models import Category, Collection, Product, ProductImage, Specs, Manufacturer, Phone, Address
 from django import forms
 
 
@@ -15,7 +15,7 @@ class ImageInline(admin.StackedInline):
     image_preview.allow_tags = True
 
 
-class SpecsInline(admin.StackedInline):
+class SpecsInline(admin.TabularInline):
     model = Specs
     extra = 0
 
@@ -36,6 +36,8 @@ class ProductInline(admin.StackedInline):
 class Manufacturer(admin.ModelAdmin):
     readonly_fields = ('slug',)
 
+
+admin.site.register(Address)
 
 @admin.register(Phone)
 class PhoneAdmin(admin.ModelAdmin):
@@ -79,7 +81,7 @@ class ProductAdmin(admin.ModelAdmin):
     search_fields = ('name', 'manufacturer',)
     list_editable = ('rating', 'isOnSale', 'price')
     list_filter = ('manufacturer__name', 'category__name', 'collection__name')
-
+    filter_horizontal = ('collectionCategory',)
     readonly_fields = ('slug', 'date', 'mainImage_preview',)
 
     inlines = [ImageInline, SpecsInline]

@@ -13,6 +13,7 @@
     --new_color: rgb(0, 167, 0);
     --bestseller_color: rgb(30, 9, 196);
     --sale_color: rgb(198, 7, 7);
+    --footer_color: rgb(125, 125, 125, 0.2);
 }
 
 body{
@@ -390,4 +391,36 @@ footer a{
 
 footer a:hover{
     color: red;
+}
+
+.hide{
+    display: none;
+}
+
+#search{
+    width: 200px;
+    height: 30px;
+    border-radius: 5px;
+    border: 2px solid var(--footer_color);
+    padding: 5px;
+    padding-left: 10px;
+    font-family: var(--Montserrat);
+}
+
+#search__btn{
+    width: 60px;
+    height: 30px;
+    border-radius: 5px;
+    border: 2px solid var(--footer_color);
+    font-family: var(--Montserrat);
+    transition: all .3s ease-in-out;
+    -webkit-transition: all .3s ease-in-out;
+    -moz-transition: all .3s ease-in-out;
+    -ms-transition: all .3s ease-in-out;
+    -o-transition: all .3s ease-in-out;
+}
+
+#search__btn:hover{
+    background-color: #7b7b7b;
+    color: white;
 }

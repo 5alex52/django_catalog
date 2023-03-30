@@ -20,9 +20,9 @@
         {% if page_obj %}
                 {% for x in page_obj %}
                     <div class="catalog_image_container">
-                        <a href="{{ x.get_absolute_url }}">
+                        <a href="{% url 'collections-category' slug=findCategory.slug slug2=x.slug %}">
                             <h1>{{x.name}}</h1></a>
-                        <a href="{{ x.get_absolute_url }}"><img src="{{ x.image.url }}" alt=""></a>
+                        <a href="{% url 'collections-category' slug=findCategory.slug slug2=x.slug %}"><img src="{{ x.image.url }}" alt=""></a>
                     </div>
                 {% endfor %}
                 {% else %}

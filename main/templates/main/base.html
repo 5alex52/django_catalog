@@ -56,8 +56,12 @@
                     {{ x.phone }}</a>
                 {% endif %}
                 {% endfor %}
-                <div class="header_item search">
-                    <img src="{% static 'main/img/search.svg'%}" alt="Поиск">
+                <form action="{% url 'search' %}" method="get">
+                    <input class="hide" type="text" id="search" name="search" value="{{search_data}}">
+                    <button type="submit" class="hide" id="search__btn">Поиск</button>
+                </form>
+                <div class="header_item">
+                    <button onclick="search()" class="search"><img src="{% static 'main/img/search.svg'%}" alt="Поиск"></button>
                 </div>
             </div>
         </header>
@@ -88,12 +92,13 @@
                 <h2>Адреса:</h2>
                 <p>г. Барановичи</p>
                 <ul class="small">
-                    <li>ул. Брестская 270Д</li>
-                    <li>ул. Пролетарская 48А</li>
+                    {% for x in address %}
+                        <li>{{ x}}</li>
+                    {% endfor %}
                 </ul>
                 <h2>Телефоны:</h2>
                 {% for x in phones%}
-                    <p>{{x.phone}} {{x.store}} {% if x.isViber %}<img src="{% static 'main/img/viber.svg'%}" alt="">{% endif %}</p>
+                    <p>{{x.phone}} {{x.store.street}} {% if x.isViber %}<img src="{% static 'main/img/viber.svg'%}" alt="">{% endif %}</p>
                 {% endfor %}
                 <h2>Email:</h2>
                 <p>uma-mebel@list.ru</p>
@@ -104,6 +109,7 @@
     </div>
     <script src="{% static 'main/js/left.js'%}"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+    <script src="{% static 'main/js/search.js'%}"></script>
     {% block script %}{% endblock %}
 </body>
 

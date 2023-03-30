@@ -79,7 +79,7 @@ class Collection(models.Model):
     manufacturer = models.ForeignKey(
         Manufacturer, verbose_name='Производитель', on_delete=models.CASCADE)
     category = models.ManyToManyField(
-        Category, verbose_name='Категория')
+        Category, verbose_name='Категория', related_name='CategoryInCollection')
     image = models.ImageField(
         'Фото категории', upload_to=collection_directory_path)
     slug = models.SlugField('Ссылка', default="",
@@ -111,11 +111,12 @@ class Product(models.Model):
     name = models.CharField('Название', max_length=100,
                             blank=False, null=False)
     manufacturer = models.ForeignKey(
-        Manufacturer, verbose_name='Производитель', on_delete=models.CASCADE)
+        Manufacturer, verbose_name='Производитель', on_delete=models.CASCADE) 
     category = models.ForeignKey(
-        Category, verbose_name='Категория',  on_delete=models.CASCADE)
+        Category, verbose_name='Категория', blank=True, null=True, on_delete=models.CASCADE, related_name='category')
     collection = models.ForeignKey(
         Collection, verbose_name='Коллекция', on_delete=models.CASCADE, blank=True, null=True)
+    collectionCategory = models.ManyToManyField(Category, verbose_name='Категория для коллекции', related_name='category2collection')
     isOnSale = models.BooleanField('Акция')
     rating = models.IntegerField('Рейтинг',  blank=False, null=False,  validators=[
         MaxValueValidator(1000),
@@ -230,11 +231,25 @@ class Specs(models.Model):
         verbose_name_plural = 'Характеристики'
 
 
+class Address(models.Model):
+    street = models.CharField('Улица', max_length=20, blank=False, null=False)
+    number = models.IntegerField('Дом', blank=False, null=False)
+    building = models.CharField('Корпус', max_length=5, blank=False, null=False)
+    
+    class Meta:
+        verbose_name = 'Адрес'
+        verbose_name_plural = 'Адреса'
+
+    def __str__(self):
+        return f'ул. {self.street} {self.number}{self.building}'
+
+
+
 class Phone(models.Model):
     phone = models.CharField('Номер', max_length=20, blank=False, null=False)
     isMain = models.BooleanField('Основной', unique=True)
     isViber = models.BooleanField('Viber', unique=True)
-    store = models.CharField('Магазин', max_length=20, blank=False, null=False)
+    store = models.ForeignKey(Address,verbose_name='Магазин', on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = 'Телефон'
