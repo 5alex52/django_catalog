@@ -10,23 +10,15 @@
 {% endblock %}
 
 {% block body %}
-{% include "main/nav.html" %} 
+{% include "main/nav.html" %}
 {% endblock %}
 
 {% block content %}
 <div class="content2">
     <div class="items_list" id="main">
-        <span onclick="navHandler()"><img src="{% static 'main/img/chevron-right.svg' %}" alt="меню" id="menu_btn"></span>
+        <span onclick="navHandler()"><img src="{% static 'main/img/chevron-right.svg' %}" alt="меню"
+                id="menu_btn"></span>
         <div class="product">
-            <h1>{{current.name}}
-                {% if current.rating >= 900 %}
-                    <div class="bestseller_product">Хит продаж</div>
-                {% elif current.isOnSale %}
-                    <div class="sale_product">Акция</div>
-                {% elif new %}
-                    <div class="new_product">Новинка</div>
-                {% endif %}
-            </h1>
             <div class="swiper-container">
                 <div class="swiper mySwiper2">
                     <div class="swiper-wrapper">
@@ -48,19 +40,49 @@
                 </div>
             </div>
             <div class="info_container">
-                <h1 id="price">Цена: {{current.price}} <span>BYN</span></h1>
-                <p id="manufacturer">Производитель: <a href="{{current.manufacturer.get_absolute_url}}">{{current.manufacturer}}</a></p>
+                <h1>{{current.name}}
+                    {% if current.rating >= 900 %}
+                        <div class="bestseller_product">Хит продаж</div>
+                    {% elif current.isOnSale %}
+                        <div class="sale_product">Акция</div>
+                    {% elif new %}
+                        <div class="new_product">Новинка</div>
+                    {% endif %}
+                </h1>
+                <h3 id="price">Цена: {{current.price}} <span>руб</span></h3>
+                <p id="manufacturer">Производитель: <a
+                        href="{{current.manufacturer.get_absolute_url}}">{{current.manufacturer}}</a></p>
                 {% if current.collection %}
-                        <p id="collection">Коллекция: <a href="{{current.collection.get_absolute_url}}">{{current.collection}}</a></p>
+                <p id="collection">Коллекция: <a
+                        href="{{current.collection.get_absolute_url}}">{{current.collection}}</a></p>
                 {% endif %}
                 <hr>
                 <div class="info">
                     <h2>Характеристики:</h2>
                     {% for x in currentSpecs %}
-                        <p><span>{{ x.get_param_display }} {%if x.unit %}, {{x.get_unit_display}} {% endif %}</span><span>{{ x.value }}</span></p>
+                    <p><span>{{ x.get_param_display }} {%if x.unit %}, {{x.get_unit_display}} {% endif %}</span><span>{{x.value }}</span></p>
                     {% endfor %}
                 </div>
                 <hr>
+            </div>
+            <div class="feedback">
+                <h2>Заинтересовало?</h2>
+                <p>Оставьте свои данные, наш менеджер перезвонит вам</p>
+                <form action="{{ current.get_absolute_url}}" method="post" novalidate enctype="multipart/form-data"
+                    id="feedback_form">
+                    {% csrf_token %}
+                    <div><label for="name">Имя:</label>
+                        {{ feedback.name }}
+                        <hr>
+                        {{ feedback.errors.name }}
+                    </div>
+                    <div><label for="tel">Номер телефона:</label>
+                        {{ feedback.phone }}
+                        <hr>
+                        {{ feedback.errors.phone }}
+                    </div>
+                    <button type="submit">Перезвонить мне</button>
+                </form>
             </div>
         </div>
     </div>
@@ -70,6 +92,10 @@
 
 {% block script %}
 <script src="https://kit.fontawesome.com/406fbec51e.js" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"
+    integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="{% static 'main/js/maska-nomera.js' %}" type="text/javascript"></script>
 <script>
     let swiper = new Swiper(".mySwiper", {
         spaceBetween: 10,
@@ -91,5 +117,44 @@
             swiper: swiper,
         },
     });
+
+
+    $('.art-stranger').mask('+375 (99) 999-99-99');
+    $.fn.setCursorPosition = function (pos) {
+        if ($(this).get(0).setSelectionRange) {
+            $(this).get(0).setSelectionRange(pos, pos);
+        } else if ($(this).get(0).createTextRange) {
+            var range = $(this).get(0).createTextRange();
+            range.collapse(true);
+            range.moveEnd('character', pos);
+            range.moveStart('character', pos);
+            range.select();
+        }
+    };
+
+    $('input[type="tel"]').click(function () {
+        $(this).setCursorPosition(6);  // set position number
+    });    
+
+    if({{ isFeedback }}){
+        let timerInterval
+        Swal.fire({
+            title: '{{ feedback_title }}',
+            text: '{{ feedback_message }}',
+            icon: '{{ icon }}',
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading()
+                const b = Swal.getHtmlContainer().querySelector('b')
+                timerInterval = setInterval(() => {
+                    b.textContent = Swal.getTimerLeft()
+                }, 100)
+            },
+            willClose: () => {
+                clearInterval(timerInterval)
+            }
+        })
+    }
 </script>
 {% endblock %}

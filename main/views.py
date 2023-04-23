@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Phone, Product, Category, ProductImage, Specs, Collection, Manufacturer, Address
 from django.db.models import Q
 from django.utils import timezone
@@ -6,13 +6,16 @@ from datetime import timedelta
 from django.core.paginator import Paginator
 from django.views.generic.list import ListView
 from django.http import Http404
+from .forms import AddFeedbackForm
+from django.contrib import messages
 
-phones = Phone.objects.all()
 categories = Category.objects.order_by('number')
-address = Address.objects.order_by('pk')
+
 
 def home(request):
     products = Product.objects.order_by('-rating')[:4]
+    phones = Phone.objects.all()
+    address = Address.objects.order_by('pk')
     new = {}
     for x in products:
         if x.date > timezone.now() - timedelta(14):
@@ -24,10 +27,14 @@ def home(request):
 
 
 def contacts(request):
+    phones = Phone.objects.all()
+    address = Address.objects.order_by('pk')
     return render(request, 'main/contacts.html', {'phones': phones, 'categories': categories, 'address': address})
 
 
 def catalog(request):
+    phones = Phone.objects.all()
+    address = Address.objects.order_by('pk')
     ordering = request.GET.get('orderby')
     if not ordering:
         ordering = '-rating'
@@ -46,16 +53,56 @@ def catalog(request):
 
 
 def currentProduct(request, slug):
+    isFeedback = False
+    feedback_title = ''
+    feedback_message = ''
+    icon = ''
+    if request.method == 'POST':
+        isFeedback = True
+        form = AddFeedbackForm(request.POST)
+        if form.is_valid():
+            product = Product.objects.get(slug=slug)
+            form.instance.product_link = product
+            form.save()
+            feedback_title = 'Заявка отправлена'
+            feedback_message = 'Наш менеджер перезвонит вам.'
+            icon = 'success'
+            return redirect(to='current-product', slug=slug)
+        else:
+            feedback_title = 'Ошибка'
+            feedback_message = 'Пожалуйста, заполните все поля'
+            icon = 'error'
+            pass
+    else:
+        form = AddFeedbackForm()
+    phones = Phone.objects.all()
+    address = Address.objects.order_by('pk')
     current = Product.objects.get(slug=slug)
     currentImages = ProductImage.objects.filter(product=current)
     currentSpecs = Specs.objects.filter(product=current)
     new = False
     if current.date > timezone.now() - timedelta(14):
         new = True
-    return render(request, 'main/product.html', {'current': current, 'currentImages': currentImages, 'currentSpecs': currentSpecs, 'phones': phones, 'categories': categories, 'new': new, 'findCategory': current.category, 'title': f'{current.name} | {current.category.name}', 'address': address})
+    data = {'current': current,
+            'currentImages': currentImages,
+            'currentSpecs': currentSpecs,
+            'phones': phones,
+            'categories': categories,
+            'new': new,
+            'findCategory': current.category,
+            'title': f'{current.name} | {current.category.name}',
+            'address': address, 'feedback': form,
+            'isFeedback': isFeedback,
+            'feedback_title': feedback_title,
+            'feedback_message': feedback_message,
+            'icon': icon,
+            }
+    return render(request, 'main/product.html', data)
 
 
 def currentCategory(request, slug):
+    phones = Phone.objects.all()
+    address = Address.objects.order_by('pk')
     try:
         findCategory = Category.objects.get(slug=slug)
     except Category.DoesNotExist:
@@ -80,6 +127,8 @@ def currentCategory(request, slug):
 
 
 def collections(request, slug):
+    phones = Phone.objects.all()
+    address = Address.objects.order_by('pk')
     findCategory = Category.objects.get(slug=slug)
     collections = Collection.objects.filter(category=findCategory)
     paginator = Paginator(collections, 8)
@@ -89,6 +138,8 @@ def collections(request, slug):
 
 
 def currentCollection(request, slug):
+    phones = Phone.objects.all()
+    address = Address.objects.order_by('pk')
     findCollection = Collection.objects.get(slug=slug)
     ordering = request.GET.get('orderby')
     if not ordering:
@@ -110,6 +161,8 @@ def currentCollection(request, slug):
 
 
 def currentCollectionFromCategory(request, slug, slug2):
+    phones = Phone.objects.all()
+    address = Address.objects.order_by('pk')
     findCollection = Collection.objects.get(slug=slug2)
     ordering = request.GET.get('orderby')
     if not ordering:
@@ -132,6 +185,8 @@ def currentCollectionFromCategory(request, slug, slug2):
 
 
 def sales(request):
+    phones = Phone.objects.all()
+    address = Address.objects.order_by('pk')
     ordering = request.GET.get('orderby')
     if not ordering:
         ordering = '-rating'
@@ -150,6 +205,8 @@ def sales(request):
 
 
 def currentManufacturer(request, slug):
+    phones = Phone.objects.all()
+    address = Address.objects.order_by('pk')
     ordering = request.GET.get('orderby')
     if not ordering:
         ordering = '-rating'
@@ -170,6 +227,8 @@ def currentManufacturer(request, slug):
 
 
 def searchHendler(request):
+    phones = Phone.objects.all()
+    address = Address.objects.order_by('pk')
     ordering = request.GET.get('orderby')
     search = request.GET.get('search')
     if not ordering:
@@ -191,6 +250,8 @@ def searchHendler(request):
 
 
 def tr_handler404(request, exeption):
+    phones = Phone.objects.all()
+    address = Address.objects.order_by('pk')
     products = Product.objects.order_by('-rating')[:4]
     new = {}
     for x in products:
@@ -201,7 +262,10 @@ def tr_handler404(request, exeption):
 
     return render(request, 'main/error.html', {'phones': phones, 'products': products, 'new': new, 'categories': categories, 'address': address, 'title': '404', 'message': 'К сожалению, такой мебели мы не нашли : (', 'message2': 'Посмотрите другие наши товары:'}, status=404)
 
+
 def tr_handler505(request):
+    phones = Phone.objects.all()
+    address = Address.objects.order_by('pk')
     products = Product.objects.order_by('-rating')[:4]
     new = {}
     for x in products:

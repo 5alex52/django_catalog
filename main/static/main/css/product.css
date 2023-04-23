@@ -30,7 +30,7 @@
     font-family: var(--Montserrat);
 }
 
-h1 .sale_product{
+h1 .sale_product {
     width: 100px;
     height: 35px;
     border-radius: 10px;
@@ -47,7 +47,7 @@ h1 .sale_product{
     margin-right: 60px;
 }
 
-h1 .bestseller_product{
+h1 .bestseller_product {
     width: 120px;
     height: 35px;
     border-radius: 10px;
@@ -64,7 +64,7 @@ h1 .bestseller_product{
     margin-right: 60px;
 }
 
-h1 .new_product{
+h1 .new_product {
     width: 100px;
     height: 35px;
     border-radius: 10px;
@@ -88,6 +88,7 @@ h1 .new_product{
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-bottom: 30px;
 }
 
 .info_container .info h2 {
@@ -188,23 +189,95 @@ div.swiper-container {
     opacity: 1;
 }
 
-#price, #manufacturer, #collection{
+#price,
+#manufacturer,
+#collection {
     text-align: left;
     margin: 10px;
     display: block;
 }
 
-#manufacturer a, #collection a {
+#manufacturer a,
+#collection a {
     color: rgb(55, 55, 143);
     font-weight: 600;
     font-style: italic;
     padding-right: 1px;
 }
 
-#manufacturer a:hover, #collection a:hover {
+#manufacturer a:hover,
+#collection a:hover {
     opacity: 80%;
 }
 
-#price span{
-    font-size: 2rem;
+#price span {
+    font-size: 1rem;
+}
+
+.feedback{
+    width: 100%;
+    height: 200px;
+    padding: 20px;
+    padding-left: 40px;
+    text-align: left;
+    margin-top: 40px;
+    font-family: var(--Montserrat);
+}
+
+.feedback p{
+    margin-top: 5px;
+}
+
+#feedback_form{
+    display: flex;
+    align-items:flex-end;
+    justify-content: left;
+}
+
+#feedback_form div{
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+    margin-bottom: 0;
+}
+
+#feedback_form div input{
+    width: 200px;
+    height: 50px;
+    padding: 10px;
+    padding-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    outline: none;
+    border: 0;
+    font-size: 1rem;
+    font-family: var(--Montserrat);
+}
+
+#feedback_form button{
+    width: 140px;
+    height: 50px;
+    margin: 2px;
+    margin-left: 10px;
+    font-family: var(--Montserrat);
+    border: 0;
+    transition: .3s;
+    box-shadow: 0px 0px 15px rgb(0, 0, 0, .3);
+    border-radius: 10px;
+}
+
+#feedback_form button:hover{
+    background-color: rgb(0, 0, 0, .1);
+}
+
+#feedback_form button:active{
+    border: 2px solid rgb(0, 0, 0, .4);
+}
+
+
+#feedback_form hr{
+    margin: 0;
+    border: 1px solid black;
+    border-radius: 50%;
 }

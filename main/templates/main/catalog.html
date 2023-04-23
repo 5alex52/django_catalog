@@ -26,12 +26,26 @@
                     <input type="hidden" name="orderby" value="-rating"/>
                     <input type="hidden" name="search" value="{{ search_data }}"/>
                 </form>
+                <form action="{% url 'search' %}" method="get" id="sortProductByPriceUp">
+                    <input type="hidden" name="orderby" value="price"/>
+                    <input type="hidden" name="search" value="{{ search_data }}"/>
+                </form>
+                <form action="{% url 'search' %}" method="get" id="sortProductByPriceDown">
+                    <input type="hidden" name="orderby" value="-price"/>
+                    <input type="hidden" name="search" value="{{ search_data }}"/>
+                </form>
             {% else %}
                 <form action="{% url 'catalog' %}" method="get" id="sortProductByDate">
                     <input type="hidden" name="orderby" value="-date" />
                 </form>
                 <form action="{% url 'catalog' %}" method="get" id="sortProductByRating">
                     <input type="hidden" name="orderby" value="-rating"/>
+                </form>
+                <form action="{% url 'catalog' %}" method="get" id="sortProductByPriceUp">
+                    <input type="hidden" name="orderby" value="price"/>
+                </form>
+                <form action="{% url 'catalog' %}" method="get" id="sortProductByPriceDown">
+                    <input type="hidden" name="orderby" value="-price"/>
                 </form>
             {% endif %}
                                             
@@ -40,6 +54,12 @@
                 <div id="myDropdown" class="dropdown-content">
                     <a href="#" onclick="document.getElementById('sortProductByDate').submit();">По дате</a>
                     <a href="#" onclick="document.getElementById('sortProductByRating').submit();">По рейтингу</a>
+                    <a href="#" onclick="document.getElementById('sortProductByPriceUp').submit();">По цене <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-up" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
+                      </svg></a>
+                    <a href="#" onclick="document.getElementById('sortProductByPriceDown').submit();">По цене <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+                      </svg></a>
                 </div>
             </div>
 

@@ -127,7 +127,7 @@ class Product(models.Model):
     slug = models.SlugField('Ссылка', default="",
                             null=False, blank=False, unique=True)
     date = models.DateTimeField('Дата добавления', default=timezone.now())
-    price = models.DecimalField('Цена', decimal_places=2, max_digits=7, default=100, blank=False, null = False)
+    price = models.DecimalField('Цена', decimal_places=2, max_digits=7, default=0, blank=False, null = False)
 
     @property
     def mainImage_preview(self):
@@ -232,6 +232,7 @@ class Specs(models.Model):
 
 
 class Address(models.Model):
+    name = models.CharField('Название', max_length=50, blank=False, null=False, default='Мебель тут')
     street = models.CharField('Улица', max_length=20, blank=False, null=False)
     number = models.IntegerField('Дом', blank=False, null=False)
     building = models.CharField('Корпус', max_length=5, blank=False, null=False)
@@ -241,14 +242,12 @@ class Address(models.Model):
         verbose_name_plural = 'Адреса'
 
     def __str__(self):
-        return f'ул. {self.street} {self.number}{self.building}'
-
+        return f'{self.name}'
 
 
 class Phone(models.Model):
     phone = models.CharField('Номер', max_length=20, blank=False, null=False)
-    isMain = models.BooleanField('Основной', unique=True)
-    isViber = models.BooleanField('Viber', unique=True)
+    isViber = models.BooleanField('Viber')
     store = models.ForeignKey(Address,verbose_name='Магазин', on_delete=models.CASCADE)
 
     class Meta:
@@ -257,3 +256,16 @@ class Phone(models.Model):
 
     def __str__(self):
         return self.phone
+
+
+class Feedback(models.Model):
+    name = models.CharField('Имя', max_length=20, blank=False)
+    phone = models.CharField('Номер', max_length=20, blank=False)
+    product_link = models.ForeignKey(Product, verbose_name='Товар', on_delete=models.DO_NOTHING)
+
+    def __str__(self):
+        return f'{self.name} {self.phone}'
+    
+    class Meta:
+        verbose_name = 'Заявка'
+        verbose_name_plural = 'Заявки'

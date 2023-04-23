@@ -424,3 +424,29 @@ footer a:hover{
     background-color: #7b7b7b;
     color: white;
 }
+
+.phone_container{
+    display: flex;
+    flex-flow: column;
+}
+
+#tel{
+    margin: 5px;
+    margin-left: 20px;
+}
+
+#footer_tel{
+    margin-left: 0;
+    margin-right: 0;
+    color: black;
+}
+
+#footer_inst{
+    margin-left: 0;
+    color: black;
+    font-size: 1rem;
+}
+
+.time{
+    font-size: 1.5rem;
+}

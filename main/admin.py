@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Collection, Product, ProductImage, Specs, Manufacturer, Phone, Address
+from .models import Category, Collection, Product, ProductImage, Specs, Manufacturer, Phone, Address, Feedback
 from django import forms
 
 
@@ -38,12 +38,14 @@ class Manufacturer(admin.ModelAdmin):
 
 
 admin.site.register(Address)
+@admin.register(Feedback)
+class Feedback(admin.ModelAdmin):
+    readonly_fields = ('phone', 'product_link')
 
 @admin.register(Phone)
 class PhoneAdmin(admin.ModelAdmin):
-    list_display = ('phone', 'isMain',)
+    list_display = ('phone',)
     list_display_links = ('phone',)
-    list_editable = ('isMain',)
 
 
 @admin.register(Collection)

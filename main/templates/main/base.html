@@ -50,12 +50,12 @@
             <div class="header_container">
                 <a class="header_item inst" href="https://www.instagram.com/mebeltutbaranovichi/"><img
                         src="{% static 'main/img/instagram.svg'%}" alt="Инстаграм"></a>
-                {% for x in phones%}
-                {% if x.isMain %}
-                <a class="header_item tel" href="tel:{{x.phone}}">
-                    {{ x.phone }}</a>
-                {% endif %}
-                {% endfor %}
+                <div class="phone_container">
+                    {% for x in phones%}
+                        <a class="header_item tel" id="tel" href="tel:{{x.phone}}">
+                        {{ x.phone }}</a>
+                    {% endfor %}
+                </div>
                 <form action="{% url 'search' %}" method="get">
                     <input class="hide" type="text" id="search" name="search" value="{{search_data}}">
                     <button type="submit" class="hide" id="search__btn">Поиск</button>
@@ -70,6 +70,40 @@
             {% block content %}{% endblock %}
         </div>
         <footer>
+           
+            <!-- <div>
+                <h1>Каталог</h1>
+                <ul>
+                    {% for x in categories %}
+                        <li><a href="{{ x.get_absolute_url }}">{{ x.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div> -->
+            <div>
+                <h1>Режим работы</h1>
+                <h2 class="time">Пн-Пт: 10:00 - 19:00</h2>
+                <h2 class="time">Cб-Вс: 10:00 - 16:00</h2>
+            </div>
+            <div>
+                <h1>Контакты</h1>
+                <p>г. Барановичи</p>
+                {% for x in address%}
+                    <h2>{{x.name}}</h2>
+                    <p>ул. {{ x.street }} {{x.number}}{{x.building}}</p>
+                    <p>{% for i in phones %}
+                            {% if i.store == x %}
+                                <a class="header_item tel" id="footer_tel" href="tel:{{i.phone}}">{{i.phone}}</a>
+                                {% if i.isViber %}<img src="{% static 'main/img/viber.svg'%}" alt="">{% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </p>
+                {% endfor %}
+
+                <h2>Email:</h2>
+                <p>uma-mebel@list.ru</p>
+                <h2>Instagram:</h2>
+                <p><a class="header_item" id="footer_inst" href="https://www.instagram.com/mebeltutbaranovichi/">@mebeltutbaranovichi</a></p>
+            </div>
             <div>
                 <h1>Реквизиты</h1>
                 <h2>ООО «МЕХО-М»</h2>
@@ -78,32 +112,6 @@
                 <p>Расчетный счет № BY30 PJCB 3012 5301 2510 0000 0933 в ОАО «Приорбанк»</p>
                 <h2>Адрес банка:</h2>
                 <p>220002, г. Минск, ул. В. Хоружей, 31а. BIC банка PJCBBY2X</p>
-            </div>
-            <div>
-                <h1>Каталог</h1>
-                <ul>
-                    {% for x in categories %}
-                        <li><a href="{{ x.get_absolute_url }}">{{ x.name }}</a></li>
-                    {% endfor %}
-                </ul>
-            </div>
-            <div>
-                <h1>Контакты</h1>
-                <h2>Адреса:</h2>
-                <p>г. Барановичи</p>
-                <ul class="small">
-                    {% for x in address %}
-                        <li>{{ x}}</li>
-                    {% endfor %}
-                </ul>
-                <h2>Телефоны:</h2>
-                {% for x in phones%}
-                    <p>{{x.phone}} {{x.store.street}} {% if x.isViber %}<img src="{% static 'main/img/viber.svg'%}" alt="">{% endif %}</p>
-                {% endfor %}
-                <h2>Email:</h2>
-                <p>uma-mebel@list.ru</p>
-                <h2>Instagram:</h2>
-                <p><a href="https://www.instagram.com/mebeltutbaranovichi/">@mebeltutbaranovichi</a></p>
             </div>
         </footer>
     </div>

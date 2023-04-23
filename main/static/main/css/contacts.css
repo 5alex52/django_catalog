@@ -5,7 +5,7 @@
     align-items: start;
 }
 
-.contacts_body div{
+.contacts_body div:not(.zero){
     width: 50%;
     height: 100%;
     padding: 50px;
@@ -40,10 +40,10 @@
 }
 
 .contacts_body p img{
-    width: 20px;
     position: absolute;
-    top: 6px;
-    left: 310px;
+    width: 1rem;
+    margin-left: 5px;
+    bottom: 7px;
 }
 
 .contacts_body h1{
@@ -64,4 +64,27 @@
 .contacts_body p, .contacts_body  li{
     font-size: 1.2rem;
     padding: 5px;
+}
+
+#time_container{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+#flex_div{
+    padding: 0;
+    width: 100%;
+    display: flex;
+}
+
+.zero{
+    margin: 0;
+    padding: 0;
+    width: 50%;
+}
+
+#time_container .time{
+    margin: 5px;
+    margin-left: 0;
 }
