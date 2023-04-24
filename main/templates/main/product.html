@@ -3,6 +3,7 @@
 
 {% block head %}
 <link rel="stylesheet" href="{% static 'main/css/product.css'%}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bigger-picture@1.1.7/dist/bigger-picture.min.css">
 {% endblock %}
 
 {% block title %}
@@ -21,10 +22,38 @@
         <div class="product">
             <div class="swiper-container">
                 <div class="swiper mySwiper2">
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide"><img src="{{ current.mainImage.url }}" alt=""></div>
+                    <div class="swiper-wrapper" id="images">
+                            <div class="swiper-slide">
+                                <a
+                                    href="{{ current.mainImage.url }}"
+                                    data-img="{{ current.mainImage.url }}"
+                                    data-thumb="{{ current.mainImage.url }}"
+                                    data-alt="Главное фото {{ current.name }}"
+                                    data-height="2000"
+                                    data-width="3000"
+                                >
+                                    <img
+                                    src="{{ current.mainImage.url }}"
+                                        alt="Главное фото {{ current.name }}"
+                                    />
+                                </a>
+                            </div>
                         {% for x in currentImages %}
-                            <div class="swiper-slide"><img src="{{ x.image.url }}" alt=""></div>
+                            <div class="swiper-slide">
+                                <a
+                                    href="{{ x.image.url }}"
+                                    data-img="{{ x.image.url }}"
+                                    data-thumb="{{ x.image.url }}"
+                                    data-alt="Фото {{ current.name }}"
+                                    data-height="2000"
+                                    data-width="3000"
+                                >
+                                    <img
+                                    src="{{ x.image.url }}"
+                                        alt="Фото {{ current.name }}"
+                                    />
+                                </a>
+                            </div>
                         {% endfor %}
                     </div>
                     <div class="swiper-button-next"></div>
@@ -74,12 +103,10 @@
                     <div><label for="name">Имя:</label>
                         {{ feedback.name }}
                         <hr>
-                        {{ feedback.errors.name }}
                     </div>
                     <div><label for="tel">Номер телефона:</label>
                         {{ feedback.phone }}
                         <hr>
-                        {{ feedback.errors.phone }}
                     </div>
                     <button type="submit">Перезвонить мне</button>
                 </form>
@@ -96,6 +123,7 @@
     integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="{% static 'main/js/maska-nomera.js' %}" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/npm/bigger-picture@1.1.7/dist/bigger-picture.min.js"></script>
 <script>
     let swiper = new Swiper(".mySwiper", {
         spaceBetween: 10,
@@ -136,7 +164,7 @@
         $(this).setCursorPosition(6);  // set position number
     });    
 
-    if({{ isFeedback }}){
+    if('{{ isFeedback }}' == 'true'){
         let timerInterval
         Swal.fire({
             title: '{{ feedback_title }}',
@@ -153,8 +181,33 @@
             },
             willClose: () => {
                 clearInterval(timerInterval)
+                window.location.replace('/product/{{ current.slug }}'); 
             }
+        }).then((result) => {
+            window.location.replace('/product/{{ current.slug }}');
         })
+    }
+
+    let bp = BiggerPicture({
+	    target: document.body,
+    })
+
+    // grab image links
+    let imageLinks = document.querySelectorAll('#images .swiper-slide > a')
+
+    // add click listener to open BiggerPicture
+    for (let link of imageLinks) {
+        link.addEventListener("click", openGallery);
+    }
+
+    // function to open BiggerPicture
+    function openGallery(e) {
+	    e.preventDefault()
+	    bp.open({
+		    items: imageLinks,
+		    el: e.currentTarget,
+            intro: 'fadeup'
+	    })
     }
 </script>
 {% endblock %}

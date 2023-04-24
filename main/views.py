@@ -53,28 +53,10 @@ def catalog(request):
 
 
 def currentProduct(request, slug):
-    isFeedback = False
+    isFeedback = 'false'
     feedback_title = ''
     feedback_message = ''
     icon = ''
-    if request.method == 'POST':
-        isFeedback = True
-        form = AddFeedbackForm(request.POST)
-        if form.is_valid():
-            product = Product.objects.get(slug=slug)
-            form.instance.product_link = product
-            form.save()
-            feedback_title = 'Заявка отправлена'
-            feedback_message = 'Наш менеджер перезвонит вам.'
-            icon = 'success'
-            return redirect(to='current-product', slug=slug)
-        else:
-            feedback_title = 'Ошибка'
-            feedback_message = 'Пожалуйста, заполните все поля'
-            icon = 'error'
-            pass
-    else:
-        form = AddFeedbackForm()
     phones = Phone.objects.all()
     address = Address.objects.order_by('pk')
     current = Product.objects.get(slug=slug)
@@ -83,6 +65,24 @@ def currentProduct(request, slug):
     new = False
     if current.date > timezone.now() - timedelta(14):
         new = True
+    if request.method == 'POST':
+        isFeedback = 'true'
+        form = AddFeedbackForm(request.POST)
+        if form.is_valid():
+            product = Product.objects.get(slug=slug)
+            form.instance.product_link = product
+            form.save()
+            feedback_title = 'Заявка отправлена'
+            feedback_message = 'Наш менеджер перезвонит вам.'
+            icon = 'success'
+            form = AddFeedbackForm()
+        else:
+            feedback_title = 'Ошибка'
+            feedback_message = 'Пожалуйста, заполните все поля'
+            icon = 'error'
+    else:
+        form = AddFeedbackForm()
+
     data = {'current': current,
             'currentImages': currentImages,
             'currentSpecs': currentSpecs,

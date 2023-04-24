@@ -10,6 +10,10 @@
     --footer_color: rgb(125, 125, 125, 0.2);
 }
 
+body{
+    font-family: var(--Montserrat);
+}
+
 
 .product {
     height: fit-content;
@@ -230,6 +234,7 @@ div.swiper-container {
 
 #feedback_form{
     display: flex;
+    flex-wrap: wrap;
     align-items:flex-end;
     justify-content: left;
 }
@@ -239,6 +244,7 @@ div.swiper-container {
     display: flex;
     flex-direction: column;
     margin: 10px;
+    margin-left: 0;
     margin-bottom: 0;
 }
 
