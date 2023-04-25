@@ -26,6 +26,15 @@
 
 <body>
     {% block body %}{% endblock %}
+    <div class="preloader">
+        <div class="lds-ring">
+            <img id="preloader__image" src="{% static 'main/img/logo.png'%}" alt="">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
     <div class="wrapper">
         <header class="header fixed">
             <div class="header_container">
@@ -115,6 +124,7 @@
             </div>
         </footer>
     </div>
+    <script src="{% static 'main/js/preloader.js'%}"></script>
     <script src="{% static 'main/js/left.js'%}"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
     <script src="{% static 'main/js/search.js'%}"></script>

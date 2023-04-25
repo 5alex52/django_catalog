@@ -44,9 +44,9 @@ class Category(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = unique_slugify(self, self.name)
-        
+
         if not self.number:
-            self.number = Category.objects.count() + 1 
+            self.number = Category.objects.count() + 1
 
         super().save(*args, **kwargs)
 
@@ -111,12 +111,13 @@ class Product(models.Model):
     name = models.CharField('Название', max_length=100,
                             blank=False, null=False)
     manufacturer = models.ForeignKey(
-        Manufacturer, verbose_name='Производитель', on_delete=models.CASCADE) 
+        Manufacturer, verbose_name='Производитель', on_delete=models.CASCADE)
     category = models.ForeignKey(
         Category, verbose_name='Категория', blank=True, null=True, on_delete=models.CASCADE, related_name='category')
     collection = models.ForeignKey(
         Collection, verbose_name='Коллекция', on_delete=models.CASCADE, blank=True, null=True)
-    collectionCategory = models.ManyToManyField(Category, verbose_name='Категория для коллекции', related_name='category2collection')
+    collectionCategory = models.ManyToManyField(
+        Category, blank=True, verbose_name='Категория для коллекции', related_name='category2collection')
     isOnSale = models.BooleanField('Акция')
     rating = models.IntegerField('Рейтинг',  blank=False, null=False,  validators=[
         MaxValueValidator(1000),
@@ -127,7 +128,8 @@ class Product(models.Model):
     slug = models.SlugField('Ссылка', default="",
                             null=False, blank=False, unique=True)
     date = models.DateTimeField('Дата добавления', default=timezone.now())
-    price = models.DecimalField('Цена', decimal_places=2, max_digits=7, default=0, blank=False, null = False)
+    price = models.DecimalField(
+        'Цена', decimal_places=2, max_digits=7, default=0, blank=False, null=False)
 
     @property
     def mainImage_preview(self):
@@ -232,11 +234,13 @@ class Specs(models.Model):
 
 
 class Address(models.Model):
-    name = models.CharField('Название', max_length=50, blank=False, null=False, default='Мебель тут')
+    name = models.CharField('Название', max_length=50,
+                            blank=False, null=False, default='Мебель тут')
     street = models.CharField('Улица', max_length=20, blank=False, null=False)
     number = models.IntegerField('Дом', blank=False, null=False)
-    building = models.CharField('Корпус', max_length=5, blank=False, null=False)
-    
+    building = models.CharField(
+        'Корпус', max_length=5, blank=False, null=False)
+
     class Meta:
         verbose_name = 'Адрес'
         verbose_name_plural = 'Адреса'
@@ -248,7 +252,8 @@ class Address(models.Model):
 class Phone(models.Model):
     phone = models.CharField('Номер', max_length=20, blank=False, null=False)
     isViber = models.BooleanField('Viber')
-    store = models.ForeignKey(Address,verbose_name='Магазин', on_delete=models.CASCADE)
+    store = models.ForeignKey(
+        Address, verbose_name='Магазин', on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = 'Телефон'
@@ -261,11 +266,12 @@ class Phone(models.Model):
 class Feedback(models.Model):
     name = models.CharField('Имя', max_length=20, blank=False)
     phone = models.CharField('Номер', max_length=20, blank=False)
-    product_link = models.ForeignKey(Product, verbose_name='Товар', on_delete=models.DO_NOTHING)
+    product_link = models.ForeignKey(
+        Product, verbose_name='Товар', on_delete=models.DO_NOTHING)
 
     def __str__(self):
         return f'{self.name} {self.phone}'
-    
+
     class Meta:
         verbose_name = 'Заявка'
         verbose_name_plural = 'Заявки'

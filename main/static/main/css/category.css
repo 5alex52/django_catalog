@@ -168,8 +168,8 @@
 
 /* Стиль активной/текущей ссылки */
 .pagination a.active {
-    background-color: dodgerblue;
-    color: white;
+    background-color: var(--footer_color);
+    color: black;
     pointer-events: none
 }
 

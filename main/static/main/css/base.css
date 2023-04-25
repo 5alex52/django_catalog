@@ -16,7 +16,7 @@
     --footer_color: rgb(125, 125, 125, 0.2);
 }
 
-body{
+body {
     scroll-behavior: smooth;
 }
 
@@ -45,7 +45,7 @@ header.fixed {
     z-index: 9;
 }
 
-.header_after{
+.header_after {
     width: 100%;
     height: 100px;
 }
@@ -57,7 +57,7 @@ ol {
     list-style: none;
 }
 
-.toggleMenu{
+.toggleMenu {
     display: none;
 }
 
@@ -163,7 +163,7 @@ a,
     opacity: 100%;
 }
 
-#menu_header{
+#menu_header {
     height: 100px;
 }
 
@@ -191,7 +191,7 @@ a,
     left: 0;
 }
 
-.menu > li{
+.menu>li {
     font-size: 1.2rem;
     height: 30px;
     padding: 20px;
@@ -207,7 +207,7 @@ header li:hover>a {
     color: black;
 }
 
-.list_header{
+.list_header {
     display: inline-block;
     height: 100%;
     display: flex;
@@ -215,18 +215,18 @@ header li:hover>a {
     justify-content: center;
 }
 
-.list_header:hover .menu{
+.list_header:hover .menu {
     display: flex;
 }
 
 
-.menu > ul{
+.menu>ul {
     visibility: visible;
 }
 
 /* Баннеры */
 
-.new{
+.new {
     background-color: var(--new_color);
     color: white;
     position: absolute;
@@ -241,7 +241,7 @@ header li:hover>a {
     font-size: .8rem;
 }
 
-.new::after{
+.new::after {
     content: "";
     position: absolute;
     left: 80px;
@@ -250,7 +250,7 @@ header li:hover>a {
     border-bottom: 15px solid var(--new_color);
 }
 
-.bestseller{
+.bestseller {
     background-color: var(--bestseller_color);
     color: white;
     position: absolute;
@@ -265,7 +265,7 @@ header li:hover>a {
     font-size: .8rem;
 }
 
-.bestseller::after{
+.bestseller::after {
     content: "";
     position: absolute;
     left: 80px;
@@ -274,7 +274,7 @@ header li:hover>a {
     border-bottom: 15px solid var(--bestseller_color);
 }
 
-.sale{
+.sale {
     background-color: var(--sale_color);
     color: white;
     position: absolute;
@@ -289,7 +289,7 @@ header li:hover>a {
     font-size: .8rem;
 }
 
-.sale::after{
+.sale::after {
     content: "";
     position: absolute;
     left: 80px;
@@ -301,7 +301,7 @@ header li:hover>a {
 /* футер */
 
 
-footer{
+footer {
     width: 100%;
     height: 450px;
     background-color: rgb(125, 125, 125, 0.2);
@@ -312,22 +312,22 @@ footer{
     justify-content: space-between;
 }
 
-footer div{
+footer div {
     width: 30%;
 }
 
-footer div ul{
+footer div ul {
     display: block;
     list-style: inside;
     font-size: 0.8rem;
     font-weight: 300;
 }
 
-footer div ul li{
+footer div ul li {
     margin: 10px;
 }
 
-footer div ul li > a{
+footer div ul li>a {
     color: black;
     text-decoration: none;
     transition: all .4s ease-in-out;
@@ -338,24 +338,24 @@ footer div ul li > a{
     padding: 5px;
 }
 
-footer div ul li > a:hover{
+footer div ul li>a:hover {
     color: white;
     background-color: #7b7b7b;
 }
 
-footer div > h1{
+footer div>h1 {
     font-size: 2rem;
     font-weight: 700;
     margin-bottom: 30px;
 }
 
-footer div > h2{
+footer div>h2 {
     font-size: 1rem;
     font-weight: 700;
     margin-bottom: 5px;
 }
 
-footer div > p{
+footer div>p {
     position: relative;
     font-size: 1rem;
     font-weight: 300;
@@ -363,24 +363,24 @@ footer div > p{
     vertical-align: middle;
 }
 
-ul.small{
+ul.small {
     list-style: inside;
     font-size: 0.9rem;
     font-weight: 300;
 }
 
-ul.small li{
+ul.small li {
     margin: 5px;
 }
 
-footer img{
+footer img {
     position: absolute;
     width: 1rem;
     margin-left: 5px;
     bottom: 1px;
 }
 
-footer a{
+footer a {
     color: black;
     transition: all .3s ease-in-out;
     -webkit-transition: all .3s ease-in-out;
@@ -389,15 +389,15 @@ footer a{
     -o-transition: all .3s ease-in-out;
 }
 
-footer a:hover{
+footer a:hover {
     color: red;
 }
 
-.hide{
+.hide {
     display: none;
 }
 
-#search{
+#search {
     width: 200px;
     height: 30px;
     border-radius: 5px;
@@ -407,7 +407,7 @@ footer a:hover{
     font-family: var(--Montserrat);
 }
 
-#search__btn{
+#search__btn {
     width: 60px;
     height: 30px;
     border-radius: 5px;
@@ -420,33 +420,108 @@ footer a:hover{
     -o-transition: all .3s ease-in-out;
 }
 
-#search__btn:hover{
+#search__btn:hover {
     background-color: #7b7b7b;
     color: white;
 }
 
-.phone_container{
+.phone_container {
     display: flex;
     flex-flow: column;
 }
 
-#tel{
+#tel {
     margin: 5px;
     margin-left: 20px;
 }
 
-#footer_tel{
+#footer_tel {
     margin-left: 0;
     margin-right: 0;
     color: black;
 }
 
-#footer_inst{
+#footer_inst {
     margin-left: 0;
     color: black;
     font-size: 1rem;
 }
 
-.time{
+.time {
     font-size: 1.5rem;
+}
+
+
+.preloader {
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    background: #ffffff;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.loaded_hiding .preloader {
+    transition: 0.3s opacity;
+    opacity: 0;
+}
+
+.loaded .preloader {
+    display: none;
+}
+
+
+#preloader__image{
+    width: 80px;
+    position: absolute;
+    top: 65px;
+    left: 65px;
+}
+
+.lds-ring {
+    display: inline-block;
+    position: relative;
+    width: 200px;
+    height: 200px;
+}
+
+.lds-ring div {
+    box-sizing: border-box;
+    display: block;
+    position: absolute;
+    width: 192px;
+    height: 192px;
+    margin: 8px;
+    border: 12px solid rgb(147, 147, 147);
+    border-radius: 50%;
+    animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    border-color: rgb(147, 147, 147) transparent transparent transparent;
+}
+
+.lds-ring div:nth-child(1) {
+    animation-delay: -0.45s;
+}
+
+.lds-ring div:nth-child(2) {
+    animation-delay: -0.3s;
+}
+
+.lds-ring div:nth-child(3) {
+    animation-delay: -0.15s;
+}
+
+@keyframes lds-ring {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }

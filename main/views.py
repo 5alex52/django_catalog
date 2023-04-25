@@ -233,8 +233,7 @@ def searchHendler(request):
     search = request.GET.get('search')
     if not ordering:
         ordering = '-rating'
-    products = Product.objects.filter(Q(name__icontains=search) | Q(
-        manufacturer__name__icontains=search) | Q(collection__name__icontains=search)).order_by(ordering)
+    products = Product.objects.filter(Q(name__icontains=search) | Q(manufacturer__name__icontains=search) | Q(collection__name__icontains=search) | Q(category__name__icontains=search)).order_by(ordering)
     paginator = Paginator(products, 16)
     new = {}
     for x in products:
