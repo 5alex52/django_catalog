@@ -52,9 +52,12 @@ header.fixed {
 
 ul,
 ol {
-    display: flex;
     align-items: center;
     list-style: none;
+}
+
+header ul{
+    display: flex;
 }
 
 .toggleMenu {
@@ -397,7 +400,7 @@ footer a:hover {
     display: none;
 }
 
-#search {
+#search, #search2 {
     width: 200px;
     height: 30px;
     border-radius: 5px;
@@ -405,9 +408,10 @@ footer a:hover {
     padding: 5px;
     padding-left: 10px;
     font-family: var(--Montserrat);
+    outline: none;
 }
 
-#search__btn {
+#search__btn, #search__btn2 {
     width: 60px;
     height: 30px;
     border-radius: 5px;
@@ -524,4 +528,8 @@ footer a:hover {
     100% {
         transform: rotate(360deg);
     }
+}
+
+.mobile{
+    display: none;
 }

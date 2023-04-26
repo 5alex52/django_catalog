@@ -1,0 +1,90 @@
+.contacts_body{
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    align-items: start;
+}
+
+.contacts_body div:not(.zero){
+    width: 50%;
+    height: 100%;
+    padding: 50px;
+    text-align: left;
+}
+
+.contacts_body p{
+    position: relative;
+}
+
+.contacts_body a{
+    color: black;
+    transition: all .3s ease-in-out;
+    -webkit-transition: all .3s ease-in-out;
+    -moz-transition: all .3s ease-in-out;
+    -ms-transition: all .3s ease-in-out;
+    -o-transition: all .3s ease-in-out;
+}
+
+.contacts_body a:hover{
+    color: rgb(198, 27, 27);
+}
+
+#map_container{
+    width: 50%;
+    min-height: 800px;
+    background-color: rgb(152, 152, 152);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+}
+
+.contacts_body p img{
+    position: absolute;
+    width: 1rem;
+    margin-left: 5px;
+    bottom: 7px;
+}
+
+.contacts_body h1{
+    font-size: 4rem;
+    margin-bottom: 10px;
+}
+
+.contacts_body h2{
+    font-size: 2rem;
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+.contacts_body ul{
+    display: block;
+}
+
+.contacts_body p, .contacts_body  li{
+    font-size: 1.2rem;
+    padding: 5px;
+}
+
+#time_container{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+#flex_div{
+    padding: 0;
+    width: 100%;
+    display: flex;
+}
+
+.zero{
+    margin: 0;
+    padding: 0;
+    width: 50%;
+}
+
+#time_container .time{
+    margin: 5px;
+    margin-left: 0;
+}

@@ -54,6 +54,12 @@
                     </li>
                     <li><a class="header_item" href="/sales">АКЦИИ</a></li>
                     <li><a class="header_item" href="/contacts">КОНТАКТЫ</a></li>
+                    <li class="mobile">
+                        <form action="{% url 'search' %}" method="get">
+                            <input type="text" id="search2" name="search" value="{{search_data}}">
+                            <button type="submit" id="search__btn2">Поиск</button>
+                        </form>
+                    </li>
                 </ul>
             </div>
             <div class="header_container">
