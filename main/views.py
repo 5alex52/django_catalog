@@ -8,13 +8,15 @@ from django.views.generic.list import ListView
 from django.http import Http404
 from .forms import AddFeedbackForm
 from django.contrib import messages
+from django.views.decorators.cache import cache_page
 
 categories = Category.objects.order_by('number')
 
 
 def home(request):
-    products = Product.objects.order_by('-rating')[:4]
-    phones = Phone.objects.all()
+    products = Product.objects.order_by(
+        '-rating')[:4].select_related('manufacturer', 'collection')
+    phones = Phone.objects.all().select_related('store')
     address = Address.objects.order_by('pk')
     new = {}
     for x in products:
@@ -26,19 +28,21 @@ def home(request):
     return render(request, 'main/index.html', {'phones': phones, 'products': products, 'new': new, 'categories': categories, 'address': address})
 
 
+#@cache_page(60 * 60 * 12)
 def contacts(request):
     phones = Phone.objects.all()
     address = Address.objects.order_by('pk')
     return render(request, 'main/contacts.html', {'phones': phones, 'categories': categories, 'address': address})
 
-
+#@cache_page(60 * 60)
 def catalog(request):
-    phones = Phone.objects.all()
+    phones = Phone.objects.all().select_related('store')
     address = Address.objects.order_by('pk')
     ordering = request.GET.get('orderby')
     if not ordering:
         ordering = '-rating'
-    products = Product.objects.order_by(ordering)
+    products = Product.objects.order_by(
+        ordering).select_related('manufacturer', 'collection')
     paginator = Paginator(products, 16)
     new = {}
     for x in products:
@@ -57,9 +61,10 @@ def currentProduct(request, slug):
     feedback_title = ''
     feedback_message = ''
     icon = ''
-    phones = Phone.objects.all()
+    phones = Phone.objects.all().select_related('store')
     address = Address.objects.order_by('pk')
-    current = Product.objects.get(slug=slug)
+    current = Product.objects.select_related(
+        'manufacturer', 'collection').get(slug=slug)
     currentImages = ProductImage.objects.filter(product=current)
     currentSpecs = Specs.objects.filter(product=current)
     new = False
@@ -101,7 +106,7 @@ def currentProduct(request, slug):
 
 
 def currentCategory(request, slug):
-    phones = Phone.objects.all()
+    phones = Phone.objects.all().select_related('store')
     address = Address.objects.order_by('pk')
     try:
         findCategory = Category.objects.get(slug=slug)
@@ -111,7 +116,7 @@ def currentCategory(request, slug):
     if not ordering:
         ordering = '-rating'
     products = Product.objects.filter(
-        category=findCategory).order_by(ordering)
+        category=findCategory).order_by(ordering).select_related('manufacturer', 'collection')
     paginator = Paginator(products, 16)
     new = {}
     for x in products:
@@ -125,9 +130,9 @@ def currentCategory(request, slug):
 
     return render(request, 'main/catalog.html', {'page_obj': page_obj, 'phones': phones, 'new': new, 'categories': categories, 'title': findCategory.name, 'findCategory': findCategory, 'address': address})
 
-
+#@cache_page(60 * 60)
 def collections(request, slug):
-    phones = Phone.objects.all()
+    phones = Phone.objects.all().select_related('store')
     address = Address.objects.order_by('pk')
     findCategory = Category.objects.get(slug=slug)
     collections = Collection.objects.filter(category=findCategory)
@@ -138,14 +143,14 @@ def collections(request, slug):
 
 
 def currentCollection(request, slug):
-    phones = Phone.objects.all()
+    phones = Phone.objects.all().select_related('store')
     address = Address.objects.order_by('pk')
     findCollection = Collection.objects.get(slug=slug)
     ordering = request.GET.get('orderby')
     if not ordering:
         ordering = '-rating'
     products = Product.objects.filter(
-        collection=findCollection).order_by(ordering)
+        collection=findCollection).order_by(ordering).select_related('manufacturer', 'collection')
     paginator = Paginator(products, 16)
     new = {}
     for x in products:
@@ -161,14 +166,14 @@ def currentCollection(request, slug):
 
 
 def currentCollectionFromCategory(request, slug, slug2):
-    phones = Phone.objects.all()
+    phones = Phone.objects.all().select_related('store')
     address = Address.objects.order_by('pk')
     findCollection = Collection.objects.get(slug=slug2)
     ordering = request.GET.get('orderby')
     if not ordering:
         ordering = '-rating'
     products = Product.objects.filter(
-        collection=findCollection).filter(collectionCategory__slug=slug).order_by(ordering)
+        collection=findCollection).filter(collectionCategory__slug=slug).order_by(ordering).select_related('manufacturer', 'collection')
     findCategory = Category.objects.get(slug=slug)
     paginator = Paginator(products, 16)
     new = {}
@@ -183,14 +188,15 @@ def currentCollectionFromCategory(request, slug, slug2):
 
     return render(request, 'main/catalog.html', {'page_obj': page_obj, 'phones': phones, 'new': new, 'categories': categories, 'title': findCollection.name, 'findCollection': findCollection.name, 'findCategory': findCategory, 'address': address})
 
-
+#@cache_page(60 * 60)
 def sales(request):
-    phones = Phone.objects.all()
+    phones = Phone.objects.all().select_related('store')
     address = Address.objects.order_by('pk')
     ordering = request.GET.get('orderby')
     if not ordering:
         ordering = '-rating'
-    products = Product.objects.filter(isOnSale=True).order_by(ordering)
+    products = Product.objects.filter(isOnSale=True).order_by(
+        ordering).select_related('manufacturer', 'collection')
     paginator = Paginator(products, 16)
     new = {}
     for x in products:
@@ -205,14 +211,14 @@ def sales(request):
 
 
 def currentManufacturer(request, slug):
-    phones = Phone.objects.all()
+    phones = Phone.objects.all().select_related('store')
     address = Address.objects.order_by('pk')
     ordering = request.GET.get('orderby')
     if not ordering:
         ordering = '-rating'
     findManufacturer = Manufacturer.objects.get(slug=slug)
     products = Product.objects.filter(
-        manufacturer=findManufacturer).order_by(ordering)
+        manufacturer=findManufacturer).order_by(ordering).select_related('manufacturer', 'collection')
     paginator = Paginator(products, 16)
     new = {}
     for x in products:
@@ -227,13 +233,14 @@ def currentManufacturer(request, slug):
 
 
 def searchHendler(request):
-    phones = Phone.objects.all()
+    phones = Phone.objects.all().select_related('store')
     address = Address.objects.order_by('pk')
     ordering = request.GET.get('orderby')
     search = request.GET.get('search')
     if not ordering:
         ordering = '-rating'
-    products = Product.objects.filter(Q(name__icontains=search) | Q(manufacturer__name__icontains=search) | Q(collection__name__icontains=search) | Q(category__name__icontains=search)).order_by(ordering)
+    products = Product.objects.filter(Q(name__icontains=search) | Q(manufacturer__name__icontains=search) | Q(
+        collection__name__icontains=search) | Q(category__name__icontains=search)).order_by(ordering).select_related('manufacturer', 'collection')
     paginator = Paginator(products, 16)
     new = {}
     for x in products:
@@ -247,11 +254,12 @@ def searchHendler(request):
 
     return render(request, 'main/catalog.html', {'page_obj': page_obj, 'phones': phones, 'new': new, 'categories': categories, 'title': 'Поиск', 'isSearch': True, 'search_data': search, 'address': address})
 
-
+@cache_page(60 * 60 * 12)
 def tr_handler404(request, exeption):
-    phones = Phone.objects.all()
+    phones = Phone.objects.all().select_related('store')
     address = Address.objects.order_by('pk')
-    products = Product.objects.order_by('-rating')[:4]
+    products = Product.objects.order_by(
+        '-rating')[:4].select_related('manufacturer', 'collection')
     new = {}
     for x in products:
         if x.date > timezone.now() - timedelta(14):
@@ -261,11 +269,12 @@ def tr_handler404(request, exeption):
 
     return render(request, 'main/error.html', {'phones': phones, 'products': products, 'new': new, 'categories': categories, 'address': address, 'title': '404', 'message': 'К сожалению, такой мебели мы не нашли : (', 'message2': 'Посмотрите другие наши товары:'}, status=404)
 
-
+@cache_page(60 * 60 * 12)
 def tr_handler505(request):
-    phones = Phone.objects.all()
+    phones = Phone.objects.all().select_related('store')
     address = Address.objects.order_by('pk')
-    products = Product.objects.order_by('-rating')[:4]
+    products = Product.objects.order_by(
+        '-rating')[:4].select_related('manufacturer', 'collection')
     new = {}
     for x in products:
         if x.date > timezone.now() - timedelta(14):
