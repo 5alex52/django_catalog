@@ -1,5 +1,6 @@
 {% extends 'main/base.html'%}
 {% load static %}
+{% load thumbnail %}
 
 {% block head %}
 <link rel="stylesheet" href="{% static 'main/css/product.css'%}">
@@ -28,13 +29,13 @@
                                 <a
                                     href="{{ current.mainImage.url }}"
                                     data-img="{{ current.mainImage.url }}"
-                                    data-thumb="{{ current.mainImage.url }}"
+                                    data-thumb="{% thumbnail current.mainImage 500x500 %}"
                                     data-alt="Главное фото {{ current.name }}"
                                     data-height="2000"
                                     data-width="3000"
                                 >
                                     <img
-                                    src="{{ current.mainImage.url }}"
+                                    src="{% thumbnail current.mainImage 500x500 %}"
                                         alt="Главное фото {{ current.name }}"
                                     />
                                 </a>
@@ -44,13 +45,13 @@
                                 <a
                                     href="{{ x.image.url }}"
                                     data-img="{{ x.image.url }}"
-                                    data-thumb="{{ x.image.url }}"
+                                    data-thumb="{% thumbnail x.image 400x400 %}"
                                     data-alt="Фото {{ current.name }}"
                                     data-height="2000"
                                     data-width="3000"
                                 >
                                     <img
-                                    src="{{ x.image.url }}"
+                                    src="{% thumbnail x.image 400x400 %}"
                                         alt="Фото {{ current.name }}"
                                     />
                                 </a>

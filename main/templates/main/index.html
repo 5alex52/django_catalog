@@ -1,5 +1,9 @@
 {% extends 'main/base.html'%}
 {% load static %}
+{% load thumbnail %}
+{% block head %}
+<meta name="keywords" content="Каталог, Барановичи, Мебель, Купить">
+{% endblock %}
 
 {% block title %}
 Мебель тут | Барановичи
@@ -157,7 +161,7 @@
                         {% endif %}
                     {% endfor %}
                 {% endif %}
-                <img src="{{ x.mainImage.url }}" alt="">
+                <img src="{% thumbnail x.mainImage 400x400 %}" alt="">
                     <h3>{{ x.name }}</h3>
             <h4>{{ x.manufacturer.name}}</h4>
                 <a href="{{ x.get_absolute_url }}" class="more">ПОДРОБНЕЕ</a>

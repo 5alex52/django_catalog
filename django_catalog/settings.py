@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'main',
     'django_cleanup',
+    'easy_thumbnails',
     'debug_toolbar',
     'django.contrib.sites',
     'django.contrib.sitemaps',
@@ -139,4 +140,10 @@ CACHES = {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
         'LOCATION': os.path.join(BASE_DIR, 'django_cache'),
     }
+}
+
+THUMBNAIL_ALIASES = {
+    '': {
+        'avatar': {'size': (50, 50), 'crop': True},
+    },
 }

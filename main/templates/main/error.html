@@ -1,5 +1,6 @@
 {% extends 'main/base.html'%}
 {% load static %}
+{% load thumbnail %}
 
 {% block head %}
 <link rel="stylesheet" href="{% static 'main/css/error.css' %}">
@@ -39,7 +40,7 @@
                         {% endif %}
                     {% endfor %}
                 {% endif %}
-                <img src="{{ x.mainImage.url }}" alt="">
+                <img src="{% thumbnail x.mainImage 400x400 %}" alt="">
                 <h3>{{ x.name }}</h3>
                 <h4>{{ x.manufacturer.name}}</h4>
                 <a href="{{ x.get_absolute_url }}" class="more">ПОДРОБНЕЕ</a>
