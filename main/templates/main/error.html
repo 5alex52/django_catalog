@@ -1,6 +1,7 @@
 {% extends 'main/base.html'%}
 {% load static %}
 {% load thumbnail %}
+{% load cache %}
 
 {% block head %}
 <link rel="stylesheet" href="{% static 'main/css/error.css' %}">
@@ -24,7 +25,8 @@
                 <p>{{ message2}}</p>
             </div>
         </div>
-        <div class="products">
+        {% cache 43200 error %}
+            <div class="products">
             {% for x in products %}
             <div class="popular_item">
                 {% if x.rating >= 900 %}
@@ -46,7 +48,8 @@
                 <a href="{{ x.get_absolute_url }}" class="more">ПОДРОБНЕЕ</a>
             </div>
             {% endfor %}
-        </div>
+            </div>
+        {% endcache %}
     </div>
 </div>
 {% endblock %}

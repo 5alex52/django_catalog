@@ -161,10 +161,14 @@
                         {% endif %}
                     {% endfor %}
                 {% endif %}
-                <img src="{% thumbnail x.mainImage 400x400 %}" alt="">
+                    <img src="{% thumbnail x.mainImage 400x400 %}" alt="">
                     <h3>{{ x.name }}</h3>
-            <h4>{{ x.manufacturer.name}}</h4>
-                <a href="{{ x.get_absolute_url }}" class="more">ПОДРОБНЕЕ</a>
+                    <h4>{{ x.manufacturer.name}}
+                        {% if x.collection%}
+                            | {{ x.collection.name }}
+                    {% endif %}</h4>
+                    <h4 id="price_h4">{{ x.price}} <span>BYN</span></h4>
+                    <a href="{{ x.get_absolute_url }}" class="more">ПОДРОБНЕЕ</a>
             </div>
         {% endfor %}
     </div>

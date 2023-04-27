@@ -21,7 +21,9 @@
 }
 
 .swiper-slide img {
+    object-fit: cover;
     width: 100%;
+    height: 100%;
 }
 
 .swiper_text {
@@ -288,7 +290,7 @@
 }
 
 .popular_item {
-    height: 400px;
+    height: 500px;
     width: 300px;
     background-color: white;
     padding: 10px;
@@ -297,6 +299,7 @@
 }
 
 .popular_item img {
+    height: 200px;
     width: 100%;
 }
 
