@@ -4,10 +4,11 @@
 {% block head %}
 <link rel="stylesheet" href="{% static 'main/css/product.css'%}">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bigger-picture@1.1.7/dist/bigger-picture.min.css">
+<meta name="keywords" content="{{current.name}}, {{current.manufacturer}}, {{current.category}}, {% if current.collection %}{{current.collection}},{% endif %} Барановичи, Мебель, Купить">
 {% endblock %}
 
 {% block title %}
-{{title}}
+{{title}} | Мебель тут Барановичи
 {% endblock %}
 
 {% block body %}

@@ -5,14 +5,25 @@ from django.utils import timezone
 from datetime import timedelta
 from django.core.paginator import Paginator
 from django.views.generic.list import ListView
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from .forms import AddFeedbackForm
 from django.contrib import messages
 from django.views.decorators.cache import cache_page
+from django.views.decorators.http import require_GET
 
 categories = Category.objects.order_by('number')
 
 
+@require_GET
+def robots_txt(request):
+    lines = [
+        "User-Agent: *",
+        "Disallow: /admin/",
+    ]
+    return HttpResponse("\n".join(lines), content_type="text/plain")
+
+
+@require_GET
 def home(request):
     products = Product.objects.order_by(
         '-rating')[:4].select_related('manufacturer', 'collection')
@@ -28,13 +39,15 @@ def home(request):
     return render(request, 'main/index.html', {'phones': phones, 'products': products, 'new': new, 'categories': categories, 'address': address})
 
 
-#@cache_page(60 * 60 * 12)
+# @cache_page(60 * 60 * 12)
+@require_GET
 def contacts(request):
     phones = Phone.objects.all()
     address = Address.objects.order_by('pk')
     return render(request, 'main/contacts.html', {'phones': phones, 'categories': categories, 'address': address})
 
-#@cache_page(60 * 60)
+# @cache_page(60 * 60)
+@require_GET
 def catalog(request):
     phones = Phone.objects.all().select_related('store')
     address = Address.objects.order_by('pk')
@@ -105,6 +118,7 @@ def currentProduct(request, slug):
     return render(request, 'main/product.html', data)
 
 
+@require_GET
 def currentCategory(request, slug):
     phones = Phone.objects.all().select_related('store')
     address = Address.objects.order_by('pk')
@@ -130,7 +144,8 @@ def currentCategory(request, slug):
 
     return render(request, 'main/catalog.html', {'page_obj': page_obj, 'phones': phones, 'new': new, 'categories': categories, 'title': findCategory.name, 'findCategory': findCategory, 'address': address})
 
-#@cache_page(60 * 60)
+# @cache_page(60 * 60)
+@require_GET
 def collections(request, slug):
     phones = Phone.objects.all().select_related('store')
     address = Address.objects.order_by('pk')
@@ -142,6 +157,7 @@ def collections(request, slug):
     return render(request, 'main/collections.html', {'page_obj': page_obj, 'phones': phones, 'categories': categories, 'title': f'{findCategory.name} | Коллекции', 'findCategory': findCategory, 'address': address})
 
 
+@require_GET
 def currentCollection(request, slug):
     phones = Phone.objects.all().select_related('store')
     address = Address.objects.order_by('pk')
@@ -165,6 +181,7 @@ def currentCollection(request, slug):
     return render(request, 'main/catalog.html', {'page_obj': page_obj, 'phones': phones, 'new': new, 'categories': categories, 'title': findCollection.name, 'findCollection': findCollection.name, 'address': address})
 
 
+@require_GET
 def currentCollectionFromCategory(request, slug, slug2):
     phones = Phone.objects.all().select_related('store')
     address = Address.objects.order_by('pk')
@@ -188,7 +205,8 @@ def currentCollectionFromCategory(request, slug, slug2):
 
     return render(request, 'main/catalog.html', {'page_obj': page_obj, 'phones': phones, 'new': new, 'categories': categories, 'title': findCollection.name, 'findCollection': findCollection.name, 'findCategory': findCategory, 'address': address})
 
-#@cache_page(60 * 60)
+# @cache_page(60 * 60)
+@require_GET
 def sales(request):
     phones = Phone.objects.all().select_related('store')
     address = Address.objects.order_by('pk')
@@ -210,6 +228,7 @@ def sales(request):
     return render(request, 'main/catalog.html', {'page_obj': page_obj, 'phones': phones, 'new': new, 'categories': categories, 'title': 'Акции', 'address': address})
 
 
+@require_GET
 def currentManufacturer(request, slug):
     phones = Phone.objects.all().select_related('store')
     address = Address.objects.order_by('pk')
@@ -254,7 +273,9 @@ def searchHendler(request):
 
     return render(request, 'main/catalog.html', {'page_obj': page_obj, 'phones': phones, 'new': new, 'categories': categories, 'title': 'Поиск', 'isSearch': True, 'search_data': search, 'address': address})
 
+
 @cache_page(60 * 60 * 12)
+@require_GET
 def tr_handler404(request, exeption):
     phones = Phone.objects.all().select_related('store')
     address = Address.objects.order_by('pk')
@@ -269,7 +290,9 @@ def tr_handler404(request, exeption):
 
     return render(request, 'main/error.html', {'phones': phones, 'products': products, 'new': new, 'categories': categories, 'address': address, 'title': '404', 'message': 'К сожалению, такой мебели мы не нашли : (', 'message2': 'Посмотрите другие наши товары:'}, status=404)
 
+
 @cache_page(60 * 60 * 12)
+@require_GET
 def tr_handler505(request):
     phones = Phone.objects.all().select_related('store')
     address = Address.objects.order_by('pk')
