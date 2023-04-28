@@ -542,6 +542,13 @@
         margin-left: 0;
     }
 
+    img.logo{
+        width: 50px;
+    }
+
+    .mobile{
+        box-shadow: 0px 6px 5px rgb(0, 0, 0, .3);
+    }
 
 }
 

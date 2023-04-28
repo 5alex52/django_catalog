@@ -10,6 +10,7 @@ from .forms import AddFeedbackForm
 from django.contrib import messages
 from django.views.decorators.cache import cache_page
 from django.views.decorators.http import require_GET
+from django.core.cache import cache
 
 categories = Category.objects.order_by('number')
 
@@ -36,7 +37,13 @@ def home(request):
         else:
             new[x.name] = False
 
-    return render(request, 'main/index.html', {'phones': phones, 'products': products, 'new': new, 'categories': categories, 'address': address})
+    content = {'phones': phones,
+               'products': products,
+               'new': new,
+               'categories': categories,
+               'address': address
+               }
+    return render(request, 'main/index.html', content)
 
 
 @cache_page(60 * 60 * 12)
@@ -56,7 +63,7 @@ def catalog(request):
         ordering = '-rating'
     products = Product.objects.order_by(
         ordering).select_related('manufacturer', 'collection').only('name', 'mainImage', 'date', 'isOnSale', 'price', 'slug', 'rating', 'manufacturer__name', 'collection__name')
-    paginator = Paginator(products, 16)
+    paginator = Paginator(products, 12)
     new = {}
     for x in products:
         if x.date > timezone.now() - timedelta(14):
@@ -66,7 +73,16 @@ def catalog(request):
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    return render(request, 'main/catalog.html', {'page_obj': page_obj, 'phones': phones, 'new': new, 'categories': categories, 'title': 'Каталог', 'address': address})
+
+    content = {'page_obj': page_obj,
+               'phones': phones,
+               'new': new,
+               'categories': categories,
+               'title': 'Каталог',
+               'address': address
+               }
+
+    return render(request, 'main/catalog.html', content)
 
 
 def currentProduct(request, slug):
@@ -104,21 +120,22 @@ def currentProduct(request, slug):
     else:
         form = AddFeedbackForm()
 
-    data = {'current': current,
-            'currentImages': currentImages,
-            'currentSpecs': currentSpecs,
-            'phones': phones,
-            'categories': categories,
-            'new': new,
-            'findCategory': current.category,
-            'title': f'{current.name} | {current.category.name}',
-            'address': address, 'feedback': form,
-            'isFeedback': isFeedback,
-            'feedback_title': feedback_title,
-            'feedback_message': feedback_message,
-            'icon': icon,
-            }
-    return render(request, 'main/product.html', data)
+    content = {'current': current,
+               'currentImages': currentImages,
+               'currentSpecs': currentSpecs,
+               'phones': phones,
+               'categories': categories,
+               'new': new,
+               'findCategory': current.category,
+               'title': f'{current.name} | {current.category.name}',
+               'address': address, 'feedback': form,
+               'isFeedback': isFeedback,
+               'feedback_title': feedback_title,
+               'feedback_message': feedback_message,
+               'icon': icon,
+               }
+
+    return render(request, 'main/product.html', content)
 
 
 @require_GET
@@ -145,7 +162,16 @@ def currentCategory(request, slug):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    return render(request, 'main/catalog.html', {'page_obj': page_obj, 'phones': phones, 'new': new, 'categories': categories, 'title': findCategory.name, 'findCategory': findCategory, 'address': address})
+    content = {'page_obj': page_obj,
+               'phones': phones,
+               'new': new,
+               'categories': categories,
+               'title': findCategory.name,
+               'findCategory': findCategory,
+               'address': address
+               }
+
+    return render(request, 'main/catalog.html', content)
 
 
 @require_GET
@@ -160,7 +186,16 @@ def collections(request, slug):
     paginator = Paginator(collections, 8)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    return render(request, 'main/collections.html', {'page_obj': page_obj, 'phones': phones, 'categories': categories, 'title': f'{findCategory.name} | Коллекции', 'findCategory': findCategory, 'address': address})
+
+    content = {'page_obj': page_obj,
+               'phones': phones,
+               'categories': categories,
+               'title': f'{findCategory.name} | Коллекции',
+               'findCategory': findCategory,
+               'address': address
+               }
+
+    return render(request, 'main/collections.html', content)
 
 
 @require_GET
@@ -187,7 +222,16 @@ def currentCollection(request, slug):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    return render(request, 'main/catalog.html', {'page_obj': page_obj, 'phones': phones, 'new': new, 'categories': categories, 'title': findCollection.name, 'findCollection': findCollection.name, 'address': address})
+    content = {'page_obj': page_obj,
+               'phones': phones,
+               'new': new,
+               'categories': categories,
+               'title': findCollection.name,
+               'findCollection': findCollection.name,
+               'address': address
+               }
+
+    return render(request, 'main/catalog.html', content)
 
 
 @require_GET
@@ -218,7 +262,17 @@ def currentCollectionFromCategory(request, slug, slug2):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    return render(request, 'main/catalog.html', {'page_obj': page_obj, 'phones': phones, 'new': new, 'categories': categories, 'title': findCollection.name, 'findCollection': findCollection.name, 'findCategory': findCategory, 'address': address})
+    content = {'page_obj': page_obj,
+               'phones': phones,
+               'new': new,
+               'categories': categories,
+               'title': findCollection.name,
+               'findCollection': findCollection.name,
+               'findCategory': findCategory,
+               'address': address
+               }
+
+    return render(request, 'main/catalog.html', content)
 
 
 @require_GET
@@ -240,7 +294,16 @@ def sales(request):
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    return render(request, 'main/catalog.html', {'page_obj': page_obj, 'phones': phones, 'new': new, 'categories': categories, 'title': 'Акции', 'address': address})
+
+    content = {'page_obj': page_obj,
+               'phones': phones,
+               'new': new,
+               'categories': categories,
+               'title': 'Акции',
+               'address': address
+               }
+
+    return render(request, 'main/catalog.html', content)
 
 
 @require_GET
@@ -263,7 +326,17 @@ def currentManufacturer(request, slug):
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    return render(request, 'main/catalog.html', {'page_obj': page_obj, 'phones': phones, 'new': new, 'categories': categories, 'title': findManufacturer.name, 'findManufacturer': findManufacturer.name, 'address': address})
+
+    content = {'page_obj': page_obj, 
+               'phones': phones, 
+               'new': new, 
+               'categories': categories,
+               'title': findManufacturer.name, 
+               'findManufacturer': findManufacturer.name, 
+               'address': address
+               }
+
+    return render(request, 'main/catalog.html', content)
 
 
 def searchHendler(request):
@@ -307,6 +380,7 @@ def tr_handler404(request, *args, **kwargs):
             new[x.name] = False
 
     return render(request, 'main/error.html', {'phones': phones, 'products': products, 'new': new, 'categories': categories, 'address': address, 'title': '404', 'message': 'К сожалению, такой мебели мы не нашли : (', 'message2': 'Посмотрите другие наши товары:'}, status=404)
+
 
 @require_GET
 def tr_handler505(request):

@@ -29,13 +29,13 @@
                                 <a
                                     href="{{ current.mainImage.url }}"
                                     data-img="{{ current.mainImage.url }}"
-                                    data-thumb="{% thumbnail current.mainImage 500x500 %}"
+                                    data-thumb="{% thumbnail current.mainImage 600x600 %}"
                                     data-alt="Главное фото {{ current.name }}"
                                     data-height="2000"
                                     data-width="3000"
                                 >
                                     <img
-                                    src="{% thumbnail current.mainImage 500x500 %}"
+                                    src="{% thumbnail current.mainImage 600x600 %}"
                                         alt="Главное фото {{ current.name }}"
                                     />
                                 </a>
@@ -45,13 +45,13 @@
                                 <a
                                     href="{{ x.image.url }}"
                                     data-img="{{ x.image.url }}"
-                                    data-thumb="{% thumbnail x.image 400x400 %}"
+                                    data-thumb="{% thumbnail x.image 600x600 %}"
                                     data-alt="Фото {{ current.name }}"
                                     data-height="2000"
                                     data-width="3000"
                                 >
                                     <img
-                                    src="{% thumbnail x.image 400x400 %}"
+                                    src="{% thumbnail x.image 600x600 %}"
                                         alt="Фото {{ current.name }}"
                                     />
                                 </a>

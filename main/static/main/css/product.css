@@ -143,6 +143,10 @@ div.swiper-container {
     user-select: none;
 }
 
+.mySwiper .swiper-slide img{
+    object-fit: contain;
+}
+
 
 .swiper {
     width: 480px;

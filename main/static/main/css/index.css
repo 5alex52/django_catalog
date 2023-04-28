@@ -43,11 +43,15 @@
     z-index: 5;
 }
 
+
 .swiper_text h1 {
     width: 600px;
     text-align: center;
     text-shadow: 2px 2px 20px #000;
+    letter-spacing: 6px;
+    position: relative;
 }
+
 
 .swiper-button-prev,
 .swiper-button-next {
