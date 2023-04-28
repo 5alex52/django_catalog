@@ -6,7 +6,7 @@ Implementing a product catalog in django
 
 This is a project for a chain of furniture stores. All fields and models were made according to the technical specifications of the customer. The model diagram looks like this:
 
-![structure image](./main/static/img/model_structure.jpg)
+![structure image](./static/main/img/model_structure.jpg)
 
 
 ## Running this project
@@ -35,6 +35,7 @@ Then install the project dependencies with
 pip install -r requirements.txt
 ```
 
+
 Now you can run the project with this command
 
 ```
@@ -59,3 +60,27 @@ ALTER ROLE django_user SET client_encoding TO 'utf8';
 CREATE DATABASE mebel_tut TEMPLATE=template0 ENCODING 'UTF-8' LC_COLLATE 'ru_RU.UTF-8' LC_CTYPE 'ru_RU.UTF-8';
 GRANT ALL PRIVILEGES ON DATABASE mebel_tut TO django_user;
 ```
+
+After that exit from pg and run this commands in root folder of project:
+
+```
+python manage.py makemigrations
+python manage.py migrate
+```
+
+## Features:
+
+<ol>
+    <li>ORM optimization</li>
+    <li>SEO optimization</li>
+    <li>Paginations</li>
+    <li>Autodelete on photo</li>
+    <li>Autogeneration folders for categoties and products</li>
+    <li>Autogeneration slug for RU-ru</li>
+    <li>Cache</li>
+    <li>Django-toolbar</li> 
+</ol>
+
+#### And so on...
+
+I hope that it will help with your e-commerce web sites or with simple catalogs like this
