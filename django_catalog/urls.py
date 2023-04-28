@@ -16,6 +16,8 @@ sitemaps = {
     'product': ProductSitemap,
 }
 
+admin.site.site_header = 'Мебель тут'
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),

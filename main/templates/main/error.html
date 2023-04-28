@@ -28,7 +28,7 @@
         {% cache 43200 error %}
             <div class="products">
             {% for x in products %}
-            <div class="popular_item">
+                <div class="popular_item">
                 {% if x.rating >= 900 %}
                     <div class="bestseller">Хит продаж</div>
                 {% elif x.isOnSale %}
@@ -42,11 +42,15 @@
                         {% endif %}
                     {% endfor %}
                 {% endif %}
-                <img src="{% thumbnail x.mainImage 400x400 %}" alt="">
-                <h3>{{ x.name }}</h3>
-                <h4>{{ x.manufacturer.name}}</h4>
-                <a href="{{ x.get_absolute_url }}" class="more">ПОДРОБНЕЕ</a>
-            </div>
+                    <img src="{% thumbnail x.mainImage 400x400 %}" alt="">
+                    <h3>{{ x.name }}</h3>
+                    <h4>{{ x.manufacturer.name}}
+                        {% if x.collection%}
+                            | {{ x.collection.name }}
+                    {% endif %}</h4>
+                    <h4 id="price_h4">{{ x.price}} <span>BYN</span></h4>
+                    <a href="{{ x.get_absolute_url }}" class="more">ПОДРОБНЕЕ</a>
+                </div>
             {% endfor %}
             </div>
         {% endcache %}

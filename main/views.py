@@ -294,7 +294,7 @@ def searchHendler(request):
 
 
 @require_GET
-def tr_handler404(request, exeption):
+def tr_handler404(request, *args, **kwargs):
     phones = Phone.objects.all().select_related('store')
     address = Address.objects.order_by('pk')
     products = Product.objects.order_by(
@@ -307,7 +307,6 @@ def tr_handler404(request, exeption):
             new[x.name] = False
 
     return render(request, 'main/error.html', {'phones': phones, 'products': products, 'new': new, 'categories': categories, 'address': address, 'title': '404', 'message': 'К сожалению, такой мебели мы не нашли : (', 'message2': 'Посмотрите другие наши товары:'}, status=404)
-
 
 @require_GET
 def tr_handler505(request):
