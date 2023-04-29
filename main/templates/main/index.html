@@ -2,6 +2,7 @@
 {% load static %}
 {% load thumbnail %}
 {% block head %}
+<link href="{% static 'main/css/aos.css' %}" rel="stylesheet">
 <meta name="keywords" content="Каталог, Барановичи, Мебель, Купить">
 {% endblock %}
 
@@ -18,32 +19,28 @@
             <div class="swiper-slide"><img src="{% static 'main/img/astrid.jpeg'%}" alt=""></div>
         </div>
         <div class="swiper_text">
-            <h1>Мебель тут</h1>
+            <h1 data-aos="fade-up" data-aos-duration="1000"  data-aos-delay="1000">Мебель тут</h1>
         </div>
-        <div class="swiper-pagination"></div>
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
-        <div class="swiper-scrollbar"></div>
     </div>
     <div class="info_container">
         <div class="info_item">
             <div>
-                <h3 id="h3">ФАБРИКА МЕБЕЛИ MEXO — ГАРМОНИЯ СТИЛЯ, ВОПЛОЩЕННАЯ В ЖИЗНЬ</h3>
-                <p>Любовь и трепетное отношение к своему ремеслу вдохновляет нас создавать современные диваны,
+                <h3 data-aos="fade-up" data-aos-duration="1000" id="h3">ФАБРИКА МЕБЕЛИ MEXO — ГАРМОНИЯ СТИЛЯ, ВОПЛОЩЕННАЯ В ЖИЗНЬ</h3>
+                <p data-aos="fade-up" data-aos-duration="2000">Любовь и трепетное отношение к своему ремеслу вдохновляет нас создавать современные диваны,
                     рождённые в творческом изобилии. Всегда оригинально, тонко, изысканно. </p>
             </div>
-            <img src="{% static 'main/img/sofa.avif'%}" alt="Диваны">
+            <img data-aos="fade-left" data-aos-duration = "1000" src="{% static 'main/img/sofa.avif'%}" alt="Диваны">
         </div>
         <div class="info_item">
             <div id="second_info">
-                <h3>ФАБРИКА МЕБЕЛИ MEXO — ГАРМОНИЯ СТИЛЯ, ВОПЛОЩЕННАЯ В ЖИЗНЬ</h3>
-                <p>Любовь и трепетное отношение к своему ремеслу вдохновляет нас создавать современные диваны,
+                <h3 data-aos="fade-up" data-aos-duration="1000">ФАБРИКА МЕБЕЛИ MEXO — ГАРМОНИЯ СТИЛЯ, ВОПЛОЩЕННАЯ В ЖИЗНЬ</h3>
+                <p data-aos="fade-up" data-aos-duration="2000"> Любовь и трепетное отношение к своему ремеслу вдохновляет нас создавать современные диваны,
                     рождённые в творческом изобилии. Всегда оригинально, тонко, изысканно. </p>
             </div>
         </div>
     </div>
 
-    <div class="swiper mySwiper_index2">
+    <div class="swiper mySwiper_index2" data-aos="fade-up">
         <div class="swiper-wrapper">
             <div class="swiper-slide">
                 <div class="index_categories">
@@ -144,10 +141,10 @@
         <div class="swiper-scrollbar"></div>
     </div>
 
-    <h1 id="last">Популярные товары:</h1>
+    <h1 id="last" data-aos="fade-up">Популярные товары:</h1>
     <div class="popular_product">
         {% for x in products %}
-            <div class="popular_item">
+            <div class="popular_item" data-aos="zoom-in-right" data-aos-delay="300" data-aos-duration="800">
                 {% if x.rating >= 900 %}
                     <div class="bestseller">Хит продаж</div>
                 {% elif x.isOnSale %}
@@ -177,23 +174,19 @@
 
 
 {% block script %}
+<script src="{% static 'main/js/aos.js' %}"></script>
 <script>
-    const swiper = new Swiper('.swiper', {
-        // Optional parameters
+    
+    AOS.init();
+
+    const swiper = new Swiper('.mySwiper_index', {
         direction: 'horizontal',
         loop: true,
 
-        // Navigation arrows
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-
-        // And if we need scrollbar
         scrollbar: {
             el: '.swiper-scrollbar',
             draggable: true,
-            hide: false
+            hide: true,
         },
 
         autoplay: {

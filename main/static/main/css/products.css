@@ -36,11 +36,13 @@
 }
 
 .product_item h3 {
-    margin-top: 30px;
-    font-size: 2rem;
+    font-size: 1.6rem;
     word-wrap: normal;
     height: 80px;
     font-family: 'Montserrat', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .product_item h4 {

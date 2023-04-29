@@ -268,7 +268,8 @@ class Feedback(models.Model):
     phone = models.CharField('Номер', max_length=20, blank=False)
     product_link = models.ForeignKey(
         Product, verbose_name='Товар', on_delete=models.DO_NOTHING)
-
+    date = models.DateTimeField('Дата добавления', default=timezone.now())
+    
     def __str__(self):
         return f'{self.name} {self.phone}'
 

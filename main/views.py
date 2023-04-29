@@ -108,6 +108,7 @@ def currentProduct(request, slug):
         if form.is_valid():
             product = Product.objects.get(slug=slug)
             form.instance.product_link = product
+            form.instance.date = timezone.now()
             form.save()
             feedback_title = 'Заявка отправлена'
             feedback_message = 'Наш менеджер перезвонит вам.'

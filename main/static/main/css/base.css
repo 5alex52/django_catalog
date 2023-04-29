@@ -56,7 +56,7 @@ ol {
     list-style: none;
 }
 
-header ul{
+header ul {
     display: flex;
 }
 
@@ -141,6 +141,7 @@ a.header_item:hover {
 img.logo {
     width: 80px;
     transition: all .4s ease;
+    animation: custom 2s ease;
 }
 
 img.logo:hover {
@@ -404,7 +405,8 @@ footer a:hover {
     display: none;
 }
 
-#search, #search2 {
+#search,
+#search2 {
     width: 200px;
     height: 30px;
     border-radius: 5px;
@@ -416,7 +418,8 @@ footer a:hover {
     transition: all 1s ease-out;
 }
 
-#search__btn, #search__btn2 {
+#search__btn,
+#search__btn2 {
     width: 60px;
     height: 30px;
     border-radius: 5px;
@@ -473,8 +476,8 @@ footer a:hover {
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
 }
-
 
 .loaded_hiding .preloader {
     transition: 0.3s opacity;
@@ -486,7 +489,7 @@ footer a:hover {
 }
 
 
-#preloader__image{
+#preloader__image {
     width: 80px;
     position: absolute;
     top: 65px;
@@ -535,6 +538,13 @@ footer a:hover {
     }
 }
 
-.mobile{
+.mobile {
     display: none;
+}
+
+@keyframes custom {
+
+    40% {
+        transform: scale(1.1);
+    }
 }

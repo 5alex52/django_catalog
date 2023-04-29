@@ -12,6 +12,7 @@
     --new_color: rgb(0, 167, 0);
     --bestseller_color: rgb(30, 9, 196);
     --sale_color: rgb(198, 7, 7);
+    --footer_color: rgb(125, 125, 125, 0.2);
 }
 
 .swiper {
@@ -288,7 +289,7 @@
     height: fit-content;
     padding: 40px 100px 40px 100px;
     text-align: center;
-    font-family: 'Comfortaa', cursive;
+    font-family: var(--Montserrat);
     background-color: rgb(255, 255, 255);
     z-index: -1;
 }
@@ -305,18 +306,22 @@
 .popular_item img {
     height: 200px;
     width: 100%;
+    object-fit: contain;
 }
 
 .popular_item h3 {
-    height: 80px;
-    margin-top: 30px;
-    font-size: 2rem;
+    height: 60px;
+    font-size: 1.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .popular_item h4 {
     margin-top: 10px;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
     font-size: 1rem;
+    font-family: var(--Comfortaa);
 }
 
 .popular_item .more {
@@ -334,7 +339,7 @@
 
 .popular_item .more:hover {
     color: white;
-    background-color: #000;
+    background-color: gray;
 }
 
 #last {
