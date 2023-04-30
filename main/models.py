@@ -266,9 +266,11 @@ class Phone(models.Model):
 class Feedback(models.Model):
     name = models.CharField('Имя', max_length=20, blank=False)
     phone = models.CharField('Номер', max_length=20, blank=False)
-    product_link = models.ForeignKey(
+    product = models.ForeignKey(
         Product, verbose_name='Товар', on_delete=models.DO_NOTHING)
+    product_name = models.CharField('Название товара', max_length=30, blank=False, default='Товар')
     date = models.DateTimeField('Дата добавления', default=timezone.now())
+    link = models.URLField(default='http://127.0.0.1:8000/')
     
     def __str__(self):
         return f'{self.name} {self.phone}'

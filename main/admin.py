@@ -40,7 +40,8 @@ class Manufacturer(admin.ModelAdmin):
 admin.site.register(Address)
 @admin.register(Feedback)
 class Feedback(admin.ModelAdmin):
-    readonly_fields = ('phone', 'product_link')
+    fields = ('name', 'phone', 'product', 'date',)
+    readonly_fields = ('phone', 'product')
 
 @admin.register(Phone)
 class PhoneAdmin(admin.ModelAdmin):

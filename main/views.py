@@ -5,7 +5,7 @@ from django.utils import timezone
 from datetime import timedelta
 from django.core.paginator import Paginator
 from django.views.generic.list import ListView
-from django.http import Http404, HttpResponse
+from django.http import Http404, HttpResponse, HttpRequest
 from .forms import AddFeedbackForm
 from django.contrib import messages
 from django.views.decorators.cache import cache_page
@@ -107,7 +107,9 @@ def currentProduct(request, slug):
         form = AddFeedbackForm(request.POST)
         if form.is_valid():
             product = Product.objects.get(slug=slug)
-            form.instance.product_link = product
+            form.instance.product = product
+            form.instance.product_name = product.name
+            form.instance.link = request.build_absolute_uri(product.get_absolute_url())
             form.instance.date = timezone.now()
             form.save()
             feedback_title = 'Заявка отправлена'
