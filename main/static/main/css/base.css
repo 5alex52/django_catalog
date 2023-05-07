@@ -70,8 +70,13 @@ header ul {
     position: relative;
 }
 
+#logo_h1 {
+    font-family: var(--Russo-One);
+    font-size: 0.6rem;
+    width: 80px;
+}
 
-.header_item {
+.header_item:not(.logo) {
     margin: 20px;
     color: grey;
 }
@@ -95,7 +100,7 @@ header ul {
     border-color: black;
 }
 
-.header_item:last-child {
+.header_item:last-child:not(.logo) {
     margin-right: 30px;
 }
 
@@ -139,9 +144,10 @@ a.header_item:hover {
 }
 
 img.logo {
-    width: 80px;
+    width: 60px;
     transition: all .4s ease;
     animation: custom 2s ease;
+    margin: 10px;
 }
 
 img.logo:hover {
@@ -180,7 +186,7 @@ a,
     background-color: rgb(255, 255, 255);
     width: 100vw;
     height: 200px;
-    margin-top: 38px;
+    margin-top: 30px;
     padding-bottom: 38px;
     padding-left: 60px;
     box-shadow: 0px 5px 10px rgb(0, 0, 0, 0.2);
@@ -198,6 +204,7 @@ a,
     top: 70px;
     left: 0;
 }
+
 
 .menu>li {
     font-size: 1.2rem;
@@ -321,7 +328,7 @@ footer {
 }
 
 footer div {
-    width: 30%;
+    width: 33%;
 }
 
 footer div ul {

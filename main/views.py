@@ -12,8 +12,6 @@ from django.views.decorators.cache import cache_page
 from django.views.decorators.http import require_GET
 from django.core.cache import cache
 
-categories = Category.objects.order_by('number')
-
 
 @require_GET
 def robots_txt(request):
@@ -23,16 +21,17 @@ def robots_txt(request):
     ]
     return HttpResponse("\n".join(lines), content_type="text/plain")
 
-
+@cache_page(60 * 60 * 12)
 @require_GET
 def home(request):
     products = Product.objects.order_by(
         '-rating')[:4].select_related('manufacturer', 'collection').only('name', 'mainImage', 'date', 'isOnSale', 'price', 'slug', 'rating', 'manufacturer__name', 'collection__name')
     phones = Phone.objects.all().select_related('store')
     address = Address.objects.order_by('pk')
+    categories = Category.objects.order_by('number')
     new = {}
     for x in products:
-        if x.date > timezone.now() - timedelta(14):
+        if x.date > timezone.now() - timedelta(30):
             new[x.name] = True
         else:
             new[x.name] = False
@@ -43,6 +42,7 @@ def home(request):
                'categories': categories,
                'address': address
                }
+    cache.clear()
     return render(request, 'main/index.html', content)
 
 
@@ -51,6 +51,7 @@ def home(request):
 def contacts(request):
     phones = Phone.objects.all()
     address = Address.objects.order_by('pk')
+    categories = Category.objects.order_by('number')
     return render(request, 'main/contacts.html', {'phones': phones, 'categories': categories, 'address': address})
 
 
@@ -58,6 +59,7 @@ def contacts(request):
 def catalog(request):
     phones = Phone.objects.all().select_related('store')
     address = Address.objects.order_by('pk')
+    categories = Category.objects.order_by('number')
     ordering = request.GET.get('orderby')
     if not ordering:
         ordering = '-rating'
@@ -66,7 +68,7 @@ def catalog(request):
     paginator = Paginator(products, 12)
     new = {}
     for x in products:
-        if x.date > timezone.now() - timedelta(14):
+        if x.date > timezone.now() - timedelta(30):
             new[x.name] = True
         else:
             new[x.name] = False
@@ -92,6 +94,7 @@ def currentProduct(request, slug):
     icon = ''
     phones = Phone.objects.all().select_related('store')
     address = Address.objects.order_by('pk')
+    categories = Category.objects.order_by('number')
     try:
         current = Product.objects.select_related(
             'manufacturer', 'collection').get(slug=slug)
@@ -100,7 +103,7 @@ def currentProduct(request, slug):
     currentImages = ProductImage.objects.filter(product=current)
     currentSpecs = Specs.objects.filter(product=current)
     new = False
-    if current.date > timezone.now() - timedelta(14):
+    if current.date > timezone.now() - timedelta(30):
         new = True
     if request.method == 'POST':
         isFeedback = 'true'
@@ -145,6 +148,7 @@ def currentProduct(request, slug):
 def currentCategory(request, slug):
     phones = Phone.objects.all().select_related('store')
     address = Address.objects.order_by('pk')
+    categories = Category.objects.order_by('number')
     try:
         findCategory = Category.objects.get(slug=slug)
     except Category.DoesNotExist:
@@ -157,7 +161,7 @@ def currentCategory(request, slug):
     paginator = Paginator(products, 16)
     new = {}
     for x in products:
-        if x.date > timezone.now() - timedelta(14):
+        if x.date > timezone.now() - timedelta(30):
             new[x.name] = True
         else:
             new[x.name] = False
@@ -181,6 +185,7 @@ def currentCategory(request, slug):
 def collections(request, slug):
     phones = Phone.objects.all().select_related('store')
     address = Address.objects.order_by('pk')
+    categories = Category.objects.order_by('number')
     try:
         findCategory = Category.objects.get(slug=slug)
     except Category.DoesNotExist:
@@ -205,6 +210,7 @@ def collections(request, slug):
 def currentCollection(request, slug):
     phones = Phone.objects.all().select_related('store')
     address = Address.objects.order_by('pk')
+    categories = Category.objects.order_by('number')
     try:
         findCollection = Collection.objects.get(slug=slug)
     except Collection.DoesNotExist:
@@ -217,7 +223,7 @@ def currentCollection(request, slug):
     paginator = Paginator(products, 16)
     new = {}
     for x in products:
-        if x.date > timezone.now() - timedelta(14):
+        if x.date > timezone.now() - timedelta(30):
             new[x.name] = True
         else:
             new[x.name] = False
@@ -241,6 +247,7 @@ def currentCollection(request, slug):
 def currentCollectionFromCategory(request, slug, slug2):
     phones = Phone.objects.all().select_related('store')
     address = Address.objects.order_by('pk')
+    categories = Category.objects.order_by('number')
     try:
         findCollection = Collection.objects.get(slug=slug2)
     except Collection.DoesNotExist:
@@ -257,7 +264,7 @@ def currentCollectionFromCategory(request, slug, slug2):
     paginator = Paginator(products, 16)
     new = {}
     for x in products:
-        if x.date > timezone.now() - timedelta(14):
+        if x.date > timezone.now() - timedelta(30):
             new[x.name] = True
         else:
             new[x.name] = False
@@ -282,6 +289,7 @@ def currentCollectionFromCategory(request, slug, slug2):
 def sales(request):
     phones = Phone.objects.all().select_related('store')
     address = Address.objects.order_by('pk')
+    categories = Category.objects.order_by('number')
     ordering = request.GET.get('orderby')
     if not ordering:
         ordering = '-rating'
@@ -290,7 +298,7 @@ def sales(request):
     paginator = Paginator(products, 16)
     new = {}
     for x in products:
-        if x.date > timezone.now() - timedelta(14):
+        if x.date > timezone.now() - timedelta(30):
             new[x.name] = True
         else:
             new[x.name] = False
@@ -313,6 +321,7 @@ def sales(request):
 def currentManufacturer(request, slug):
     phones = Phone.objects.all().select_related('store')
     address = Address.objects.order_by('pk')
+    categories = Category.objects.order_by('number')
     ordering = request.GET.get('orderby')
     if not ordering:
         ordering = '-rating'
@@ -322,7 +331,7 @@ def currentManufacturer(request, slug):
     paginator = Paginator(products, 16)
     new = {}
     for x in products:
-        if x.date > timezone.now() - timedelta(14):
+        if x.date > timezone.now() - timedelta(30):
             new[x.name] = True
         else:
             new[x.name] = False
@@ -345,6 +354,7 @@ def currentManufacturer(request, slug):
 def searchHendler(request):
     phones = Phone.objects.all().select_related('store')
     address = Address.objects.order_by('pk')
+    categories = Category.objects.order_by('number')
     ordering = request.GET.get('orderby')
     search = request.GET.get('search')
     if not ordering:
@@ -358,7 +368,7 @@ def searchHendler(request):
     paginator = Paginator(products, 16)
     new = {}
     for x in products:
-        if x.date > timezone.now() - timedelta(14):
+        if x.date > timezone.now() - timedelta(30):
             new[x.name] = True
         else:
             new[x.name] = False
@@ -373,11 +383,12 @@ def searchHendler(request):
 def tr_handler404(request, *args, **kwargs):
     phones = Phone.objects.all().select_related('store')
     address = Address.objects.order_by('pk')
+    categories = Category.objects.order_by('number')
     products = Product.objects.order_by(
         '-rating')[:4].select_related('manufacturer', 'collection')
     new = {}
     for x in products:
-        if x.date > timezone.now() - timedelta(14):
+        if x.date > timezone.now() - timedelta(30):
             new[x.name] = True
         else:
             new[x.name] = False
@@ -389,11 +400,12 @@ def tr_handler404(request, *args, **kwargs):
 def tr_handler505(request):
     phones = Phone.objects.all().select_related('store')
     address = Address.objects.order_by('pk')
+    categories = Category.objects.order_by('number')
     products = Product.objects.order_by(
         '-rating')[:4].select_related('manufacturer', 'collection')
     new = {}
     for x in products:
-        if x.date > timezone.now() - timedelta(14):
+        if x.date > timezone.now() - timedelta(30):
             new[x.name] = True
         else:
             new[x.name] = False

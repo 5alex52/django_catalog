@@ -127,7 +127,7 @@ class Product(models.Model):
         'Главное фото', upload_to=product_directory_path)
     slug = models.SlugField('Ссылка', default="",
                             null=False, blank=False, unique=True)
-    date = models.DateTimeField('Дата добавления', default=timezone.now())
+    date = models.DateTimeField('Дата добавления', default=timezone.now)
     price = models.DecimalField(
         'Цена', decimal_places=2, max_digits=7, default=0, blank=False, null=False)
 
@@ -269,7 +269,7 @@ class Feedback(models.Model):
     product = models.ForeignKey(
         Product, verbose_name='Товар', on_delete=models.DO_NOTHING)
     product_name = models.CharField('Название товара', max_length=30, blank=False, default='Товар')
-    date = models.DateTimeField('Дата добавления', default=timezone.now())
+    date = models.DateTimeField('Дата добавления', default=timezone.now)
     link = models.URLField(default='http://127.0.0.1:8000/')
     
     def __str__(self):

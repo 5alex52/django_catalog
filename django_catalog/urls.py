@@ -24,7 +24,7 @@ urlpatterns = [
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
     path("robots.txt", robots_txt),
     path('api-auth/', include('rest_framework.urls')),
-    path('feedback/', include('api.urls')),
+    path('api/', include('api.urls')),
     path('', include('main.urls')),
 ]
 

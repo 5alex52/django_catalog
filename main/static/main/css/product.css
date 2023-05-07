@@ -288,3 +288,8 @@ div.swiper-container {
     border: 1px solid black;
     border-radius: 50%;
 }
+
+.warning{
+    color: rgb(128, 128, 128, 0.5);
+    margin-top: 40px;
+}

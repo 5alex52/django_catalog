@@ -55,6 +55,12 @@
                 <a href="/">
                     <img class="header_item logo" src="{% static 'main/img/logo.png' %}" alt="">
                 </a>
+                <div id="logo_h1">
+                    <h1>Мебель тут</h1>
+                    <div class="glow-wrap">
+                        <i class="glow"></i>
+                    </div>
+                </div>
                 <input type="checkbox" id="menuToggle">
                 <label for="menuToggle" class="menu-icon"><img src="{% static 'main/img/list.svg'%}" alt="меню"></label>
                 <ul id="menu_header">
@@ -101,21 +107,12 @@
         </div>
         {% cache 43200 footer %}
             <footer>
-           
-            <!-- <div>
-                <h1>Каталог</h1>
-                <ul>
-                    {% for x in categories %}
-                        <li><a href="{{ x.get_absolute_url }}">{{ x.name }}</a></li>
-                    {% endfor %}
-                </ul>
-            </div> -->
-            <div>
+                <div>
                 <h1>Режим работы</h1>
-                <h2 class="time">Пн-Пт: 10:00 - 19:00</h2>
-                <h2 class="time">Cб-Вс: 10:00 - 16:00</h2>
-            </div>
-            <div>
+                    <h2 class="time">Пн-Пт: 10:00 - 19:00</h2>
+                    <h2 class="time">Cб-Вс: 10:00 - 16:00</h2>
+                </div>
+                <div>
                 <h1>Контакты</h1>
                 <p>г. Барановичи</p>
                 {% for x in address%}
@@ -133,16 +130,19 @@
                 <p>uma-mebel@list.ru</p>
                 <h2>Instagram:</h2>
                 <p><a class="header_item" id="footer_inst" href="https://www.instagram.com/mebeltutbaranovichi/">@mebeltutbaranovichi</a></p>
-            </div>
-            <div>
+                </div>
+                <div>
                 <h1>Реквизиты</h1>
-                <h2>ООО «МЕХО-М»</h2>
-                <p>УНП 290327381, ОКПО 292130241000</p>
+                <h2>ОДО «ЮМА»</h2>
+                <p>УНП 200423289</p>
+                <p>Регистрирующий орган: Брестский областной исполнительный комитет
+                <br>Регистрационный номер №200423289 от 17.11.2000</p>
                 <h2>Банковские реквизиты:</h2>
-                <p>Расчетный счет № BY30 PJCB 3012 5301 2510 0000 0933 в ОАО «Приорбанк»</p>
+                <p>Расчетный счет:<br>BY89 AKBB 3012 6133 9001 6130 0000<br>в ОАО «АСБ Беларусбанк</p>
                 <h2>Адрес банка:</h2>
-                <p>220002, г. Минск, ул. В. Хоружей, 31а. BIC банка PJCBBY2X</p>
-            </div>
+                <p>220089, г.Минск, пр-т Дзержинского, 18. BIC банка: AKBBBY2X</p>
+
+                </div>
             </footer>
         {% endcache %}
     </div>

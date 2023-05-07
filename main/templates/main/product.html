@@ -98,7 +98,7 @@
             </div>
             <div class="feedback">
                 <h2>Заинтересовало?</h2>
-                <p>Оставьте свои данные, наш менеджер перезвонит вам</p>
+                <p>Оставьте свои данные, наш специалист перезвонит вам</p>
                 <form action="{{ current.get_absolute_url}}" method="post" novalidate enctype="multipart/form-data"
                     id="feedback_form">
                     {% csrf_token %}
@@ -112,6 +112,9 @@
                     </div>
                     <button type="submit">Перезвонить мне</button>
                 </form>
+            </div>
+            <div class="warning">
+                <p>*Цветопередача на фотографиях может не соответствовать оригиналу</p>
             </div>
         </div>
     </div>
