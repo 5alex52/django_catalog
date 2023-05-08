@@ -42,7 +42,6 @@ def home(request):
                'categories': categories,
                'address': address
                }
-    cache.clear()
     return render(request, 'main/index.html', content)
 
 

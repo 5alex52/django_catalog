@@ -77,13 +77,15 @@
     align-items: center;
     justify-content: center;
     flex-flow: column;
+    font-family: var(--Montserrat);
 }
 
 #second_info{
-    width: 100%;
+    width: 75%;
     color: black;
     padding: 50px;
     text-align: center;
+    margin: auto;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -105,8 +107,11 @@
 .info_item img {
     margin: 5px 20px 5px 20px;
     width: 60%;
+    height: 500px;
     object-fit: cover;
+    object-position: 50% 65%;
 }
+
 
 
 /* Гриды */
