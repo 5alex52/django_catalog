@@ -52,9 +52,12 @@ header.fixed {
 
 ul,
 ol {
-    display: flex;
     align-items: center;
     list-style: none;
+}
+
+header ul {
+    display: flex;
 }
 
 .toggleMenu {
@@ -67,8 +70,13 @@ ol {
     position: relative;
 }
 
+#logo_h1 {
+    font-family: var(--Russo-One);
+    font-size: 0.6rem;
+    width: 80px;
+}
 
-.header_item {
+.header_item:not(.logo) {
     margin: 20px;
     color: grey;
 }
@@ -92,7 +100,7 @@ ol {
     border-color: black;
 }
 
-.header_item:last-child {
+.header_item:last-child:not(.logo) {
     margin-right: 30px;
 }
 
@@ -135,10 +143,16 @@ a.header_item:hover {
     color: black;
 }
 
-.logo {
-    width: 160px;
-    color: black;
-    font-family: 'Russo One', sans-serif;
+img.logo {
+    width: 60px;
+    transition: all .4s ease;
+    animation: custom 2s ease;
+    margin: 10px;
+}
+
+img.logo:hover {
+    transform: scale(1.1);
+    opacity: 90%;
 }
 
 a.tel {
@@ -172,7 +186,7 @@ a,
     background-color: rgb(255, 255, 255);
     width: 100vw;
     height: 200px;
-    margin-top: 38px;
+    margin-top: 30px;
     padding-bottom: 38px;
     padding-left: 60px;
     box-shadow: 0px 5px 10px rgb(0, 0, 0, 0.2);
@@ -190,6 +204,7 @@ a,
     top: 70px;
     left: 0;
 }
+
 
 .menu>li {
     font-size: 1.2rem;
@@ -313,7 +328,7 @@ footer {
 }
 
 footer div {
-    width: 30%;
+    width: 33%;
 }
 
 footer div ul {
@@ -397,7 +412,8 @@ footer a:hover {
     display: none;
 }
 
-#search, #search2 {
+#search,
+#search2 {
     width: 200px;
     height: 30px;
     border-radius: 5px;
@@ -406,9 +422,11 @@ footer a:hover {
     padding-left: 10px;
     font-family: var(--Montserrat);
     outline: none;
+    transition: all 1s ease-out;
 }
 
-#search__btn, #search__btn2 {
+#search__btn,
+#search__btn2 {
     width: 60px;
     height: 30px;
     border-radius: 5px;
@@ -465,8 +483,8 @@ footer a:hover {
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
 }
-
 
 .loaded_hiding .preloader {
     transition: 0.3s opacity;
@@ -478,7 +496,7 @@ footer a:hover {
 }
 
 
-#preloader__image{
+#preloader__image {
     width: 80px;
     position: absolute;
     top: 65px;
@@ -527,6 +545,13 @@ footer a:hover {
     }
 }
 
-.mobile{
+.mobile {
     display: none;
+}
+
+@keyframes custom {
+
+    40% {
+        transform: scale(1.1);
+    }
 }

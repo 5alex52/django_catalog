@@ -143,6 +143,10 @@ div.swiper-container {
     user-select: none;
 }
 
+.mySwiper .swiper-slide img{
+    object-fit: contain;
+}
+
 
 .swiper {
     width: 480px;
@@ -283,4 +287,9 @@ div.swiper-container {
     margin: 0;
     border: 1px solid black;
     border-radius: 50%;
+}
+
+.warning{
+    color: rgb(128, 128, 128, 0.5);
+    margin-top: 40px;
 }
