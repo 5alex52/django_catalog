@@ -71,14 +71,14 @@ python manage.py migrate
 ## Features:
 
 <ol>
-    <li>ORM optimization</li>
-    <li>SEO optimization</li>
-    <li>Paginations</li>
-    <li>Autodelete on photo</li>
-    <li>Autogeneration folders for categoties and products</li>
-    <li>Autogeneration slug for RU-ru</li>
+    <li>Automatic generation of folders for categories and products</li>
+    <li>Auto-delete on photos and folders</li>
+    <li>Slug auto-generation for RU-ru</li>
+    <li>ORM and SEO optimization</li>
+    <li>Api for telegram bot</li>
+    <li>Auto Generated thumbnails</li>
+    <li>Pagination</li>
     <li>Cache</li>
-    <li>Django-toolbar</li> 
 </ol>
 
 #### And so on...
