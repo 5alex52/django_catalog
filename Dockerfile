@@ -10,7 +10,6 @@ RUN pip install poetry \
     && poetry config virtualenvs.create false \
     && poetry install --no-dev --no-interaction --no-ansi
 
+ADD ./src /src
 
-ADD ./backend /backend
-
-WORKDIR /backend
+WORKDIR /src

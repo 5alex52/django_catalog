@@ -2,29 +2,28 @@ version: '3.8'
 
 services:
   app:
-    container_name: goodtoeat_app
+    container_name: mebeltut_app
     build:
       context: .
     env_file:
       - .env
-    #entrypoint: ["bash", "-c", "export ENVIRONMENT=local && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
     command: bash -c "
       export ENVIROMENT='local' &&
       python manage.py migrate &&
       python manage.py collectstatic --noinput &&
       python manage.py runserver 0.0.0.0:8000"
     restart: always
+    ports:
+      - "8000:8000"
     depends_on:
       - database
-      - celery
     networks:
-      - goodtoeat-network
+      - mebeltut-network
     volumes:
-      - ./backend/goodtoeat/static:/backend/goodtoeat/static
-      - ./backend:/backend
+      - ./src:/src
 
   database:
-    container_name: goodtoeat_base
+    container_name: mebeltut_base
     image: postgres:14.5
     command: postgres -c 'max_connections=1000'
     expose:
@@ -35,94 +34,13 @@ services:
     env_file:
       - .env
     networks:
-      - goodtoeat-network
+      - mebeltut-network
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
-
-  nginx:
-    container_name: goodtoeat_nginx
-    image: nginx:latest
-    expose:
-      - 80
-    ports:
-      - "80:80"
-    depends_on:
-      - app
-    networks:
-      - goodtoeat-network
-    volumes:
-      - ./nginx/nginx_local.conf:/etc/nginx/nginx.conf
-      - ./backend/goodtoeat/static:/backend/goodtoeat/static
-
-  rabbitmq:
-    container_name: goodtoeat_rabbit
-    image: rabbitmq:3.13-management
-    restart: always
-    networks:
-      - goodtoeat-network
-    volumes:
-      - rabbitmq_data:/var/lib/rabbitmq
-
-  redis:
-    container_name: goodtoeat_redis
-    image: redis
-    restart: always
-    networks:
-      - goodtoeat-network
-    volumes:
-      - redis_data:/var/lib/redis
-
-  celery:
-    container_name: goodtoeat_celery
-    build:
-      context: .
-    command: celery -A goodtoeat worker -l info
-    restart: always
-    env_file:
-      - .env
-    depends_on:
-      - redis
-    networks:
-      - goodtoeat-network
-    volumes:
-      - ./backend:/backend
-
-  celery-beat:
-    container_name: goodtoeat_celery_beat
-    build:
-      context: .
-    command: celery -A goodtoeat beat -l info
-    restart: always
-    env_file:
-      - .env
-    depends_on:
-      - redis
-      - celery
-    networks:
-      - goodtoeat-network
-    volumes:
-      - ./backend:/backend
-
-  flower:
-    container_name: goodtoeat_flower
-    build:
-      context: .
-    command: celery -A goodtoeat flower
-    env_file:
-      - .env
-    restart: always
-    depends_on:
-      - redis
-      - celery
-    networks:
-      - goodtoeat-network
-
 networks:
-  goodtoeat-network:
+  mebeltut-network:
     driver: bridge
 
 volumes:
   postgres_data:
-  rabbitmq_data:
-  redis_data:

@@ -1,0 +1,13 @@
+from .base import *
+
+AUTH_PASSWORD_VALIDATORS = []
+
+DEBUG = True
+
+ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
+
+SILKY_PYTHON_PROFILER = True
+
+SILKY_PYTHON_PROFILER_BINARY = True
+
+SILKY_PYTHON_PROFILER_RESULT_PATH = "silk_profiles"
