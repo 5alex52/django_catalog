@@ -11,7 +11,7 @@
 {% endblock %}
 
 {% block body %}
-{% include "main/nav.html" %} 
+{% include "main/nav.html" %}
 {% endblock %}
 
 {% block content %}
@@ -50,7 +50,7 @@
                     <input type="hidden" name="orderby" value="-price"/>
                 </form>
             {% endif %}
-                                            
+
             <div class="dropdown">
                 <button onclick="myFunction()" class="dropbtn">Сортировка: </button>
                 <div id="myDropdown" class="dropdown-content">
@@ -93,7 +93,7 @@
                     {% endif %}
                     <img src="{% thumbnail x.mainImage 400x400 %}" alt="Фото {{x.name}}">
                     <h3>{{ x.name }}</h3>
-                    <h4>{{ x.manufacturer.name}} 
+                    <h4>{{ x.manufacturer.name}}
                         {% if x.collection%}
                         | {{ x.collection.name }}
                         {% endif %}
@@ -108,7 +108,7 @@
                 </div>
             {% endif %}
         </div>
-        {% include "main/pagination.html" %} 
+        {% include "main/pagination.html" %}
     </div>
 </div>
 {% endblock %}

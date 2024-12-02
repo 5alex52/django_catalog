@@ -1,25 +1,28 @@
-from django.shortcuts import render, redirect
-from .models import (
-    Phone,
-    Product,
-    Category,
-    ProductImage,
-    Specs,
-    Collection,
-    Manufacturer,
-    Address,
-)
-from django.db.models import Q
-from django.utils import timezone
 from datetime import timedelta
-from django.core.paginator import Paginator
-from django.views.generic.list import ListView
-from django.http import Http404, HttpResponse, HttpRequest
-from .forms import AddFeedbackForm
+
 from django.contrib import messages
+from django.core.cache import cache
+from django.core.paginator import Paginator
+from django.db.models import Q
+from django.http import Http404
+from django.http import HttpRequest
+from django.http import HttpResponse
+from django.shortcuts import redirect
+from django.shortcuts import render
+from django.utils import timezone
 from django.views.decorators.cache import cache_page
 from django.views.decorators.http import require_GET
-from django.core.cache import cache
+from django.views.generic.list import ListView
+
+from .forms import AddFeedbackForm
+from .models import Address
+from .models import Category
+from .models import Collection
+from .models import Manufacturer
+from .models import Phone
+from .models import Product
+from .models import ProductImage
+from .models import Specs
 
 
 @require_GET

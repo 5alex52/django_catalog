@@ -1,11 +1,14 @@
-from django.contrib import admin
-from django.urls import path, include
-from django.conf.urls.static import static
-from django.conf import settings
-from django.contrib.sitemaps.views import sitemap
-from apps.main.sitemaps import CategorySitemap, CollectionSitemap, ProductSitemap
-from django.views.generic.base import TemplateView
+from apps.main.sitemaps import CategorySitemap
+from apps.main.sitemaps import CollectionSitemap
+from apps.main.sitemaps import ProductSitemap
 from apps.main.views import robots_txt
+from django.conf import settings
+from django.conf.urls.static import static
+from django.contrib import admin
+from django.contrib.sitemaps.views import sitemap
+from django.urls import include
+from django.urls import path
+from django.views.generic.base import TemplateView
 from drf_spectacular.views import SpectacularAPIView
 from drf_spectacular.views import SpectacularRedocView
 from drf_spectacular.views import SpectacularSwaggerView
@@ -47,5 +50,5 @@ if settings.DEBUG:
     ] + urlpatterns
 
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    
-    urlpatterns += [path('silk/', include('silk.urls', namespace='silk'))]
+
+    urlpatterns += [path("silk/", include("silk.urls", namespace="silk"))]

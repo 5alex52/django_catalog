@@ -1,6 +1,8 @@
 from uuid import uuid4
+
+from PIL import Image
+from PIL import ImageOps
 from pytils.translit import slugify
-from PIL import Image, ImageOps
 
 
 def unique_slugify(instance, slug):
@@ -26,3 +28,19 @@ def image_compress(image_path, height, width):
         img.thumbnail(output_size)
     img = ImageOps.exif_transpose(img)
     img.save(image_path, format="JPEG", quality=100, optimize=True)
+
+
+def collection_directory_path(instance, filename):
+    return "collection_{0}/{1}".format(instance.slug, filename)
+
+
+def image_directory_path(instance, filename):
+    return "category_{0}/product_{1}/{2}".format(
+        instance.product.category.slug, instance.product.slug, filename
+    )
+
+
+def product_directory_path(instance, filename):
+    return "category_{0}/product_{1}/{2}".format(
+        instance.category.slug, instance.slug, filename
+    )

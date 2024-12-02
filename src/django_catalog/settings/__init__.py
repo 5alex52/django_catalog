@@ -1,8 +1,7 @@
 import logging
 
-from .env_config import env_config
-
 from . import base  # noqa: F401
+from .env_config import env_config
 
 logger = logging.getLogger(__name__)
 

@@ -28,6 +28,9 @@ pytils = "^0.4.1"
 django-silk = "^5.3.1"
 drf-spectacular = "^0.28.0"
 django-phonenumber-field = "^8.0.0"
+phonenumbers = "^8.13.51"
+telebot = "^0.0.5"
+pre-commit = "^4.0.1"
 
 
 [build-system]
@@ -42,3 +45,7 @@ addopts = "-p no:warnings"
 
 [tool.pytest_env]
 ENVIROMENT="testing"
+
+[tool.black]
+line-length = 88
+target-version = ['py311']

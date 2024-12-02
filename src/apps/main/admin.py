@@ -1,16 +1,15 @@
-from django.contrib import admin
-from .models import (
-    Category,
-    Collection,
-    Product,
-    ProductImage,
-    Specs,
-    Manufacturer,
-    Phone,
-    Address,
-    Feedback,
-)
 from django import forms
+from django.contrib import admin
+
+from .models import Address
+from .models import Category
+from .models import Collection
+from .models import Feedback
+from .models import Manufacturer
+from .models import Phone
+from .models import Product
+from .models import ProductImage
+from .models import Specs
 
 
 class ImageInline(admin.StackedInline):

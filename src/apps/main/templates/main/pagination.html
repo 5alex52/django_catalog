@@ -6,7 +6,7 @@
     {% for p in page_obj.paginator.page_range %}
         {% if page_obj.number == p and page_obj.paginator.num_pages != 1 %}
             <a href="#" class="active">{{ p }}</a>
-        {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 and page_obj.paginator.num_pages != 1%} 
+        {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 and page_obj.paginator.num_pages != 1%}
             <a href="?page={{ p }}">{{ p }}</a>
         {% endif %}
     {% endfor %}

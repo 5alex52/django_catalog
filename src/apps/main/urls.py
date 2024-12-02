@@ -1,5 +1,16 @@
 from django.urls import path
-from .views import *
+
+from .views import catalog
+from .views import collections
+from .views import contacts
+from .views import currentCategory
+from .views import currentCollection
+from .views import currentCollectionFromCategory
+from .views import currentManufacturer
+from .views import currentProduct
+from .views import home
+from .views import sales
+from .views import searchHendler
 
 
 urlpatterns = [

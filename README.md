@@ -1,4 +1,4 @@
-# Django Catalog 
+# Django Catalog
 
 Implementing a product catalog in django
 

@@ -167,7 +167,7 @@
 
     $('input[type="tel"]').click(function () {
         $(this).setCursorPosition(6);  // set position number
-    });    
+    });
 
     if('{{ isFeedback }}' == 'true'){
         let timerInterval
@@ -186,7 +186,7 @@
             },
             willClose: () => {
                 clearInterval(timerInterval)
-                window.location.replace('/product/{{ current.slug }}'); 
+                window.location.replace('/product/{{ current.slug }}');
             }
         }).then((result) => {
             window.location.replace('/product/{{ current.slug }}');

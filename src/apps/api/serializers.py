@@ -1,5 +1,7 @@
+from apps.main.models import Feedback
+from apps.main.models import Product
+from apps.main.models import ProductImage
 from rest_framework import serializers
-from apps.main.models import Feedback, Product, ProductImage
 
 
 class FeedbackSerializer(serializers.ModelSerializer):

@@ -21,6 +21,7 @@ class EnvConfig(BaseSettings):
 
     TECH_BOT_TOKEN: str = ""
     TECH_CHANNEL_ID: str = ""
+    MAIN_CHANNEL_ID: str = ""
 
     S3_BUCKET_NAME: str = ""
     AWS_ACCESS_KEY: str = ""

@@ -1,5 +1,8 @@
 from django.contrib.sitemaps import Sitemap
-from .models import Category, Collection, Product
+
+from .models import Category
+from .models import Collection
+from .models import Product
 
 
 class CategorySitemap(Sitemap):

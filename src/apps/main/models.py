@@ -1,27 +1,18 @@
-from django.db import models
-from django.core.validators import MaxValueValidator, MinValueValidator
 import random
+
+from apps.main.utils import collection_directory_path
+from apps.main.utils import image_directory_path
+from apps.main.utils import product_directory_path
+from django.contrib import messages
+from django.core.validators import MaxValueValidator
+from django.core.validators import MinValueValidator
+from django.db import models
+from django.urls import reverse
 from django.utils import timezone
 from django.utils.html import mark_safe
-from django.contrib import messages
-from django.urls import reverse
-from .utils import unique_slugify, image_compress
+from phonenumber_field.modelfields import PhoneNumberField
 
-
-def product_directory_path(instance, filename):
-    return "category_{0}/product_{1}/{2}".format(
-        instance.category.slug, instance.slug, filename
-    )
-
-
-def image_directory_path(instance, filename):
-    return "category_{0}/product_{1}/{2}".format(
-        instance.product.category.slug, instance.product.slug, filename
-    )
-
-
-def collection_directory_path(instance, filename):
-    return "collection_{0}/{1}".format(instance.slug, filename)
+from .utils import unique_slugify
 
 
 class Category(models.Model):
@@ -186,7 +177,9 @@ class Product(models.Model):
 
 class ProductImage(models.Model):
     image = models.ImageField("Фото", upload_to=image_directory_path)
-    product = models.ForeignKey(Product, verbose_name="Товар", on_delete=models.CASCADE)
+    product = models.ForeignKey(
+        Product, verbose_name="Товар", on_delete=models.CASCADE, related_name="photos"
+    )
 
     def __str__(self):
         return f"Фото {self.product.name}"
@@ -285,7 +278,8 @@ class Phone(models.Model):
 
 class Feedback(models.Model):
     name = models.CharField("Имя", max_length=20, blank=False)
-    phone = models.CharField("Номер", max_length=20, blank=False)
+    phone = PhoneNumberField("Номер", blank=True, null=True, unique=True, region="BY")
+    # phone = models.CharField("Номер", max_length=20, blank=False, null=False)
     product = models.ForeignKey(
         Product, verbose_name="Товар", on_delete=models.DO_NOTHING
     )

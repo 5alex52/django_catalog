@@ -1,7 +1,8 @@
+import logging
 import os
 from pathlib import Path
+
 from django_catalog.settings.env_config import env_config
-import logging
 
 logger = logging.getLogger()
 
@@ -35,6 +36,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "phonenumber_field",
     "apps.main",
     "apps.api",
     "django_cleanup",
@@ -104,7 +106,6 @@ DATABASES = {
         "PORT": env_config.POSTGRES_PORT,
     }
 }
-
 
 
 # Password validation
