@@ -2,6 +2,9 @@ import logging
 import os
 from pathlib import Path
 
+from django.templatetags.static import static
+from django.urls import reverse_lazy
+from django.utils.translation import gettext_lazy as _
 from django_catalog.settings.env_config import env_config
 
 logger = logging.getLogger()
@@ -29,6 +32,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 SITE_ID = 1
 
 INSTALLED_APPS = [
+    "unfold",
+    "unfold.contrib.filters",
+    "unfold.contrib.forms",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -163,3 +169,90 @@ THUMBNAIL_ALIASES = {
         "avatar": {"size": (500, 500), "crop": True},
     },
 }
+
+UNFOLD = {
+    "SITE_TITLE": "Mebel Tut",
+    "SITE_HEADER": "Mebel Tut",
+    "SITE_URL": "/",
+    "SITE_ICON": lambda request: static(
+        "main/img/logo.png"
+    ),  # both modes, optimise for 32px height
+    "SHOW_HISTORY": True,  # show/hide "History" button, default: True
+    "SHOW_VIEW_ON_SITE": True,  # show/hide "View on site" button, default: True
+    "ENVIRONMENT": "django_catalog.settings.environment_callback",
+    # "DASHBOARD_CALLBACK": "dashboard_callback",
+    "LOGIN": {
+        "image": lambda request: static("main/img/logo.png"),
+    },
+    "COLORS": {
+        "primary": {
+            "50": "#fbeae5",
+            "100": "#f7d1c8",
+            "200": "#f2a891",
+            "300": "#ed8464",
+            "400": "#e96b48",
+            "500": "#e55e31",
+            "600": "#d4552c",
+            "700": "#b84726",
+            "800": "#963a20",
+            "900": "#7a301b",
+            "950": "#43180e",
+        }
+    },
+    "TABS": [
+        {
+            "models": ["main.product"],
+            "items": [
+                {
+                    "title": _("Товары"),
+                    "link": reverse_lazy("admin:main_product_changelist"),
+                },
+                {
+                    "title": _("На акции"),
+                    "link": lambda request: f"{reverse_lazy('admin:main_product_changelist')}?isOnSale__exact=True",
+                },
+                {
+                    "title": _("Рейтинговые"),
+                    "link": lambda request: f"{reverse_lazy('admin:main_product_changelist')}?rating__gt=850",
+                },
+            ],
+        },
+    ],
+    "SIDEBAR": {
+        "show_search": True,  # Search in applications and models names
+        "show_all_applications": True,  # Dropdown with all applications and models
+        "navigation": [
+            {
+                "title": _("Navigation"),
+                "separator": True,  # Top border
+                "items": [
+                    {
+                        "title": _("Dashboard"),
+                        "icon": "dashboard",  # Supported icon set: https://fonts.google.com/icons
+                        "link": reverse_lazy("admin:index"),
+                        # "badge": "goodtoeat_badge_callback",
+                        "permission": lambda request: request.user.is_superuser,
+                    },
+                    {
+                        "title": _("Пользователи"),
+                        "icon": "people",
+                        "link": reverse_lazy("admin:auth_user_changelist"),
+                        "permission": lambda request: request.user.is_superuser,
+                    },
+                    {
+                        "title": _("Товары"),
+                        "icon": "Grocery",
+                        "link": reverse_lazy("admin:main_product_changelist"),
+                    },
+                    # {
+                    #     "title": _("Заказы"),
+                    #     "icon": "Grocery",
+                    #     "link": reverse_lazy("admin:products_product_changelist"),
+                    # },
+                ],
+            },
+        ],
+    },
+}
+
+SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin-allow-popups"

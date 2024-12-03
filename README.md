@@ -20,52 +20,26 @@ pip install virtualenv
 Clone or download this repository and open it in your editor of choice. In a terminal (mac/linux) or windows terminal, run the following command in the base directory of this project
 
 ```
-virtualenv env
+virtualenv venv
 ```
 
-That will create a new folder `env` in your project directory. Next activate it with this command on mac/linux:
+That will create a new folder `venv` in your project directory. Next activate it with this command on mac/linux:
 
 ```
-source env/bin/active
+source venv/bin/active
 ```
 
 Then install the project dependencies with
 
 ```
-pip install -r requirements.txt
+poetry install
 ```
 
 
 Now you can run the project with this command
 
 ```
-python manage.py runserver
-```
-
-## Create postgresql db
-
-### Mac Instructions
-
-Instructions for Russian localization.\
-Execute commands sequentially.
-
-```
-brew install postgres
-brew services start postgresql
-
-sudo psql -U *your_username* -d postgres
-
-CREATE USER django_user WITH PASSWORD 'dbpass';
-ALTER ROLE django_user SET client_encoding TO 'utf8';
-CREATE DATABASE mebel_tut TEMPLATE=template0 ENCODING 'UTF-8' LC_COLLATE 'ru_RU.UTF-8' LC_CTYPE 'ru_RU.UTF-8';
-GRANT ALL PRIVILEGES ON DATABASE mebel_tut TO django_user;
-```
-
-After that exit from pg and run this commands in root folder of project:
-
-```
-python manage.py makemigrations
-python manage.py migrate
+docker-compose -f docker-compose-local.yaml up -d
 ```
 
 ## Features:
@@ -81,6 +55,34 @@ python manage.py migrate
     <li>Cache</li>
 </ol>
 
-#### And so on...
+Project works in several enviroments:
+* local
+* development
+* testing
+* production
 
-I hope that it will help with your e-commerce web sites or with simple catalogs like this
+## Полезные команды
+
+* Тестирование:
+
+    ```bash
+    pytest -v -x -n 4 src
+    ```
+
+* Форматер:
+
+    ```bash
+    black src
+    ```
+
+* Pylint:
+    ```bash
+    pylint --load-plugins pylint_django --django-settings-module=django_catalog.settings --fail-under=9 **/*.py
+    ```
+
+* Pre-commit
+    ```bash
+    pre-commit run # Вручную запускает пре комиты
+    pre-commit install # Устанавлиет пре-комиты
+    pre-commit autoupdate # Обновляет пакеты для пре-комитов
+    ```

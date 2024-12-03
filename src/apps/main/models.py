@@ -4,12 +4,14 @@ from apps.main.utils import collection_directory_path
 from apps.main.utils import image_directory_path
 from apps.main.utils import product_directory_path
 from django.contrib import messages
+from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.html import mark_safe
+from django.utils.translation import gettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
 
 from .utils import unique_slugify
@@ -140,13 +142,13 @@ class Product(models.Model):
         "Цена", decimal_places=2, max_digits=7, default=0, blank=False, null=False
     )
 
-    @property
-    def mainImage_preview(self):
-        if self.mainImage:
-            return mark_safe(
-                '<img src="{}" width="auto" height="250" />'.format(self.mainImage.url)
-            )
-        return ""
+    # @property
+    # def mainImage_preview(self):
+    #     if self.mainImage:
+    #         return mark_safe(
+    #             '<img src="{}" width="auto" height="250" />'.format(self.mainImage.url)
+    #         )
+    #     return ""
 
     def __str__(self):
         return self.name
@@ -197,50 +199,60 @@ class ProductImage(models.Model):
         verbose_name_plural = "Фото"
 
 
+class SpecsCoices(models.TextChoices):
+    LENGTH = "Length", _("Длина")
+    WIDTH = "Width", _("Ширина")
+    HEIGHT = "Height", _("Высота")
+    WEIGHT = "Weight", _("Вес")
+    BED_LENGTH = "Bed length", _("Длина спального места")
+    BED_WIDTH = "Bed width", _("Ширина спального места")
+    TRANSFORMATION_MECHANISM = "Transformation mechanism", _("Механизм трансформации")
+    PRESENCE_OF_DRAWERS_FOR_LINEN = "The presence of drawers for linen", _(
+        "Наличие ящиков для белья"
+    )
+    CORNER = "Corner", _("Угол")
+    MATERIAL = "Material", _("Материал")
+    COLOR = "Color", _("Цвет")
+    MAXIMUM_LOAD = "Maximum load", _("Максимальная нагрузка")
+    TABLETOP_THICKNESS = "Tabletop thickness", _("Толщина столешницы")
+    ADDITIONAL_INFORMATION = "Additional Information", _("Дополнительная информация")
+
+
+class UnitCoices(models.TextChoices):
+    MM = "mm", _("мм")
+    SM = "sm", _("см")
+    PC = "pc", _("шт")
+    KG = "kg", _("кг")
+
+
 class Specs(models.Model):
     product = models.ForeignKey(Product, verbose_name="Товар", on_delete=models.CASCADE)
 
-    SPECS_CHOICES = (
-        ("Length", "Длина"),
-        ("Width", "Ширина"),
-        ("Height", "Высота"),
-        ("Weight", "Вес"),
-        ("Bed length", "Длина спального места"),
-        ("Bed width", "Ширина спального места"),
-        ("Transformation mechanism", "Механизм трансформации"),
-        ("The presence of drawers for linen", "Наличие ящиков для белья"),
-        ("Corner", "Угол"),
-        ("Material", "Материал"),
-        ("Color", "Цвет"),
-        ("Maximum load", "Максимальная нагрузка"),
-        ("Tabletop thickness", "Толщина столешницы"),
-        ("Additional Information", "Дополнительная информация"),
-    )
-
-    UNIT_CHOICES = (
-        ("mm", "мм"),
-        ("sm", "см"),
-        ("pc", "шт"),
-        ("kg", "кг"),
-    )
-
     param = models.CharField(
-        "Параметр", max_length=100, choices=SPECS_CHOICES, blank=False, null=False
+        "Параметр", max_length=100, choices=SpecsCoices.choices, blank=False, null=False
     )
     value = models.CharField("Значение", max_length=200, blank=False, null=False)
     unit = models.CharField(
-        "Ед. измерения", max_length=10, choices=UNIT_CHOICES, blank=True, null=True
+        "Ед. измерения",
+        max_length=10,
+        choices=UnitCoices.choices,
+        blank=True,
+        null=True,
     )
+
+    def clean(self):
+        # Проверяем на дублирование
+        if (
+            Specs.objects.filter(product=self.product, param=self.param)
+            .exclude(pk=self.pk)
+            .exists()
+        ):
+            raise ValidationError(
+                f"Спецификация с параметром '{self.param}' уже существует для этого продукта."
+            )
 
     def __str__(self):
         return f"{self.product.name}"
-
-    def save(self, *args, **kwargs):
-        all_specs = Specs.objects.filter(product=self.product)
-        for item in all_specs:
-            if item.param == self.param:
-                return
-        super().save()
 
     class Meta:
         verbose_name = "Характеристика"
