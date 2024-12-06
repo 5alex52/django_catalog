@@ -1,0 +1,95 @@
+{% extends 'main/base.html'%}
+{% load static %}
+
+
+{% block head %}
+<link href="{% static 'main/css/checkout.css' %}" rel="stylesheet">
+<meta name="keywords" content="Каталог, Барановичи, Мебель, Купить, Телефоны, Адреса">
+{% endblock %}
+{% block title %}
+Контакты | Мебель тут
+{% endblock %}
+
+{% block content %}
+<div class="content" id="content_checkout">
+    <div class="checkout-container">
+        <h1>Оформление заказа</h1>
+        <div id="form-container">
+            <div>
+                <h2>Информация о заказе</h2>
+                {% for item in cart.items.all %}
+                    <p><a href="{{ item.link }}">{{ item.product.name }}</a> {{ item.product.price }} руб. x {{ item.quantity }} шт. <span>{{ item.total_price }} </span></p>
+                {% endfor %}
+                <p>Общая сумма: {{ cart.total_price }}</p>
+            </div>
+            {% if form.errors %}
+                <div class="alert alert-danger">
+                    <ul>
+                        {% for field, errors in form.errors.items %}
+                            {% for error in errors %}
+                                <li>{{ field.label }}: {{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+            <form id="checkout-form" class="form-group" method="post">
+                {% csrf_token %}
+                <!-- {{ form.customer_first_name }}
+                {{ form.customer_last_name }}
+                {{ form.customer_email }}
+                {{ form.customer_phone }}
+                {{ form.payment_method }}
+                {{ form.payment_method }}
+                {{ form.delivery_method }}
+                {{ form.delivery_address }}
+                {{ form.pickup_address }} -->
+                <div class="form-group mb-3">
+                    <label for="{{ form.customer_first_name.id_for_label }}">Имя</label>
+                    {{ form.customer_first_name }}
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="{{ form.customer_last_name.id_for_label }}">Фамилия</label>
+                    {{ form.customer_last_name }}
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="{{ form.customer_email.id_for_label }}">Email</label>
+                    {{ form.customer_email }}
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="{{ form.customer_phone.id_for_label }}">Телефон</label>
+                    {{ form.customer_phone }}
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="{{ form.payment_method.id_for_label }}">Метод оплаты</label>
+                    {{ form.payment_method }}
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="{{ form.delivery_method.id_for_label }}">Метод доставки</label>
+                    {{ form.delivery_method }}
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="{{ form.delivery_address.id_for_label }}">Адрес доставки</label>
+                    {{ form.delivery_address }}
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="{{ form.pickup_address.id_for_label }}">Адрес самовывоза</label>
+                    {{ form.pickup_address }}
+                </div>
+                <button type="submit" class="checkout-button-submit">Подтвердить заказ</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block script %}
+{% endblock %}

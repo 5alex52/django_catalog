@@ -5,46 +5,17 @@ from collections.abc import Callable
 from datetime import datetime
 from datetime import timedelta
 
-from django.conf import settings
 from django.contrib.humanize.templatetags.humanize import intcomma
 from django.core.cache import caches
-from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from django.db.models import Count
 from django.db.models import F
 from django.db.models import QuerySet
 from django.db.models import Sum
 from django.utils.safestring import mark_safe
 from django.utils.timezone import now
-from django.utils.translation import gettext_lazy as _
+from django_catalog.settings.base import CACHE_TIMEOUTS
 
 from .models import Order
-
-CACHE_TIMEOUTS = {
-    "5_seconds": 5,
-    "5_minutes": 5 * 60,  # 5 минут (в секундах)
-    "10_minutes": 10 * 60,  # 10 минут (в секундах)
-    "1_hour": 60 * 60,  # 1 час (в секундах)
-    "6_hours": 6 * 60 * 60,  # 6 часов (в секундах)
-    "12_hours": 12 * 60 * 60,  # 12 часов (в секундах)
-    "1_day": 24 * 60 * 60,  # 1 день (в секундах)
-}
-
-METRICS_CACHE_TIMEOUTS = {
-    "total_revenue_by_week": CACHE_TIMEOUTS["5_minutes"],
-    "total_revenue_by_month": CACHE_TIMEOUTS["10_minutes"],
-    "total_revenue_by_quarter": CACHE_TIMEOUTS["12_hours"],
-    "total_revenue_by_year": CACHE_TIMEOUTS["1_day"],
-    "total_revenue_growth_by_week": CACHE_TIMEOUTS["5_minutes"],
-    "total_revenue_growth_by_month": CACHE_TIMEOUTS["10_minutes"],
-    "total_revenue_growth_by_quarter": CACHE_TIMEOUTS["12_hours"],
-    "total_revenue_growth_by_year": CACHE_TIMEOUTS["1_day"],
-    "total_orders_by_week": CACHE_TIMEOUTS["5_minutes"],
-    "total_orders_by_month": CACHE_TIMEOUTS["10_minutes"],
-    "weekly_revenue": CACHE_TIMEOUTS["5_minutes"],
-    "monthly_revenue": CACHE_TIMEOUTS["10_minutes"],
-    "quarterly_revenue": CACHE_TIMEOUTS["12_hours"],
-    "yearly_revenue": CACHE_TIMEOUTS["1_day"],
-}
 
 
 redis_cache = caches["redis"]
@@ -313,6 +284,23 @@ class MetricsService:
         "Дек",
     ]
 
+    METRICS_CACHE_TIMEOUTS = {
+        "total_revenue_by_week": CACHE_TIMEOUTS["5_minutes"],
+        "total_revenue_by_month": CACHE_TIMEOUTS["10_minutes"],
+        "total_revenue_by_quarter": CACHE_TIMEOUTS["12_hours"],
+        "total_revenue_by_year": CACHE_TIMEOUTS["1_day"],
+        "total_revenue_growth_by_week": CACHE_TIMEOUTS["5_minutes"],
+        "total_revenue_growth_by_month": CACHE_TIMEOUTS["10_minutes"],
+        "total_revenue_growth_by_quarter": CACHE_TIMEOUTS["12_hours"],
+        "total_revenue_growth_by_year": CACHE_TIMEOUTS["1_day"],
+        "total_orders_by_week": CACHE_TIMEOUTS["5_minutes"],
+        "total_orders_by_month": CACHE_TIMEOUTS["10_minutes"],
+        "weekly_revenue": CACHE_TIMEOUTS["5_minutes"],
+        "monthly_revenue": CACHE_TIMEOUTS["10_minutes"],
+        "quarterly_revenue": CACHE_TIMEOUTS["12_hours"],
+        "yearly_revenue": CACHE_TIMEOUTS["1_day"],
+    }
+
     @staticmethod
     def get_orders_by_period(start: datetime, end: datetime):
         return OrderService.get_orders_by_period(start, end)
@@ -383,7 +371,7 @@ class MetricsTotalService(MetricsService):
         else:
             products = self.get_total_revenue_by_period(start, end)
             redis_cache.set(
-                cache_key, products, timeout=METRICS_CACHE_TIMEOUTS[cache_key]
+                cache_key, products, timeout=self.METRICS_CACHE_TIMEOUTS[cache_key]
             )
         return products
 
@@ -409,7 +397,7 @@ class MetricsTotalService(MetricsService):
             result = ((current_revenue - previous_revenue) / previous_revenue) * 100
 
             redis_cache.set(
-                cache_key, result, timeout=METRICS_CACHE_TIMEOUTS[cache_key]
+                cache_key, result, timeout=self.METRICS_CACHE_TIMEOUTS[cache_key]
             )
 
             return result
@@ -469,7 +457,7 @@ class MetricsTotalService(MetricsService):
         else:
             result = self.get_orders_by_period(start, end).count()
             redis_cache.set(
-                cache_key, result, timeout=METRICS_CACHE_TIMEOUTS[cache_key]
+                cache_key, result, timeout=self.METRICS_CACHE_TIMEOUTS[cache_key]
             )
         return result
 
@@ -539,7 +527,7 @@ class MetricsDatasetService(MetricsService):
                 redis_cache.set(
                     cache_key,
                     (dates, values),
-                    timeout=METRICS_CACHE_TIMEOUTS[cache_key],
+                    timeout=self.METRICS_CACHE_TIMEOUTS[cache_key],
                 )
             return dates, values
 
@@ -564,7 +552,7 @@ class MetricsDatasetService(MetricsService):
                 redis_cache.set(
                     cache_key,
                     (dates, values),
-                    timeout=METRICS_CACHE_TIMEOUTS[cache_key],
+                    timeout=self.METRICS_CACHE_TIMEOUTS[cache_key],
                 )
             return dates, values
 
@@ -590,7 +578,7 @@ class MetricsDatasetService(MetricsService):
                 redis_cache.set(
                     cache_key,
                     (dates, values),
-                    timeout=METRICS_CACHE_TIMEOUTS[cache_key],
+                    timeout=self.METRICS_CACHE_TIMEOUTS[cache_key],
                 )
             return dates, values
 
@@ -619,6 +607,6 @@ class MetricsDatasetService(MetricsService):
                 redis_cache.set(
                     cache_key,
                     (dates, values),
-                    timeout=METRICS_CACHE_TIMEOUTS[cache_key],
+                    timeout=self.METRICS_CACHE_TIMEOUTS[cache_key],
                 )
             return dates, values

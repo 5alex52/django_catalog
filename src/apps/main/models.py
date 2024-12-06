@@ -10,6 +10,7 @@ from django.core.validators import MinValueValidator
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.html import format_html
 from django.utils.html import mark_safe
 from django.utils.translation import gettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
@@ -303,6 +304,13 @@ class Feedback(models.Model):
 
     def __str__(self):
         return f"{self.name} {self.phone}"
+
+    def url(self):
+        return format_html(
+            "<a href='{url}' target='_blank'>{name}</a>",
+            url=self.link,
+            name=self.product.name,
+        )
 
     class Meta:
         verbose_name = "Заявка"

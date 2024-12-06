@@ -49,7 +49,6 @@ INSTALLED_APPS = [
     "smart_selects",
     "apps.main",
     "apps.orders",
-    "apps.api",
     "django_cleanup",
     "easy_thumbnails",
     "drf_spectacular",
@@ -201,6 +200,16 @@ CACHES = {
     },
 }
 
+CACHE_TIMEOUTS = {
+    "5_seconds": 5,
+    "5_minutes": 5 * 60,  # 5 минут (в секундах)
+    "10_minutes": 10 * 60,  # 10 минут (в секундах)
+    "1_hour": 60 * 60,  # 1 час (в секундах)
+    "6_hours": 6 * 60 * 60,  # 6 часов (в секундах)
+    "12_hours": 12 * 60 * 60,  # 12 часов (в секундах)
+    "1_day": 24 * 60 * 60,  # 1 день (в секундах)
+}
+
 THUMBNAIL_ALIASES = {
     "": {
         "avatar": {"size": (500, 500), "crop": True},
@@ -299,9 +308,19 @@ UNFOLD = {
                         "link": reverse_lazy("admin:main_product_changelist"),
                     },
                     {
+                        "title": _("Заявки"),
+                        "icon": "feedback",
+                        "link": reverse_lazy("admin:main_feedback_changelist"),
+                    },
+                    {
                         "title": _("Заказы"),
                         "icon": "Orders",
                         "link": reverse_lazy("admin:orders_order_changelist"),
+                    },
+                    {
+                        "title": _("Доставка"),
+                        "icon": "map",
+                        "link": reverse_lazy("admin:delivery"),
                     },
                 ],
             },

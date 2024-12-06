@@ -2,6 +2,8 @@ import uuid
 
 from apps.main.models import Address
 from apps.main.models import Product
+from apps.utills import get_coordinates
+from apps.utills import get_full_url_to_product
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
@@ -43,7 +45,7 @@ class DeliveryChoices(models.TextChoices):
 
 class Order(models.Model):
     session_id = models.UUIDField(editable=False, default=uuid.uuid4)
-    created_at = models.DateTimeField(_("created at"))
+    created_at = models.DateTimeField(_("created at"), auto_now_add=True)
     customer_first_name = models.CharField(
         "Имя", max_length=255, blank=False, null=False
     )
@@ -87,6 +89,9 @@ class Order(models.Model):
         default="New",
     )
 
+    latitude = models.FloatField(null=True, blank=True, default=None)
+    longitude = models.FloatField(null=True, blank=True, default=None)
+
     def __str__(self):
         return f"Заказ {self.customer_first_name} {self.customer_last_name} {self.customer_phone}"
 
@@ -94,6 +99,11 @@ class Order(models.Model):
     def total_price(self):
         all_items = self.items.all()
         return sum(item.total_price for item in all_items)
+
+    def save(self, *args, **kwargs):
+        if not self.latitude or not self.longitude:
+            self.latitude, self.longitude = get_coordinates(self.delivery_address)
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = "Заказ"
@@ -126,6 +136,11 @@ class Cart(models.Model):
         verbose_name = "Корзина"
         verbose_name_plural = "Корзины"
 
+    @property
+    def total_price(self):
+        all_items = self.items.all()
+        return sum(item.total_price for item in all_items)
+
 
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name="items")
@@ -138,3 +153,7 @@ class CartItem(models.Model):
     @property
     def total_price(self):
         return self.product.price * self.quantity
+
+    @property
+    def link(self):
+        return get_full_url_to_product(self.product)

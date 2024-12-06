@@ -35,6 +35,10 @@ django-unfold = "^0.42.0"
 django-smart-selects = "^1.7.2"
 django-autocomplete-light = "^3.11.0"
 django-redis = "^5.4.0"
+yandex-geocoder = "^3.0.1"
+folium = "^0.18.0"
+openrouteservice = "^2.3.3"
+osmnx = "^2.0.0"
 
 
 [build-system]

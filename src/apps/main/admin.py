@@ -123,6 +123,19 @@ class FeedbackAdmin(ModelAdmin):
     )
     readonly_fields = ("phone", "product")
 
+    list_display = (
+        "display_header",
+        "url",
+        "date",
+    )
+
+    @display(description=_("Заголовок"), header=True)
+    def display_header(self, instance: Product):
+        return [
+            instance.name,
+            instance.phone,
+        ]
+
 
 @admin.register(Phone)
 class PhoneAdmin(ModelAdmin):

@@ -1,12 +1,12 @@
+from apps.orders.views import DeliveryView
 from django.contrib import admin
+from django.urls import path
 from django.utils.translation import gettext_lazy as _
 from django_catalog.settings import env_config
 from unfold.admin import ModelAdmin
-from unfold.admin import StackedInline
 from unfold.admin import TabularInline
 from unfold.contrib.filters.admin import ChoicesDropdownFilter
 from unfold.contrib.filters.admin import FieldTextFilter
-from unfold.contrib.filters.admin import RangeDateFilter
 from unfold.contrib.filters.admin import RangeDateTimeFilter
 from unfold.contrib.filters.admin import RelatedDropdownFilter
 from unfold.decorators import display
@@ -62,6 +62,8 @@ class OrderAdmin(ModelAdmin):
         "total_price",
     )
 
+    ordering = ["-created_at"]
+
     warn_unsaved_form = True if env_config.ENVIROMENT == "production" else False
 
     list_filter_sheet = False
@@ -107,6 +109,11 @@ class OrderAdmin(ModelAdmin):
 
     def total_price(self, obj):
         return obj.total_price
+
+    def get_urls(self):
+        return super().get_urls() + [
+            path("delivery", DeliveryView.as_view(model_admin=self), name="delivery"),
+        ]
 
 
 class CartItemInline(TabularInline):

@@ -1,24 +1,24 @@
+from django.urls import include
 from django.urls import path
+from rest_framework.routers import DefaultRouter
 
-from .views import AddToCartView
-from .views import CartView
-from .views import CreateOrderView
-from .views import OrderDetailView
-from .views import OrderListView
-from .views import RemoveFromCartView
+from .views import CartViewSet
+from .views import OrderCreateView
 
+router = DefaultRouter()
+router.register(r"cart", CartViewSet, basename="cart")
 
 urlpatterns = [
-    # Корзина
-    path("cart/", CartView.as_view(), name="cart"),
-    path("cart/add/<int:product_id>/", AddToCartView.as_view(), name="add_to_cart"),
+    path("", include(router.urls)),
+    path("checkout/", OrderCreateView.as_view(), name="checkout"),
+    path(
+        "cart/add/<int:product_id>/",
+        CartViewSet.as_view({"post": "add"}),
+        name="cart-add",
+    ),
     path(
         "cart/remove/<int:product_id>/",
-        RemoveFromCartView.as_view(),
-        name="remove_from_cart",
+        CartViewSet.as_view({"post": "remove"}),
+        name="cart-remove",
     ),
-    # Заказы
-    path("orders/", OrderListView.as_view(), name="order_list"),
-    path("orders/<int:pk>/", OrderDetailView.as_view(), name="order_detail"),
-    path("orders/create/", CreateOrderView.as_view(), name="create_order"),
 ]

@@ -31,6 +31,9 @@ class EnvConfig(BaseSettings):
 
     ENVIROMENT: str = "testing"
 
+    YANDEX_MAPS_API_KEY: str = ""
+    OPEN_ROUTE_SERVICE_API_KEY: str = ""
+
     class Config:  # pylint: disable=R0903
         case_sensitive = True
         env_file = ".env"

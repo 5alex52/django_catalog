@@ -140,3 +140,4 @@ django_cache
 static
 silk_profiles
 .DS_Store
+cache

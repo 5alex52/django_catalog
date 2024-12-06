@@ -1,3 +1,4 @@
+from apps.main.models import Product
 from rest_framework import serializers
 
 from .models import Cart
@@ -6,9 +7,28 @@ from .models import Order
 from .models import OrderItem
 
 
+class ProductSerializer(serializers.ModelSerializer):
+    link = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Product
+        fields = [
+            "name",
+            "link",
+            "price",
+            "mainImage",
+            "isOnSale",
+        ]
+
+    def get_link(self, obj: Product):
+        request = self.context["request"]
+        return request.build_absolute_uri(obj.get_absolute_url())
+
+
 # Сериализатор для товара в корзине
 class CartItemSerializer(serializers.ModelSerializer):
     total_price = serializers.ReadOnlyField()
+    product = ProductSerializer(read_only=True)
 
     class Meta:
         model = CartItem
@@ -21,7 +41,14 @@ class CartSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Cart
-        fields = ["id", "session_id", "created_at", "updated_at", "items"]
+        fields = [
+            "id",
+            "session_id",
+            "created_at",
+            "updated_at",
+            "items",
+            "total_price",
+        ]
 
 
 # Сериализатор для позиции заказа
