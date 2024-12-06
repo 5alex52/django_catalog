@@ -276,7 +276,7 @@ class Address(models.Model):
 
 
 class Phone(models.Model):
-    phone = models.CharField("Номер", max_length=20, blank=False, null=False)
+    phone = PhoneNumberField("Номер", blank=True, null=True, unique=True, region="BY")
     isViber = models.BooleanField("Viber")
     store = models.ForeignKey(Address, verbose_name="Магазин", on_delete=models.CASCADE)
 

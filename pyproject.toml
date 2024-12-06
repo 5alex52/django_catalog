@@ -32,6 +32,9 @@ phonenumbers = "^8.13.51"
 telebot = "^0.0.5"
 pre-commit = "^4.0.1"
 django-unfold = "^0.42.0"
+django-smart-selects = "^1.7.2"
+django-autocomplete-light = "^3.11.0"
+django-redis = "^5.4.0"
 
 
 [build-system]

@@ -1,6 +1,8 @@
+from dal import autocomplete
 from django import forms
 
 from .models import Feedback
+from .models import Product
 
 
 class AddFeedbackForm(forms.ModelForm):
@@ -25,3 +27,19 @@ class AddFeedbackForm(forms.ModelForm):
     class Meta:
         model = Feedback
         fields = ["name", "phone"]
+
+
+class ProductForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = "__all__"
+        widgets = {
+            "collection": autocomplete.ModelSelect2(
+                url="collection-autocomplete",
+                forward=["manufacturer"],
+                attrs={
+                    "data-theme": "admin-autocomplete",
+                    "class": "unfold-admin-autocomplete",
+                },
+            ),
+        }

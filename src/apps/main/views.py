@@ -1,18 +1,16 @@
+import logging
+import random
 from datetime import timedelta
 
-from django.contrib import messages
-from django.core.cache import cache
+from apps.orders.services import MetricsVisualService
+from dal import autocomplete
 from django.core.paginator import Paginator
 from django.db.models import Q
-from django.http import Http404
-from django.http import HttpRequest
 from django.http import HttpResponse
-from django.shortcuts import redirect
 from django.shortcuts import render
 from django.utils import timezone
 from django.views.decorators.cache import cache_page
 from django.views.decorators.http import require_GET
-from django.views.generic.list import ListView
 
 from .forms import AddFeedbackForm
 from .models import Address
@@ -23,6 +21,8 @@ from .models import Phone
 from .models import Product
 from .models import ProductImage
 from .models import Specs
+
+logger = logging.getLogger()
 
 
 @require_GET
@@ -542,3 +542,75 @@ def tr_handler505(request):
         },
         status=505,
     )
+
+
+class CollectionAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        try:
+            if not self.request.user.is_authenticated:
+                return Collection.objects.none()
+
+            qs = Collection.objects.all()
+
+            manufacturer_id = self.forwarded.get("manufacturer", None)
+
+            if manufacturer_id:
+                qs = qs.filter(manufacturer_id=manufacturer_id)
+
+            return qs
+        except Exception as e:
+            logger.warning(e)
+
+
+def dashboard_callback(request, context):
+    positive = [[1, random.randrange(8, 28)] for i in range(1, 28)]
+    negative = [[-1, -random.randrange(8, 28)] for i in range(1, 28)]
+    average = [r[1] - random.randint(3, 5) for r in positive]
+    context.update(
+        {
+            # "navigation": [
+            #     {"title": _("Dashboard"), "link": "/", "active": True},
+            #     {"title": _("Analytics"), "link": "#"},
+            #     {"title": _("Settings"), "link": "#"},
+            # ],
+            # "filters": [
+            #     {"title": _("All"), "link": "#", "active": True},
+            #     {
+            #         "title": _("New"),
+            #         "link": "#",
+            #     },
+            # ],
+            # "chart": json.dumps(
+            #     {
+            #         "labels": [WEEKDAYS[day % 7] for day in range(1, 28)],
+            #         "datasets": [
+            #             {
+            #                 "label": "Среднее",
+            #                 "type": "line",
+            #                 "data": average,
+            #                 "backgroundColor": "#f0abfc",
+            #                 "borderColor": "#f0abfc",
+            #             },
+            #             {
+            #                 "label": "Позитивное",
+            #                 "data": positive,
+            #                 "backgroundColor": "#9333ea",
+            #             },
+            #             {
+            #                 "label": "Негативное",
+            #                 "data": negative,
+            #                 "backgroundColor": "#f43f5e",
+            #             },
+            #         ],
+            #     }
+            # ),
+        },
+    )
+    metrics_visual_service = MetricsVisualService()
+
+    context["kpi"] = metrics_visual_service.generate_kpi()
+    context["performance"] = metrics_visual_service.generate_performance()
+    context["progress"] = metrics_visual_service.generate_progress_week()
+    context["progress_month"] = metrics_visual_service.generate_progress_month()
+
+    return context

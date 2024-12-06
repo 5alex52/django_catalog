@@ -1,6 +1,7 @@
 from django.urls import path
 
 from .views import catalog
+from .views import CollectionAutocomplete
 from .views import collections
 from .views import contacts
 from .views import currentCategory
@@ -29,4 +30,9 @@ urlpatterns = [
     path("contacts/", contacts, name="contacts"),
     path("search/", searchHendler, name="search"),
     path("manufacturer/<str:slug>/", currentManufacturer, name="current-manufacturer"),
+    path(
+        "collection-autocomplete/",
+        CollectionAutocomplete.as_view(),
+        name="collection-autocomplete",
+    ),
 ]

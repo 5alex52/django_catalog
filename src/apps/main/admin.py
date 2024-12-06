@@ -1,24 +1,20 @@
-from django import forms
+from apps.main.forms import ProductForm
 from django.contrib import admin
 from django.contrib import messages
 from django.contrib.auth.admin import GroupAdmin as BaseGroupAdmin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import Group
 from django.contrib.auth.models import User
-from django.contrib.contenttypes.admin import GenericTabularInline
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
+from django_catalog.settings import env_config
 from unfold.admin import ModelAdmin
 from unfold.admin import StackedInline
 from unfold.admin import TabularInline
 from unfold.contrib.filters.admin import ChoicesDropdownFilter
 from unfold.contrib.filters.admin import MultipleRelatedDropdownFilter
-from unfold.contrib.filters.admin import RangeDateFilter
-from unfold.contrib.filters.admin import RangeDateTimeFilter
 from unfold.contrib.filters.admin import RangeNumericFilter
 from unfold.contrib.filters.admin import RelatedDropdownFilter
-from unfold.contrib.filters.admin import SingleNumericFilter
-from unfold.contrib.filters.admin import TextFilter
 from unfold.decorators import display
 
 from .models import Address
@@ -157,6 +153,7 @@ class CategoryAdmin(ModelAdmin):
 
 @admin.register(Product)
 class ProductAdmin(ModelAdmin):
+    form = ProductForm
     search_fields = (
         "name",
         "manufacturer",
@@ -171,6 +168,7 @@ class ProductAdmin(ModelAdmin):
     )
     filter_horizontal = ("collectionCategory",)
     readonly_fields = (
+        "id",
         "slug",
         "date",
     )
@@ -186,7 +184,7 @@ class ProductAdmin(ModelAdmin):
         "rating",
     )
 
-    warn_unsaved_form = True
+    warn_unsaved_form = True if env_config.ENVIROMENT == "production" else False
 
     list_filter_sheet = False
     list_filter_submit = True

@@ -1,5 +1,6 @@
 import logging
 import os
+from os import path
 from pathlib import Path
 
 from django.templatetags.static import static
@@ -43,7 +44,11 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "phonenumber_field",
+    "dal",
+    "dal_select2",
+    "smart_selects",
     "apps.main",
+    "apps.orders",
     "apps.api",
     "django_cleanup",
     "easy_thumbnails",
@@ -71,7 +76,7 @@ ROOT_URLCONF = "django_catalog.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -145,6 +150,34 @@ USE_I18N = True
 
 USE_TZ = True
 
+DATE_INPUT_FORMATS = [
+    "%d.%m.%Y",  # Custom input
+    "%Y-%m-%d",  # '2006-10-25'
+    "%m/%d/%Y",  # '10/25/2006'
+    "%m/%d/%y",  # '10/25/06'
+    "%b %d %Y",  # 'Oct 25 2006'
+    "%b %d, %Y",  # 'Oct 25, 2006'
+    "%d %b %Y",  # '25 Oct 2006'
+    "%d %b, %Y",  # '25 Oct, 2006'
+    "%B %d %Y",  # 'October 25 2006'
+    "%B %d, %Y",  # 'October 25, 2006'
+    "%d %B %Y",  # '25 October 2006'
+    "%d %B, %Y",  # '25 October, 2006'
+]
+
+DATETIME_INPUT_FORMATS = [
+    "%d.%m.%Y %H:%M:%S",  # Custom input
+    "%Y-%m-%d %H:%M:%S",  # '2006-10-25 14:30:59'
+    "%Y-%m-%d %H:%M:%S.%f",  # '2006-10-25 14:30:59.000200'
+    "%Y-%m-%d %H:%M",  # '2006-10-25 14:30'
+    "%m/%d/%Y %H:%M:%S",  # '10/25/2006 14:30:59'
+    "%m/%d/%Y %H:%M:%S.%f",  # '10/25/2006 14:30:59.000200'
+    "%m/%d/%Y %H:%M",  # '10/25/2006 14:30'
+    "%m/%d/%y %H:%M:%S",  # '10/25/06 14:30:59'
+    "%m/%d/%y %H:%M:%S.%f",  # '10/25/06 14:30:59.000200'
+    "%m/%d/%y %H:%M",  # '10/25/06 14:30'
+]
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -161,7 +194,11 @@ CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
         "LOCATION": os.path.join(BASE_DIR, "django_cache"),
-    }
+    },
+    "redis": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": "redis://redis:6379",
+    },
 }
 
 THUMBNAIL_ALIASES = {
@@ -174,13 +211,11 @@ UNFOLD = {
     "SITE_TITLE": "Mebel Tut",
     "SITE_HEADER": "Mebel Tut",
     "SITE_URL": "/",
-    "SITE_ICON": lambda request: static(
-        "main/img/logo.png"
-    ),  # both modes, optimise for 32px height
-    "SHOW_HISTORY": True,  # show/hide "History" button, default: True
-    "SHOW_VIEW_ON_SITE": True,  # show/hide "View on site" button, default: True
+    "SITE_ICON": lambda request: static("main/img/logo.png"),
+    "SHOW_HISTORY": True,
+    "SHOW_VIEW_ON_SITE": True,
     "ENVIRONMENT": "django_catalog.settings.environment_callback",
-    # "DASHBOARD_CALLBACK": "dashboard_callback",
+    "DASHBOARD_CALLBACK": "apps.main.views.dashboard_callback",
     "LOGIN": {
         "image": lambda request: static("main/img/logo.png"),
     },
@@ -217,38 +252,57 @@ UNFOLD = {
                 },
             ],
         },
+        {
+            "models": ["orders.order"],
+            "items": [
+                {
+                    "title": _("Все"),
+                    "link": lambda request: f"{reverse_lazy('admin:orders_order_changelist')}",
+                },
+                {
+                    "title": _("Новые"),
+                    "link": lambda request: f"{reverse_lazy('admin:orders_order_changelist')}?status__exact=New",
+                },
+                {
+                    "title": _("Текущие"),
+                    "link": lambda request: f"{reverse_lazy('admin:orders_order_changelist')}?status__exact=In+progress",
+                },
+                {
+                    "title": _("Завершённые"),
+                    "link": lambda request: f"{reverse_lazy('admin:orders_order_changelist')}?status__exact=Completed",
+                },
+                {
+                    "title": _("Отменённые"),
+                    "link": lambda request: f"{reverse_lazy('admin:orders_order_changelist')}?status__exact=Cancelled",
+                },
+            ],
+        },
     ],
     "SIDEBAR": {
         "show_search": True,  # Search in applications and models names
         "show_all_applications": True,  # Dropdown with all applications and models
         "navigation": [
             {
-                "title": _("Navigation"),
+                "title": _("Навигация"),
                 "separator": True,  # Top border
                 "items": [
                     {
-                        "title": _("Dashboard"),
+                        "title": _("Cтатистика"),
                         "icon": "dashboard",  # Supported icon set: https://fonts.google.com/icons
                         "link": reverse_lazy("admin:index"),
                         # "badge": "goodtoeat_badge_callback",
                         "permission": lambda request: request.user.is_superuser,
                     },
                     {
-                        "title": _("Пользователи"),
-                        "icon": "people",
-                        "link": reverse_lazy("admin:auth_user_changelist"),
-                        "permission": lambda request: request.user.is_superuser,
-                    },
-                    {
                         "title": _("Товары"),
-                        "icon": "Grocery",
+                        "icon": "bed",
                         "link": reverse_lazy("admin:main_product_changelist"),
                     },
-                    # {
-                    #     "title": _("Заказы"),
-                    #     "icon": "Grocery",
-                    #     "link": reverse_lazy("admin:products_product_changelist"),
-                    # },
+                    {
+                        "title": _("Заказы"),
+                        "icon": "Orders",
+                        "link": reverse_lazy("admin:orders_order_changelist"),
+                    },
                 ],
             },
         ],
