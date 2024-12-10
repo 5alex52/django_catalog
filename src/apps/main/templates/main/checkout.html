@@ -15,12 +15,34 @@
     <div class="checkout-container">
         <h1>Оформление заказа</h1>
         <div id="form-container">
-            <div>
-                <h2>Информация о заказе</h2>
-                {% for item in cart.items.all %}
+            <div id="cart-popup">
+                <h2>Информация о заказе: </h2>
+                <!-- {% for item in cart.items.all %}
                     <p><a href="{{ item.link }}">{{ item.product.name }}</a> {{ item.product.price }} руб. x {{ item.quantity }} шт. <span>{{ item.total_price }} </span></p>
-                {% endfor %}
-                <p>Общая сумма: {{ cart.total_price }}</p>
+                {% endfor %} -->
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Товар</th>
+                            <th>Количество</th>
+                            <th>Цена</th>
+                            <th>Итого</th>
+                            <th>Действие</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in cart.items.all  %}
+                        <tr>
+                            <td><a href="{{ item.product.link }}">{{ item.product.name }}</a></td>
+                            <td>{{ item.quantity }}</td>
+                            <td>{{ item.product.price }}</td>
+                            <td>{{ item.total_price }}</td>
+                            <td><button type="submit" class="remove-button" data-product-id="{{ item.product.id }}">Удалить</button></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <h3>Общая сумма: {{ cart.total_price }}</h3>
             </div>
             {% if form.errors %}
                 <div class="alert alert-danger">
@@ -35,15 +57,7 @@
             {% endif %}
             <form id="checkout-form" class="form-group" method="post">
                 {% csrf_token %}
-                <!-- {{ form.customer_first_name }}
-                {{ form.customer_last_name }}
-                {{ form.customer_email }}
-                {{ form.customer_phone }}
-                {{ form.payment_method }}
-                {{ form.payment_method }}
-                {{ form.delivery_method }}
-                {{ form.delivery_address }}
-                {{ form.pickup_address }} -->
+
                 <div class="form-group mb-3">
                     <label for="{{ form.customer_first_name.id_for_label }}">Имя</label>
                     {{ form.customer_first_name }}

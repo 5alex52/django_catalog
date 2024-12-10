@@ -1,3 +1,7 @@
+from typing import Union
+
+import requests
+
 from .models import Cart
 
 

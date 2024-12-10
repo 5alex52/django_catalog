@@ -1,25 +1,8 @@
 {% extends "unfold/layouts/base.html" %}
+{% load i18n unfold %}
 
 {% block content %}
-    Content here
-    <div id="map" style="width: 100%; height: 500px;"></div>
-    <title>Optimal Route Map</title>
-    {{ map_html|safe }}
-    <!-- <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey={{ api_key }}" type="text/javascript"></script>
-    <script>
-        // Инициализация карты
-        ymaps.ready(function () {
-            var map = new ymaps.Map("map", {
-                center: [55.7558, 37.6173],  // Центр карты (Москва)
-                zoom: 10
-            });
-
-            // Добавляем маркер на карту
-            var placemark = new ymaps.Placemark([55.7558, 37.6173], {
-                balloonContent: 'Москва, Кремль'  // Текст при клике на маркер
-            });
-
-            map.geoObjects.add(placemark);  // Добавляем маркер на карту
-        });
-    </script> -->
+    <div id="map" style="width: 100%; height: 500px;">
+        {{ map_html|safe }}
+    </div>
 {% endblock %}

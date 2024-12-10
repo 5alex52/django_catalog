@@ -1,6 +1,13 @@
 from django import forms
 
+from .models import Delivery
 from .models import Order
+
+
+class AssignCourierForm(forms.Form):
+    delivery = forms.ModelChoiceField(
+        queryset=Delivery.objects.filter(status="New"), label="Выберите доставку"
+    )
 
 
 class OrderForm(forms.ModelForm):

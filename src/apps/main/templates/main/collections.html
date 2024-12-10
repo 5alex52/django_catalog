@@ -22,8 +22,10 @@
                 {% for x in page_obj %}
                     <div class="catalog_image_container">
                         <a href="{% url 'collections-category' slug=findCategory.slug slug2=x.slug %}">
-                            <h1>{{x.name}}</h1></a>
-                        <a href="{% url 'collections-category' slug=findCategory.slug slug2=x.slug %}"><img src="{{ x.image.url }}" alt=""></a>
+                            <h1>{{x.name}}</h1><h3>{{x.manufacturer}}</h3></a>
+                        <div class="collection_photo">
+                            <a href="{% url 'collections-category' slug=findCategory.slug slug2=x.slug %}"><img src="{{ x.image.url }}" alt=""></a>
+                        </div>
                     </div>
                 {% endfor %}
                 {% else %}

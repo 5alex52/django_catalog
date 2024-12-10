@@ -3,6 +3,7 @@ import random
 from apps.main.utils import collection_directory_path
 from apps.main.utils import image_directory_path
 from apps.main.utils import product_directory_path
+from apps.utills import get_coordinates
 from django.contrib import messages
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator
@@ -131,10 +132,9 @@ class Product(models.Model):
     isOnSale = models.BooleanField("Акция")
     rating = models.IntegerField(
         "Рейтинг",
-        blank=False,
+        blank=True,
         null=False,
         validators=[MaxValueValidator(1000), MinValueValidator(1)],
-        default=random.randint(1, 1001),
     )
     mainImage = models.ImageField("Главное фото", upload_to=product_directory_path)
     slug = models.SlugField("Ссылка", default="", null=False, blank=False, unique=True)
@@ -164,6 +164,8 @@ class Product(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = unique_slugify(self, self.name)
+        if not self.rating:
+            self.rating = random.randint(1, 1001)
         super().save(*args, **kwargs)
 
         """
@@ -242,15 +244,16 @@ class Specs(models.Model):
     )
 
     def clean(self):
+        pass
         # Проверяем на дублирование
-        if (
-            Specs.objects.filter(product=self.product, param=self.param)
-            .exclude(pk=self.pk)
-            .exists()
-        ):
-            raise ValidationError(
-                f"Спецификация с параметром '{self.param}' уже существует для этого продукта."
-            )
+        # if (
+        #     Specs.objects.filter(product=self.product, param=self.param)
+        #     .exclude(pk=self.pk)
+        #     .exists()
+        # ):
+        #     raise ValidationError(
+        #         f"Спецификация с параметром '{self.param}' уже существует для этого продукта."
+        #     )
 
     def __str__(self):
         return f"{self.product.name}"
@@ -267,6 +270,15 @@ class Address(models.Model):
     street = models.CharField("Улица", max_length=20, blank=False, null=False)
     number = models.IntegerField("Дом", blank=False, null=False)
     building = models.CharField("Корпус", max_length=5, blank=False, null=False)
+    latitude = models.FloatField(null=True, blank=True, default=None)
+    longitude = models.FloatField(null=True, blank=True, default=None)
+
+    def save(self, *args, **kwargs):
+        if not self.latitude or not self.longitude:
+            self.latitude, self.longitude = get_coordinates(
+                f"Барановичи {self.street} {self.number} {self.building}"
+            )
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = "Адрес"
@@ -286,7 +298,7 @@ class Phone(models.Model):
         verbose_name_plural = "Телефоны"
 
     def __str__(self):
-        return self.phone
+        return str(self.phone)
 
 
 class Feedback(models.Model):

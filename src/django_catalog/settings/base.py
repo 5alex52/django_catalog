@@ -320,7 +320,7 @@ UNFOLD = {
                     {
                         "title": _("Доставка"),
                         "icon": "map",
-                        "link": reverse_lazy("admin:delivery"),
+                        "link": reverse_lazy("admin:orders_delivery_changelist"),
                     },
                 ],
             },

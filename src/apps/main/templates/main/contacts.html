@@ -4,6 +4,7 @@
 
 {% block head %}
 <meta name="keywords" content="Каталог, Барановичи, Мебель, Купить, Телефоны, Адреса">
+<script src="https://api-maps.yandex.ru/2.1/?apikey=aa766433-77fe-499f-8164-94c2784de54d&lang=ru_RU" type="text/javascript"></script>
 {% endblock %}
 {% block title %}
 Контакты | Мебель тут
@@ -45,7 +46,6 @@
             </div>
         </div>
         <div id="map_container">
-            Поле для Яндекс карт
         </div>
     </div>
 </div>
@@ -53,4 +53,62 @@
 
 
 {% block script %}
+<script type="text/javascript">
+    ymaps.ready(init);
+    function init() {
+        var myMap = new ymaps.Map("map_container", {
+            // Координаты центра карты
+            center: [53.132552, 25.993283],
+            // Масштаб карты
+            zoom: 13,
+            // Выключаем все управление картой
+            controls: ['zoomControl']
+        });
+
+        var myGeoObjects = [];
+
+        // Указываем координаты метки
+
+
+        first = new ymaps.Placemark([53.152019, 26.026961], {
+            balloonContentBody: 'Мебель тут<br>ул. Пролетарская 48А<br>+375-33-322-61-15',
+        }, {
+            iconLayout: 'default#image',
+            // Путь до нашей картинки
+            iconImageHref: 'https://mebeltut24.by/static/main/img/logo.png',
+            // Размеры иконки
+            iconImageSize: [40, 40],
+            // Смещение верхнего угла относительно основания иконки
+            iconImageOffset: [-20, -30]
+        });
+
+        second = new ymaps.Placemark([53.113425, 25.967842], {
+            balloonContentBody: 'Мебель тут ПЛЮС<br>ул. Брестская 270Д<br>+375-33-376-06-77',
+        }, {
+            iconLayout: 'default#image',
+            // Путь до нашей картинки
+            iconImageHref: 'https://mebeltut24.by/static/main/img/logo.png',
+            // Размеры иконки
+            iconImageSize: [40, 40],
+            // Смещение верхнего угла относительно основания иконки
+            iconImageOffset: [-20, -30]
+        });
+
+        myGeoObjects = [first, second]
+
+        var clusterer = new ymaps.Clusterer({
+            clusterDisableClickZoom: false,
+            clusterOpenBalloonOnClick: false,
+        });
+
+
+        clusterer.add(myGeoObjects);
+        myMap.geoObjects.add(clusterer);
+
+
+        if (window.matchMedia("(max-width: 850px)").matches) {
+        	myMap.setZoom(12);
+        };
+    }
+</script>
 {% endblock %}

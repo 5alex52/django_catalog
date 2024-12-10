@@ -4,7 +4,11 @@ from calendar import monthrange
 from collections.abc import Callable
 from datetime import datetime
 from datetime import timedelta
+from itertools import permutations
 
+import folium
+from apps.utills import get_address_from_coordinates
+from apps.utills import reorder_coordinates
 from django.contrib.humanize.templatetags.humanize import intcomma
 from django.core.cache import caches
 from django.db.models import Count
@@ -14,6 +18,8 @@ from django.db.models import Sum
 from django.utils.safestring import mark_safe
 from django.utils.timezone import now
 from django_catalog.settings.base import CACHE_TIMEOUTS
+from folium import plugins
+from folium.features import CustomIcon
 
 from .models import Order
 
@@ -610,3 +616,73 @@ class MetricsDatasetService(MetricsService):
                     timeout=self.METRICS_CACHE_TIMEOUTS[cache_key],
                 )
             return dates, values
+
+
+class DeliveryService:
+
+    @classmethod
+    def calculate_route_order(cls, distances):
+        # Простейший алгоритм для решения TSP
+        # Находим оптимальный порядок посещения точек
+        n = len(distances)
+        # Генерируем все маршруты, начиная с точки 0
+        all_routes = permutations(range(1, n))
+        min_distance = float("inf")
+        best_route = []
+        for route in all_routes:
+            # Начальная точка до первой в маршруте
+            current_distance = distances[0][route[0]]
+            for i in range(len(route) - 1):
+                current_distance += distances[route[i]][route[i + 1]]
+            # Возврат в начальную точку
+            current_distance += distances[route[-1]][0]
+            if current_distance < min_distance:
+                min_distance = current_distance
+                best_route = [0] + list(route) + [0]
+        return best_route, min_distance
+
+    @classmethod
+    def create_route_map(cls, ors_coordinates, optimal_route, orders, route_geojson):
+        m = folium.Map(location=reorder_coordinates(ors_coordinates[0]), zoom_start=14)
+
+        # Добавляем точки на карту
+        for i, coord in enumerate(optimal_route):
+            popup_text = get_address_from_coordinates(orders, coord)
+            if i == 0 or i == len(optimal_route) - 1:
+                folium.Marker(
+                    location=(coord[1], coord[0]),
+                    # radius=15,
+                    # color="red",
+                    # fill=True,
+                    # fill_color="red",
+                    # popup="Магазин",
+                    icon=CustomIcon(
+                        "https://mebeltut24.by/static/main/img/logo.png",
+                        icon_size=(40, 40),
+                    ),
+                ).add_to(m)
+            else:
+                folium.Marker(
+                    location=(coord[1], coord[0]), popup=f"{i}. {popup_text}"
+                ).add_to(m)
+
+        # Добавляем маршрут на карту с уникальным цветом
+        for i, feature in enumerate(route_geojson["features"]):
+            route_coords = feature["geometry"]["coordinates"]
+
+            folium.PolyLine(
+                locations=[
+                    (lat, lon) for lon, lat in route_coords
+                ],  # Порядок: (lat, lon)
+                color="blue",  # Цвет маршрута
+                weight=4,  # Толщина линии
+                opacity=0.7,  # Прозрачность линии
+            ).add_to(m)
+
+        plugins.Fullscreen().add_to(m)
+        plugins.LocateControl().add_to(m)
+
+        # Сохранение карты в HTML
+        map_html = m._repr_html_()
+
+        return map_html

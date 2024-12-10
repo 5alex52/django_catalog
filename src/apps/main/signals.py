@@ -4,8 +4,8 @@ import shutil
 from pathlib import Path
 
 import telebot
-from apps.utills import send_product_request
-from apps.utills import send_product_to_telegram_channel
+from apps.main.services import send_product_request
+from apps.main.services import send_product_to_telegram_channel
 from django.db.models.signals import post_delete
 from django.db.models.signals import post_save
 from django.db.models.signals import pre_save

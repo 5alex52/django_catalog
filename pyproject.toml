@@ -38,7 +38,6 @@ django-redis = "^5.4.0"
 yandex-geocoder = "^3.0.1"
 folium = "^0.18.0"
 openrouteservice = "^2.3.3"
-osmnx = "^2.0.0"
 
 
 [build-system]
