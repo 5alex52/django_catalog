@@ -151,7 +151,9 @@ class Order(models.Model):
         return sum(item.total_price for item in all_items)
 
     def save(self, *args, **kwargs):
-        if not self.latitude or not self.longitude:
+        if (
+            not self.latitude or not self.longitude
+        ) and self.delivery_address is not None:
             self.latitude, self.longitude = get_coordinates(self.delivery_address)
         super().save(*args, **kwargs)
 

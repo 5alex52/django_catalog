@@ -113,11 +113,17 @@ class DateTimeService:
     def previous_quarter():
         today = now().date()
         quarter = (today.month - 1) // 3 + 1
-        start_month = 3 * (quarter - 2) + 1
+        year = today.year
+        if quarter == 1:
+            quarter = 4
+            year -= 1
+        else:
+            quarter -= 1
+        start_month = 3 * (quarter - 1) + 1
         end_month = start_month + 2
-        start_of_quarter = today.replace(month=start_month, day=1)
+        start_of_quarter = today.replace(year=year, month=start_month, day=1)
         end_of_quarter = today.replace(
-            month=end_month, day=monthrange(today.year, end_month)[1]
+            year=year, month=end_month, day=monthrange(year, end_month)[1]
         )
         return start_of_quarter, end_of_quarter
 
@@ -164,14 +170,14 @@ class MetricsVisualService:
         if title:
             result["title"] = title
         if metric:
-            result["metric"] = f"{intcomma(f'{metric: .02f}')} BYN"
+            result["metric"] = f"{intcomma(f'{metric}')} BYN"
         if footer:
             if footer >= 0:
                 color_class = "text-green-700 font-semibold dark:text-green-400"
                 sign = "+"
             else:
                 color_class = "text-red-700 font-semibold dark:text-red-400"
-                sign = "-"
+                sign = ""
 
             formatted_footer = f'<strong class="{color_class}">{sign}{intcomma(f"{footer:.02f}")}%</strong>&nbsp; по сравнению с предыдущим периудом'
 
@@ -196,9 +202,7 @@ class MetricsVisualService:
             all_progress.append(
                 {
                     "title": item["title"],
-                    "description": str(
-                        intcomma(f"{item['description']: .02f}") + " BYN"
-                    ),
+                    "description": str(intcomma(f"{item['description']}") + " BYN"),
                     "value": item["value"],
                 }
             )
@@ -324,6 +328,7 @@ class MetricsService:
         self, start: datetime, end: datetime, cache_key=str
     ) -> float:
         orders = self.get_orders_by_period(start, end)
+        logger.warning(orders)
         return float(self.aggregate_total_revenue(orders))
 
     def get_revenue_share_by_product(self, start: datetime, end: datetime):
@@ -622,7 +627,7 @@ class DeliveryService:
 
     @classmethod
     def calculate_route_order(cls, distances):
-        # Простейший алгоритм для решения TSP
+        # Алгоритм для решения TSP
         # Находим оптимальный порядок посещения точек
         n = len(distances)
         # Генерируем все маршруты, начиная с точки 0
@@ -651,11 +656,6 @@ class DeliveryService:
             if i == 0 or i == len(optimal_route) - 1:
                 folium.Marker(
                     location=(coord[1], coord[0]),
-                    # radius=15,
-                    # color="red",
-                    # fill=True,
-                    # fill_color="red",
-                    # popup="Магазин",
                     icon=CustomIcon(
                         "https://mebeltut24.by/static/main/img/logo.png",
                         icon_size=(40, 40),

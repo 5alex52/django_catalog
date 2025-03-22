@@ -43,7 +43,7 @@ services:
     image: redis/redis-stack
     restart: always
     ports:
-      - 8001:8001
+      - 8008:8001
     networks:
       - mebeltut-network
 

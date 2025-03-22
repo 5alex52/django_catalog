@@ -8,7 +8,7 @@ RUN pip install --upgrade pip
 COPY ./pyproject.toml ./poetry.lock ./
 RUN pip install poetry \
     && poetry config virtualenvs.create false \
-    && poetry install --no-dev --no-interaction --no-ansi
+    && poetry install --no-root --no-interaction --no-ansi
 
 ADD ./src /src
 

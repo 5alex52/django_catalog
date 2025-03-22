@@ -38,6 +38,7 @@ django-redis = "^5.4.0"
 yandex-geocoder = "^3.0.1"
 folium = "^0.18.0"
 openrouteservice = "^2.3.3"
+factory-boy = "^3.3.1"
 
 
 [build-system]
@@ -46,7 +47,7 @@ build-backend = "poetry.core.masonry.api"
 
 
 [tool.pytest.ini_options]
-DJANGO_SETTINGS_MODULE = "goodtoeat.settings"
+DJANGO_SETTINGS_MODULE = "django_catalog.settings"
 python_files = ["tests.py", "test_*.py", "*_test.py", "tests/*/*_tests.py"]
 addopts = "-p no:warnings"
 

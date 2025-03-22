@@ -53,7 +53,6 @@ INSTALLED_APPS = [
     "easy_thumbnails",
     "drf_spectacular",
     "silk",
-    "debug_toolbar",
     "django.contrib.sites",
     "django.contrib.sitemaps",
 ]
@@ -67,7 +66,6 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "silk.middleware.SilkyMiddleware",
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = "django_catalog.urls"

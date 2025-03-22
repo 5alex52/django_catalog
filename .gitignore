@@ -4,6 +4,7 @@
 *.pyc
 __pycache__
 db.sqlite3
+test_database.sqlite3
 media
 
 # Backup files #
@@ -141,3 +142,4 @@ static
 silk_profiles
 .DS_Store
 cache
+.vscode
