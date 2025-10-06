@@ -207,7 +207,6 @@ UNFOLD = {
     "SITE_ICON": lambda request: static("main/img/logo.png"),
     "SHOW_HISTORY": True,
     "SHOW_VIEW_ON_SITE": True,
-    "ENVIRONMENT": "django_catalog.settings.environment_callback",
     "DASHBOARD_CALLBACK": "main.views.dashboard_callback",
     "LOGIN": {
         "image": lambda request: static("main/img/logo.png"),
@@ -237,11 +236,11 @@ UNFOLD = {
                 },
                 {
                     "title": _("На акции"),
-                    "link": lambda request: f"{reverse_lazy('admin:main_product_changelist')}?isOnSale__exact=True",
+                    "link": lambda request: f"{reverse_lazy('admin:main_product_changelist')}?isOnSale__exact=1",
                 },
                 {
                     "title": _("Рейтинговые"),
-                    "link": lambda request: f"{reverse_lazy('admin:main_product_changelist')}?rating__gt=850",
+                    "link": lambda request: f"{reverse_lazy('admin:main_product_changelist')}?rating_from=850",
                 },
             ],
         },
@@ -255,10 +254,9 @@ UNFOLD = {
                 "separator": True,  # Top border
                 "items": [
                     {
-                        "title": _("Cтатистика"),
+                        "title": _("Главная"),
                         "icon": "dashboard",  # Supported icon set: https://fonts.google.com/icons
                         "link": reverse_lazy("admin:index"),
-                        # "badge": "goodtoeat_badge_callback",
                         "permission": lambda request: request.user.is_superuser,
                     },
                     {

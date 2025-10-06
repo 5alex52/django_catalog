@@ -13,6 +13,7 @@ from unfold.contrib.filters.admin import ChoicesDropdownFilter
 from unfold.contrib.filters.admin import MultipleRelatedDropdownFilter
 from unfold.contrib.filters.admin import RangeNumericFilter
 from unfold.contrib.filters.admin import RelatedDropdownFilter
+from unfold.contrib.filters.admin import BooleanRadioFilter
 from unfold.decorators import display
 
 from .forms import ProductForm
@@ -160,7 +161,7 @@ class CollectionAdmin(ModelAdmin):
 class CategoryAdmin(ModelAdmin):
     list_display = ("name", "slug", "number", "isCabinet")
     list_display_links = ("name",)
-    list_editable = ("number",)
+    list_editable = ("number", "isCabinet")
     readonly_fields = ("slug",)
 
 

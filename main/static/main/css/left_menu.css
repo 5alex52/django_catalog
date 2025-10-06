@@ -1,6 +1,6 @@
 .sidenav {
   margin-top: 110px;
-  height: 86vh; 
+  min-height: 85vh; 
   width: 0; 
   position: fixed; 
   z-index: 8; 
@@ -17,9 +17,9 @@
 /* Ссылки в меню навигации */
 .sidenav a {
   margin: 3px;
-  padding: 8px 8px 8px 32px;
+  padding: 6px 6px 6px 28px;
   text-decoration: none;
-  font-size: 20px;
+  font-size: 17px;
   color: #818181;
   display: block;
   transition: 0.3s;
@@ -52,7 +52,7 @@
 }
 
 #menu_btn{
-  z-index: 8;
+  z-index: 4;
   position: fixed;
   top: 120px;
   width: 50px;

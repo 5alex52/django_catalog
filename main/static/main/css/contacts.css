@@ -37,6 +37,7 @@
     align-items: center;
     justify-content: center;
     font-size: 4rem;
+    padding: 0;
 }
 
 .contacts_body p img{

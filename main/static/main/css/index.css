@@ -174,7 +174,7 @@
 }
 
 .index_categories div:nth-child(1) div:nth-child(2) {
-    background-image: url('../../main/img/bedroom.jpg');
+    background-image: url('../../main/img/tiffany.jpeg');
     background-size: cover;
     background-position: center;
     background-origin: border-box;
@@ -212,7 +212,7 @@
 }
 
 .index_categories div:nth-child(4) div:nth-child(2) {
-    background-image: url('../../main/img//modular.jpg');
+    background-image: url('../../main/img//credo.jpeg');
     background-size: cover;
     background-position: center;
     background-origin: border-box;
@@ -326,7 +326,14 @@
     margin-bottom: 15px;
     font-size: 1rem;
     font-family: var(--Comfortaa);
+    height: 40px;
 }
+
+.popular_item h4:not(#price_h4){
+    padding-top: 20px;
+}
+
+
 
 .popular_item .more {
     text-decoration: none;
@@ -353,4 +360,9 @@
 
 .mySwiper_index2 {
     height: 600px;
+}
+
+#index_warning{
+    margin: 10px;
+    color: gray;
 }

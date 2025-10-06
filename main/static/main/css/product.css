@@ -21,7 +21,7 @@ body{
     padding-top: 50px;
     display: flex;
     flex-wrap: wrap;
-    overflow-x: scroll;
+    overflow-x: hidden;
     align-items: top;
     justify-content: space-around;
 }
@@ -102,6 +102,15 @@ h1 .new_product {
     padding: 20px;
 }
 
+.info p span a{
+    color: black;
+}
+
+
+.info p span a:hover{
+    color: rgb(153,20,66);
+}
+
 .info p {
     overflow: hidden;
     margin-top: 5px;
@@ -115,6 +124,7 @@ h1 .new_product {
     color: var(--footer_color);
 }
 
+
 .info p span:first-of-type {
     float: left;
     margin-right: 10px;
@@ -123,6 +133,7 @@ h1 .new_product {
 .info p span:last-of-type {
     float: right;
     margin-left: 10px;
+    text-align: left;
 }
 
 .info_container hr {
@@ -147,6 +158,9 @@ div.swiper-container {
     object-fit: contain;
 }
 
+.mySwiper2 .swiper-slide img{
+    object-fit: contain;
+}
 
 .swiper {
     width: 480px;

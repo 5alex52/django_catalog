@@ -179,6 +179,7 @@ a,
 
 #menu_header {
     height: 100px;
+    padding-left: 20px;
 }
 
 .list_header .menu {
@@ -188,7 +189,7 @@ a,
     height: 200px;
     margin-top: 30px;
     padding-bottom: 38px;
-    padding-left: 60px;
+    padding: auto;
     box-shadow: 0px 5px 10px rgb(0, 0, 0, 0.2);
     display: none;
     transition-delay: 1s;
@@ -199,7 +200,6 @@ a,
     flex-direction: column;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: space-around;
 
     top: 70px;
     left: 0;

@@ -36,7 +36,8 @@
 }
 
 .product_item h3 {
-    font-size: 1.6rem;
+    padding: 0px 5px 0px 5px;
+    font-size: 1.4rem;
     word-wrap: normal;
     height: 80px;
     font-family: 'Montserrat', sans-serif;

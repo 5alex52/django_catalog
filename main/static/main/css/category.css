@@ -187,25 +187,60 @@
     -o-transition: all .3s ease-in-out;
 }
 
+.collection{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-around;
+    text-align: left;
+}
+
+.catalog_image_container{
+    width: 400px;
+    height: 400px;
+    padding: 20px;
+}
+
 .catalog_image_container a:hover {
-    color: var(--bestseller_color);
+    color: rgb(153,20,66);
 }
 
 .catalog_image_container h1 {
     margin-right: 0;
     font-family: var(--Montserrat);
-    font-size: 4rem;
-    padding: 60px;
+    font-size: 3rem;
+    padding: 20px;
     padding-bottom: 0px;
-    width: fit-content;
+}
+
+.catalog_image_container h3{
+    padding: 20px;
+    padding-bottom: 0px;
+    padding-top: 0px;
 }
 
 .catalog_image_container img {
     width: 100%;
-    height: 500px;
-    padding: 60px;
+    height: 100%;
     object-fit: cover;
+    -webkit-transition: all .3s ease-in-out;
+    -moz-transition:    all .3s ease-in-out;
+    -o-transition:      all .3s ease-in-out;
+    -ms-transition:     all .3s ease-in-out;
+    transition:         all .3s ease-in-out;
 }
+
+.collection_photo{
+    height: 210px;
+    overflow: hidden;
+    border-radius: 20px;
+    margin: 20px;
+}
+
+.catalog_image_container:hover img{
+    transform: scale(1.1);
+}
+
 
 #empty {
     width: 100%;

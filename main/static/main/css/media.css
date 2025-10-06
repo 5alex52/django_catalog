@@ -76,6 +76,7 @@
     }
 
     #menu_header {
+        padding-left: 0px;
         display: none;
         /* position: absolute; */
         /* opacity: 0%;
@@ -101,7 +102,6 @@
 
     .swiper-slide img {
         width: 100%;
-        object-fit: cover;
     }
 
     .swiper_text {
@@ -276,16 +276,13 @@
     }
 
     .catalog_image_container h1 {
-        text-align: center;
         font-family: var(--Montserrat);
         font-size: 2rem;
-        padding: 20px;
         padding-bottom: 5px;
     }
 
     .catalog_image_container img {
         width: 100%;
-        height: 200px;
         padding: 0px;
         object-fit: cover;
     }
@@ -323,9 +320,23 @@
     #search2 {
         width: 80%;
     }
+    
+    .index_categories div > h1:not(.smaller) {
+        font-size: 2rem;
+    }
 }
 
 @media (max-width: 680px) {
+    .sidenav {
+        margin-top: 90px;
+        overflow-y: scroll;
+        min-height: 85vh;
+    }
+    
+    #dialogbox{
+        width: 90%;
+    }
+    
     .header {
         font-size: 10px;
     }
@@ -335,11 +346,14 @@
         height: fit-content;
     }
 
-    .mySwiper_index {
+    .swiper.mySwiper_index {
         --swiper-navigation-size: 0px;
         z-index: -1;
         width: 100%;
         height: 200px;
+    }
+    .swiper.mySwiper_index2{
+        width: 100%;
     }
 
     .mySwiper_index2 {
@@ -487,9 +501,7 @@
     }
 
 
-    .mySwiper {
-        width: 100%;
-    }
+    
 
     h1 div {
         margin-right: 10px;
@@ -499,15 +511,25 @@
     .info_container {
         padding: 5px;
     }
-
+    
+    .info_container .info h2{
+        margin-top: 5px;
+    }
+        
     .info span {
         font-size: .8rem;
     }
 
     .info_container h1 {
+        font-size: 1.4rem;
         text-align: left;
     }
-
+    
+    .info_container h1 div{
+        margin-left: 20px;
+        font-size: 12px;
+    }
+    
     #menu_btn {
         width: 30px;
         margin: 0;
@@ -532,9 +554,7 @@
     }
 
     .catalog_image_container h1 {
-        text-align: center;
         font-size: 1.5rem;
-        padding: 20px;
     }
 
     .select_container {
@@ -570,7 +590,40 @@
     .popular_item img{
         height: 130px;
     }
+    
+    #category_name{
+        font-size: 1.6rem;
+        margin-top: 10px;
+    }
+    
+    .dropdown{
+        width: 120px;
+        font-size: .8rem;
+        z-index: 5;
+    }
+    
+    .dropbtn{
+        margin-top: 50px;
+        width: 120px;
+        font-size: .8rem;
+    }
+
+    .dropdown-content{
+        width: 120px;
+    }
+    
+    .dropdown-content a svg{
+        top: 12px;
+        right: 20px;
+    }
+    
+    .sidenav{
+        z-index: 6;
+    }
+    
+    
 }
+
 
 @media (max-width: 550px) {
     .popular_item {
@@ -582,6 +635,10 @@
     .mySwiper2 {
         width: 300px;
         height: 200px;
+    }
+    
+    .swiper{
+        width: 90vw;
     }
 }
 
