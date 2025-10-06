@@ -1,18 +1,28 @@
-from django.shortcuts import render, redirect
-from .models import Phone, Product, Category, ProductImage, Specs, Collection, Manufacturer, Address
-from django.db.models import Q
-from django.utils import timezone
+import logging
 from datetime import timedelta
-from django.core.paginator import Paginator
-from django.views.generic.list import ListView
-from django.http import Http404, HttpResponse, HttpRequest
-from .forms import AddFeedbackForm
-from django.contrib import messages
-from django.views.decorators.cache import cache_page
-from django.views.decorators.http import require_GET
+
 from django.core.cache import cache
-from transliterate import translit
+from django.core.paginator import Paginator
+from django.db.models import Q
+from django.http import HttpResponse
+from django.shortcuts import render
+from django.utils import timezone
+from django.views.decorators.http import require_GET
 from googletrans import Translator
+from transliterate import translit
+
+from .forms import AddFeedbackForm
+from .models import Address
+from .models import Category
+from .models import Collection
+from .models import Manufacturer
+from .models import Phone
+from .models import Product
+from .models import ProductImage
+from .models import Specs
+from dal import autocomplete
+
+logger = logging.getLogger()
 
 
 @require_GET
@@ -24,14 +34,28 @@ def robots_txt(request):
     ]
     return HttpResponse("\n".join(lines), content_type="text/plain")
 
-#@cache_page(60 * 60 * 12)
+
+# @cache_page(60 * 60 * 12)
 @require_GET
 def home(request):
-    products = Product.objects.order_by(
-        '-rating')[:4].select_related('manufacturer', 'collection').only('name', 'mainImage', 'date', 'isOnSale', 'price', 'slug', 'rating', 'manufacturer__name', 'collection__name')
-    phones = Phone.objects.all().select_related('store')
-    address = Address.objects.order_by('-pk')
-    categories = Category.objects.order_by('number')
+    products = (
+        Product.objects.order_by("-rating")[:4]
+        .select_related("manufacturer", "collection")
+        .only(
+            "name",
+            "mainImage",
+            "date",
+            "isOnSale",
+            "price",
+            "slug",
+            "rating",
+            "manufacturer__name",
+            "collection__name",
+        )
+    )
+    phones = Phone.objects.all().select_related("store")
+    address = Address.objects.order_by("-pk")
+    categories = Category.objects.order_by("number")
     new = {}
     for x in products:
         if x.date > timezone.now() - timedelta(30):
@@ -39,35 +63,53 @@ def home(request):
         else:
             new[x.slug] = False
 
-    content = {'phones': phones,
-               'products': products,
-               'new': new,
-               'categories': categories,
-               'address': address
-               }
+    content = {
+        "phones": phones,
+        "products": products,
+        "new": new,
+        "categories": categories,
+        "address": address,
+    }
     cache.clear()
-    return render(request, 'main/index.html', content)
+    return render(request, "main/index.html", content)
 
 
-#@cache_page(60 * 60 * 12)
+# @cache_page(60 * 60 * 12)
 @require_GET
 def contacts(request):
     phones = Phone.objects.all()
-    address = Address.objects.order_by('-pk')
-    categories = Category.objects.order_by('number')
-    return render(request, 'main/contacts.html', {'phones': phones, 'categories': categories, 'address': address})
+    address = Address.objects.order_by("-pk")
+    categories = Category.objects.order_by("number")
+    return render(
+        request,
+        "main/contacts.html",
+        {"phones": phones, "categories": categories, "address": address},
+    )
 
 
 @require_GET
 def catalog(request):
-    phones = Phone.objects.all().select_related('store')
-    address = Address.objects.order_by('-pk')
-    categories = Category.objects.order_by('number')
-    ordering = request.GET.get('orderby')
+    phones = Phone.objects.all().select_related("store")
+    address = Address.objects.order_by("-pk")
+    categories = Category.objects.order_by("number")
+    ordering = request.GET.get("orderby")
     if not ordering:
-        ordering = '-rating'
-    products = Product.objects.order_by(
-        ordering).select_related('manufacturer', 'collection').only('name', 'mainImage', 'date', 'isOnSale', 'price', 'slug', 'rating', 'manufacturer__name', 'collection__name')
+        ordering = "-rating"
+    products = (
+        Product.objects.order_by(ordering)
+        .select_related("manufacturer", "collection")
+        .only(
+            "name",
+            "mainImage",
+            "date",
+            "isOnSale",
+            "price",
+            "slug",
+            "rating",
+            "manufacturer__name",
+            "collection__name",
+        )
+    )
     paginator = Paginator(products, 12)
     new = {}
     for x in products:
@@ -76,40 +118,42 @@ def catalog(request):
         else:
             new[x.slug] = False
 
-    page_number = request.GET.get('page')
+    page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
-    content = {'page_obj': page_obj,
-               'phones': phones,
-               'new': new,
-               'categories': categories,
-               'title': 'Каталог',
-               'address': address,
-               'ordering': ordering,
-               }    
-    return render(request, 'main/catalog.html', content)
+    content = {
+        "page_obj": page_obj,
+        "phones": phones,
+        "new": new,
+        "categories": categories,
+        "title": "Каталог",
+        "address": address,
+        "ordering": ordering,
+    }
+    return render(request, "main/catalog.html", content)
 
 
 def currentProduct(request, slug):
-    isFeedback = 'false'
-    feedback_title = ''
-    feedback_message = ''
-    icon = ''
-    phones = Phone.objects.all().select_related('store')
-    address = Address.objects.order_by('-pk')
-    categories = Category.objects.order_by('number')
+    isFeedback = "false"
+    feedback_title = ""
+    feedback_message = ""
+    icon = ""
+    phones = Phone.objects.all().select_related("store")
+    address = Address.objects.order_by("-pk")
+    categories = Category.objects.order_by("number")
     try:
-        current = Product.objects.select_related(
-            'manufacturer', 'collection').get(slug=slug)
+        current = Product.objects.select_related("manufacturer", "collection").get(
+            slug=slug
+        )
     except Product.DoesNotExist:
-        return tr_handler404(request, 'Error')
+        return tr_handler404(request, "Error")
     currentImages = ProductImage.objects.filter(product=current)
-    currentSpecs = Specs.objects.filter(product=current).order_by('pk')
+    currentSpecs = Specs.objects.filter(product=current).order_by("pk")
     new = False
     if current.date > timezone.now() - timedelta(30):
         new = True
-    if request.method == 'POST':
-        isFeedback = 'true'
+    if request.method == "POST":
+        isFeedback = "true"
         form = AddFeedbackForm(request.POST)
         if form.is_valid():
             product = Product.objects.get(slug=slug)
@@ -118,49 +162,54 @@ def currentProduct(request, slug):
             form.instance.link = request.build_absolute_uri(product.get_absolute_url())
             form.instance.date = timezone.now()
             form.save()
-            feedback_title = 'Заявка отправлена'
-            feedback_message = 'Наш менеджер перезвонит вам.'
-            icon = 'success'
+            feedback_title = "Заявка отправлена"
+            feedback_message = "Наш менеджер перезвонит вам."
+            icon = "success"
             form = AddFeedbackForm()
         else:
-            feedback_title = 'Ошибка'
-            feedback_message = 'Пожалуйста, заполните все поля'
-            icon = 'error'
+            feedback_title = "Ошибка"
+            feedback_message = "Пожалуйста, заполните все поля"
+            icon = "error"
     else:
         form = AddFeedbackForm()
 
-    content = {'current': current,
-               'currentImages': currentImages,
-               'currentSpecs': currentSpecs,
-               'phones': phones,
-               'categories': categories,
-               'new': new,
-               'findCategory': current.category,
-               'title': f'{current.name} | {current.category.name}',
-               'address': address, 'feedback': form,
-               'isFeedback': isFeedback,
-               'feedback_title': feedback_title,
-               'feedback_message': feedback_message,
-               'icon': icon,
-               }
+    content = {
+        "current": current,
+        "currentImages": currentImages,
+        "currentSpecs": currentSpecs,
+        "phones": phones,
+        "categories": categories,
+        "new": new,
+        "findCategory": current.category,
+        "title": f"{current.name} | {current.category.name}",
+        "address": address,
+        "feedback": form,
+        "isFeedback": isFeedback,
+        "feedback_title": feedback_title,
+        "feedback_message": feedback_message,
+        "icon": icon,
+    }
 
-    return render(request, 'main/product.html', content)
+    return render(request, "main/product.html", content)
 
 
 @require_GET
 def currentCategory(request, slug):
-    phones = Phone.objects.all().select_related('store')
-    address = Address.objects.order_by('-pk')
-    categories = Category.objects.order_by('number')
+    phones = Phone.objects.all().select_related("store")
+    address = Address.objects.order_by("-pk")
+    categories = Category.objects.order_by("number")
     try:
         findCategory = Category.objects.get(slug=slug)
     except Category.DoesNotExist:
-        return tr_handler404(request, 'Error')
-    ordering = request.GET.get('orderby')
+        return tr_handler404(request, "Error")
+    ordering = request.GET.get("orderby")
     if not ordering:
-        ordering = '-rating'
-    products = Product.objects.filter(
-        category=findCategory).order_by(ordering).select_related('manufacturer', 'collection')
+        ordering = "-rating"
+    products = (
+        Product.objects.filter(category=findCategory)
+        .order_by(ordering)
+        .select_related("manufacturer", "collection")
+    )
     paginator = Paginator(products, 12)
     new = {}
     for x in products:
@@ -169,61 +218,66 @@ def currentCategory(request, slug):
         else:
             new[x.slug] = False
 
-    page_number = request.GET.get('page')
+    page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
-    content = {'page_obj': page_obj,
-               'phones': phones,
-               'new': new,
-               'categories': categories,
-               'title': findCategory.name,
-               'findCategory': findCategory,
-               'address': address,
-               'ordering': ordering,
-               }
+    content = {
+        "page_obj": page_obj,
+        "phones": phones,
+        "new": new,
+        "categories": categories,
+        "title": findCategory.name,
+        "findCategory": findCategory,
+        "address": address,
+        "ordering": ordering,
+    }
 
-    return render(request, 'main/catalog.html', content)
+    return render(request, "main/catalog.html", content)
 
 
 @require_GET
 def collections(request, slug):
-    phones = Phone.objects.all().select_related('store')
-    address = Address.objects.order_by('-pk')
-    categories = Category.objects.order_by('number')
+    phones = Phone.objects.all().select_related("store")
+    address = Address.objects.order_by("-pk")
+    categories = Category.objects.order_by("number")
     try:
         findCategory = Category.objects.get(slug=slug)
     except Category.DoesNotExist:
-        return tr_handler404(request, 'Error')
-    collections = Collection.objects.filter(category=findCategory).order_by('pk')
+        return tr_handler404(request, "Error")
+    collections = Collection.objects.filter(category=findCategory).order_by("pk")
     paginator = Paginator(collections, 8)
-    page_number = request.GET.get('page')
+    page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
-    content = {'page_obj': page_obj,
-               'phones': phones,
-               'categories': categories,
-               'title': f'{findCategory.name} | Коллекции',
-               'findCategory': findCategory,
-               'address': address
-               }
+    content = {
+        "page_obj": page_obj,
+        "phones": phones,
+        "categories": categories,
+        "title": f"{findCategory.name} | Коллекции",
+        "findCategory": findCategory,
+        "address": address,
+    }
 
-    return render(request, 'main/collections.html', content)
+    return render(request, "main/collections.html", content)
 
 
 @require_GET
 def currentCollection(request, slug):
-    phones = Phone.objects.all().select_related('store')
-    address = Address.objects.order_by('-pk')
-    categories = Category.objects.order_by('number')
+    phones = Phone.objects.all().select_related("store")
+    address = Address.objects.order_by("-pk")
+    categories = Category.objects.order_by("number")
     try:
         findCollection = Collection.objects.get(slug=slug)
     except Collection.DoesNotExist:
-        return tr_handler404(request, 'Error')
-    ordering = request.GET.get('orderby')
+        return tr_handler404(request, "Error")
+    ordering = request.GET.get("orderby")
     if not ordering:
-        ordering = '-rating'
-    products = Product.objects.filter(
-        collection=findCollection).order_by(ordering).select_related('manufacturer', 'collection')
+        ordering = "-rating"
+    products = (
+        Product.objects.filter(collection=findCollection)
+        .order_by(ordering)
+        .select_related("manufacturer", "collection")
+    )
     paginator = Paginator(products, 12)
     new = {}
     for x in products:
@@ -232,40 +286,45 @@ def currentCollection(request, slug):
         else:
             new[x.slug] = False
 
-    page_number = request.GET.get('page')
+    page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
-    content = {'page_obj': page_obj,
-               'phones': phones,
-               'new': new,
-               'categories': categories,
-               'title': findCollection.name,
-               'findCollection': findCollection.name,
-               'address': address,
-               'ordering': ordering,
-               }
+    content = {
+        "page_obj": page_obj,
+        "phones": phones,
+        "new": new,
+        "categories": categories,
+        "title": findCollection.name,
+        "findCollection": findCollection.name,
+        "address": address,
+        "ordering": ordering,
+    }
 
-    return render(request, 'main/catalog.html', content)
+    return render(request, "main/catalog.html", content)
 
 
 @require_GET
 def currentCollectionFromCategory(request, slug, slug2):
-    phones = Phone.objects.all().select_related('store')
-    address = Address.objects.order_by('-pk')
-    categories = Category.objects.order_by('number')
+    phones = Phone.objects.all().select_related("store")
+    address = Address.objects.order_by("-pk")
+    categories = Category.objects.order_by("number")
     try:
         findCollection = Collection.objects.get(slug=slug2)
     except Collection.DoesNotExist:
-        return tr_handler404(request, 'Error')
-    ordering = request.GET.get('orderby')
+        return tr_handler404(request, "Error")
+    ordering = request.GET.get("orderby")
     if not ordering:
-        ordering = '-rating'
-    products = Product.objects.filter(
-        collection=findCollection).filter(collectionCategory__slug=slug).order_by(ordering).select_related('manufacturer', 'collection')
+        ordering = "-rating"
+    products = (
+        Product.objects.filter(collection=findCollection)
+        .filter(collectionCategory__slug=slug)
+        .order_by(ordering)
+        .select_related("manufacturer", "collection")
+    )
     try:
         findCategory = Category.objects.get(slug=slug)
     except Category.DoesNotExist:
-        return tr_handler404(request, 'Error')
+        return tr_handler404(request, "Error")
     paginator = Paginator(products, 12)
     new = {}
     for x in products:
@@ -274,33 +333,48 @@ def currentCollectionFromCategory(request, slug, slug2):
         else:
             new[x.slug] = False
 
-    page_number = request.GET.get('page')
+    page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
-    content = {'page_obj': page_obj,
-               'phones': phones,
-               'new': new,
-               'categories': categories,
-               'title': findCollection.name,
-               'findCollection': findCollection.name,
-               'findCategory': findCategory,
-               'address': address,
-               'ordering': ordering,
-               }
+    content = {
+        "page_obj": page_obj,
+        "phones": phones,
+        "new": new,
+        "categories": categories,
+        "title": findCollection.name,
+        "findCollection": findCollection.name,
+        "findCategory": findCategory,
+        "address": address,
+        "ordering": ordering,
+    }
 
-    return render(request, 'main/catalog.html', content)
+    return render(request, "main/catalog.html", content)
 
 
 @require_GET
 def sales(request):
-    phones = Phone.objects.all().select_related('store')
-    address = Address.objects.order_by('-pk')
-    categories = Category.objects.order_by('number')
-    ordering = request.GET.get('orderby')
+    phones = Phone.objects.all().select_related("store")
+    address = Address.objects.order_by("-pk")
+    categories = Category.objects.order_by("number")
+    ordering = request.GET.get("orderby")
     if not ordering:
-        ordering = '-rating'
-    products = Product.objects.filter(isOnSale=True).order_by(
-        ordering).select_related('manufacturer', 'collection').only('name', 'mainImage', 'date', 'isOnSale', 'price', 'slug', 'rating', 'manufacturer__name', 'collection__name')
+        ordering = "-rating"
+    products = (
+        Product.objects.filter(isOnSale=True)
+        .order_by(ordering)
+        .select_related("manufacturer", "collection")
+        .only(
+            "name",
+            "mainImage",
+            "date",
+            "isOnSale",
+            "price",
+            "slug",
+            "rating",
+            "manufacturer__name",
+            "collection__name",
+        )
+    )
     paginator = Paginator(products, 12)
     new = {}
     for x in products:
@@ -309,32 +383,36 @@ def sales(request):
         else:
             new[x.slug] = False
 
-    page_number = request.GET.get('page')
+    page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
-    content = {'page_obj': page_obj,
-               'phones': phones,
-               'new': new,
-               'categories': categories,
-               'title': 'Акции',
-               'address': address,
-               'ordering': ordering,
-               }
+    content = {
+        "page_obj": page_obj,
+        "phones": phones,
+        "new": new,
+        "categories": categories,
+        "title": "Акции",
+        "address": address,
+        "ordering": ordering,
+    }
 
-    return render(request, 'main/catalog.html', content)
+    return render(request, "main/catalog.html", content)
 
 
 @require_GET
 def currentManufacturer(request, slug):
-    phones = Phone.objects.all().select_related('store')
-    address = Address.objects.order_by('-pk')
-    categories = Category.objects.order_by('number')
-    ordering = request.GET.get('orderby')
+    phones = Phone.objects.all().select_related("store")
+    address = Address.objects.order_by("-pk")
+    categories = Category.objects.order_by("number")
+    ordering = request.GET.get("orderby")
     if not ordering:
-        ordering = '-rating'
+        ordering = "-rating"
     findManufacturer = Manufacturer.objects.get(slug=slug)
-    products = Product.objects.filter(
-        manufacturer=findManufacturer).order_by(ordering).select_related('manufacturer', 'collection')
+    products = (
+        Product.objects.filter(manufacturer=findManufacturer)
+        .order_by(ordering)
+        .select_related("manufacturer", "collection")
+    )
     paginator = Paginator(products, 12)
     new = {}
     for x in products:
@@ -343,40 +421,54 @@ def currentManufacturer(request, slug):
         else:
             new[x.slug] = False
 
-    page_number = request.GET.get('page')
+    page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
-    content = {'page_obj': page_obj, 
-               'phones': phones, 
-               'new': new, 
-               'categories': categories,
-               'title': findManufacturer.name, 
-               'findManufacturer': findManufacturer.name, 
-               'address': address,
-               'ordering': ordering,
-               }
+    content = {
+        "page_obj": page_obj,
+        "phones": phones,
+        "new": new,
+        "categories": categories,
+        "title": findManufacturer.name,
+        "findManufacturer": findManufacturer.name,
+        "address": address,
+        "ordering": ordering,
+    }
 
-    return render(request, 'main/catalog.html', content)
+    return render(request, "main/catalog.html", content)
 
 
 def searchHendler(request):
-    phones = Phone.objects.all().select_related('store')
-    address = Address.objects.order_by('-pk')
-    categories = Category.objects.order_by('number')
-    ordering = request.GET.get('orderby')
-    search = request.GET.get('search')
+    phones = Phone.objects.all().select_related("store")
+    address = Address.objects.order_by("-pk")
+    categories = Category.objects.order_by("number")
+    ordering = request.GET.get("orderby")
+    search = request.GET.get("search")
     translator = Translator()
     if not ordering:
-        ordering = '-rating'
+        ordering = "-rating"
     if search:
-        products = Product.objects.filter(Q(
-            name__icontains=search) | Q(
-            manufacturer__name__icontains=search) | Q(
-            collection__name__icontains=search) | Q(
-            manufacturer__name__icontains=translit(search, 'ru', reversed=True)) | Q(
-            collection__name__icontains=translit(search, 'ru', reversed=True)) | Q(
-            manufacturer__name__icontains=(translator.translate(search, src='ru', dest='en')).text) | Q(
-            collection__name__icontains=(translator.translate(search, src='ru', dest='en')).text) ).order_by(ordering).select_related('manufacturer', 'collection')
+        products = (
+            Product.objects.filter(
+                Q(name__icontains=search)
+                | Q(manufacturer__name__icontains=search)
+                | Q(collection__name__icontains=search)
+                | Q(manufacturer__name__icontains=translit(search, "ru", reversed=True))
+                | Q(collection__name__icontains=translit(search, "ru", reversed=True))
+                | Q(
+                    manufacturer__name__icontains=(
+                        translator.translate(search, src="ru", dest="en")
+                    ).text
+                )
+                | Q(
+                    collection__name__icontains=(
+                        translator.translate(search, src="ru", dest="en")
+                    ).text
+                )
+            )
+            .order_by(ordering)
+            .select_related("manufacturer", "collection")
+        )
     else:
         products = Product.objects.none()
 
@@ -388,19 +480,34 @@ def searchHendler(request):
         else:
             new[x.slug] = False
 
-    page_number = request.GET.get('page')
+    page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
-    return render(request, 'main/catalog.html', {'page_obj': page_obj, 'phones': phones, 'new': new, 'categories': categories, 'title': 'Поиск', 'isSearch': True, 'search_data': search, 'address': address, 'ordering': ordering})
+    return render(
+        request,
+        "main/catalog.html",
+        {
+            "page_obj": page_obj,
+            "phones": phones,
+            "new": new,
+            "categories": categories,
+            "title": "Поиск",
+            "isSearch": True,
+            "search_data": search,
+            "address": address,
+            "ordering": ordering,
+        },
+    )
 
 
 @require_GET
 def tr_handler404(request, *args, **kwargs):
-    phones = Phone.objects.all().select_related('store')
-    address = Address.objects.order_by('-pk')
-    categories = Category.objects.order_by('number')
-    products = Product.objects.order_by(
-        '-rating')[:4].select_related('manufacturer', 'collection')
+    phones = Phone.objects.all().select_related("store")
+    address = Address.objects.order_by("-pk")
+    categories = Category.objects.order_by("number")
+    products = Product.objects.order_by("-rating")[:4].select_related(
+        "manufacturer", "collection"
+    )
     new = {}
     for x in products:
         if x.date > timezone.now() - timedelta(30):
@@ -408,16 +515,31 @@ def tr_handler404(request, *args, **kwargs):
         else:
             new[x.slug] = False
 
-    return render(request, 'main/error.html', {'phones': phones, 'products': products, 'new': new, 'categories': categories, 'address': address, 'title': '404', 'message': 'К сожалению, такой мебели мы не нашли : (', 'message2': 'Посмотрите другие наши товары:'}, status=404)
+    return render(
+        request,
+        "main/error.html",
+        {
+            "phones": phones,
+            "products": products,
+            "new": new,
+            "categories": categories,
+            "address": address,
+            "title": "404",
+            "message": "К сожалению, такой мебели мы не нашли : (",
+            "message2": "Посмотрите другие наши товары:",
+        },
+        status=404,
+    )
 
 
 @require_GET
 def tr_handler505(request):
-    phones = Phone.objects.all().select_related('store')
-    address = Address.objects.order_by('-pk')
-    categories = Category.objects.order_by('number')
-    products = Product.objects.order_by(
-        '-rating')[:4].select_related('manufacturer', 'collection')
+    phones = Phone.objects.all().select_related("store")
+    address = Address.objects.order_by("-pk")
+    categories = Category.objects.order_by("number")
+    products = Product.objects.order_by("-rating")[:4].select_related(
+        "manufacturer", "collection"
+    )
     new = {}
     for x in products:
         if x.date > timezone.now() - timedelta(30):
@@ -425,4 +547,40 @@ def tr_handler505(request):
         else:
             new[x.slug] = False
 
-    return render(request, 'main/error.html', {'phones': phones, 'products': products, 'new': new, 'categories': categories, 'address': address, 'title': '505', 'message': 'Наш программист накосячил', 'message2': 'Пожалуйста посмотрите другие товары в каталоге, а он исправит ошибку : )'}, status=505)
+    return render(
+        request,
+        "main/error.html",
+        {
+            "phones": phones,
+            "products": products,
+            "new": new,
+            "categories": categories,
+            "address": address,
+            "title": "505",
+            "message": "Наш программист накосячил",
+            "message2": "Пожалуйста посмотрите другие товары в каталоге, а он исправит ошибку : )",
+        },
+        status=505,
+    )
+
+
+class CollectionAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        try:
+            if not self.request.user.is_authenticated:
+                return Collection.objects.none()
+
+            qs = Collection.objects.all()
+
+            manufacturer_id = self.forwarded.get("manufacturer", None)
+
+            if manufacturer_id:
+                qs = qs.filter(manufacturer_id=manufacturer_id)
+
+            return qs
+        except Exception as e:
+            logger.warning(e)
+
+
+def dashboard_callback(request, context):
+    return context
