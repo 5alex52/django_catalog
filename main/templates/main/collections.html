@@ -1,0 +1,46 @@
+{% extends 'main/base.html'%}
+{% load static %}
+
+{% block head %}
+<meta name="keywords" content="Каталог, Коллекции, Барановичи, Мебель, Купить">
+{% endblock %}
+
+{% block title %}
+{{title}} | Мебель тут Барановичи
+{% endblock %}
+
+{% block body %}
+{% include "main/nav.html" %} 
+{% endblock %}
+
+{% block content %}
+<div class="content2">
+    <div class="items_list" id="main">
+        <span onclick="navHandler()"><img src="{% static 'main/img/chevron-right.svg' %}" alt="меню" id="menu_btn"></span>
+        <div class="collection">
+        {% if page_obj %}
+                {% for x in page_obj %}
+                    <div class="catalog_image_container">
+                        <a href="{% url 'collections-category' slug=findCategory.slug slug2=x.slug %}">
+                            <h1>{{x.name}}</h1><h3>{{x.manufacturer}}</h3></a>
+                        <div class="collection_photo">
+                            <a href="{% url 'collections-category' slug=findCategory.slug slug2=x.slug %}"><img src="{{ x.image.url }}" alt=""></a>
+                        </div>
+                    </div>
+                {% endfor %}
+                {% else %}
+                <div id="empty">
+                    <h1>Нет коллекций</h1>
+                </div>
+        {% endif %}
+        </div>
+        {% include "main/pagination.html" %} 
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block script %}
+<script src="https://kit.fontawesome.com/406fbec51e.js" crossorigin="anonymous"></script>
+{% endblock %}

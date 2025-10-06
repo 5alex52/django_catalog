@@ -1,0 +1,84 @@
+{% extends 'main/base.html'%}
+{% load static %}
+{% load thumbnail %}
+{% load cache %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'main/css/error.css' %}">
+<!-- Facebook Meta Tags -->
+<meta property="og:url" content="https://mebeltut24.by/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Мебель тут">
+<meta property="og:description" content="Магазины мебели в Барановичах. Телефоны:  {% for x in phones%} {{x.phone}} {% endfor %}  inst: @mebeltutbaranovichi">
+<meta property="og:image" content="https://mebeltut24.by/static/main/img/logo.png">
+
+<!-- Twitter Meta Tags -->
+<meta name="twitter:card" content="summary_large_image">
+<meta property="twitter:domain" content="mebeltut24.by">
+<meta property="twitter:url" content="https://mebeltut24.by/">
+<meta name="twitter:title" content="Мебель тут">
+<meta name="twitter:description" content="Магазины мебели в Барановичах. Телефоны:  {% for x in phones%} {{x.phone}} {% endfor %}  inst: @mebeltutbaranovichi">
+<meta name="twitter:image" content="https://mebeltut24.by/static/main/img/logo.png">
+
+<!-- Meta Tags Generated via https://www.opengraph.xyz -->
+{% endblock %}
+
+{% block title %}
+{{title}}
+{% endblock %}
+
+{% block body %}
+{% include "main/nav.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="content2">
+    <div class="items_list">
+        <div class="message">
+            <h1>{{ title }}</h1>
+            <div>
+                <p>{{ message }}</p>
+                <p>{{ message2}}</p>
+            </div>
+        </div>
+        {% cache 43200 error %}
+            <div class="products">
+            {% for x in products %}
+                <div class="popular_item">
+                {% if x.rating >= 900 %}
+                    <div class="bestseller">Хит продаж</div>
+                {% elif x.isOnSale %}
+                    <div class="sale">Акция</div>
+                {% else %}
+                    {% for key, value in new.items %}
+                        {% if key == x.name %}
+                            {% if value == True %}
+                                <div class="new">Новинка</div>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                    <img src="{% thumbnail x.mainImage 400x400 %}" alt="">
+                    <h3>{{ x.name }}</h3>
+                    <h4>{{ x.manufacturer.name}}
+                        {% if x.collection%}
+                            | {{ x.collection.name }}
+                    {% endif %}</h4>
+                    {% if x.price != 0 %}
+                        <h4 id="price_h4">{{ x.price }} <span>руб</span></h4>
+                    {% else %}
+                        <h4 id="price_h4">Под заказ</h4>
+                    {% endif %}
+                    <a href="{{ x.get_absolute_url }}" class="more">ПОДРОБНЕЕ</a>
+                </div>
+            {% endfor %}
+            </div>
+        {% endcache %}
+    </div>
+</div>
+{% endblock %}
+
+
+{% block script %}
+<script src="https://kit.fontawesome.com/406fbec51e.js" crossorigin="anonymous"></script>
+{% endblock %}

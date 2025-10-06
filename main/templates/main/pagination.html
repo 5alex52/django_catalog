@@ -1,0 +1,35 @@
+<div class="pagination">
+    {% if isSearch %}
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}&orderby={{ ordering }}&search={{ search_data }}">&laquo;</a>
+        {% endif %}
+
+        {% for p in page_obj.paginator.page_range %}
+            {% if page_obj.number == p and page_obj.paginator.num_pages != 1 %}
+                <a href="#" class="active">{{ p }}</a>
+            {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 and page_obj.paginator.num_pages != 1%} 
+                <a href="?page={{ p }}&orderby={{ ordering }}&search={{ search_data }}">{{ p }}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}&orderby={{ ordering }}&search={{ search_data }}">&raquo;</a>
+        {% endif %}
+    {% else %}
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}&orderby={{ ordering }}">&laquo;</a>
+        {% endif %}
+
+        {% for p in page_obj.paginator.page_range %}
+            {% if page_obj.number == p and page_obj.paginator.num_pages != 1 %}
+                <a href="#" class="active">{{ p }}</a>
+            {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 and page_obj.paginator.num_pages != 1%} 
+                <a href="?page={{ p }}&orderby={{ ordering }}">{{ p }}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}&orderby={{ ordering }}">&raquo;</a>
+        {% endif %}
+    {% endif %}
+</div>

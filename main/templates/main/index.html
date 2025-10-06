@@ -1,0 +1,303 @@
+{% extends 'main/base.html'%}
+{% load static %}
+{% load thumbnail %}
+{% block head %}
+<link href="{% static 'main/css/aos.css' %}" rel="stylesheet">
+<meta name="keywords" content="Каталог, Барановичи, Мебель, Купить">
+<!-- Facebook Meta Tags -->
+<meta property="og:url" content="https://mebeltut24.by/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Мебель тут">
+<meta property="og:description" content="Магазины мебели в Барановичах. Телефоны:  {% for x in phones%} {{x.phone}} {% endfor %}  inst: @mebeltutbaranovichi">
+<meta property="og:image" content="https://mebeltut24.by/static/main/img/logo.png">
+
+<!-- Twitter Meta Tags -->
+<meta name="twitter:card" content="summary_large_image">
+<meta property="twitter:domain" content="mebeltut24.by">
+<meta property="twitter:url" content="https://mebeltut24.by/">
+<meta name="twitter:title" content="Мебель тут">
+<meta name="twitter:description" content="Магазины мебели в Барановичах. Телефоны:  {% for x in phones%} {{x.phone}} {% endfor %}  inst: @mebeltutbaranovichi">
+<meta name="twitter:image" content="https://mebeltut24.by/static/main/img/logo.png">
+
+<!-- Meta Tags Generated via https://www.opengraph.xyz -->
+{% endblock %}
+
+{% block title %}
+Мебель тут | Барановичи
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="swiper mySwiper_index">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide"><img src="{% static 'main/img/mortiz.jpeg'%}" alt=""></div>
+            <div class="swiper-slide"><img src="{% static 'main/img/verona.jpeg'%}" alt=""></div>
+            <div class="swiper-slide"><img src="{% static 'main/img/astrid.jpeg'%}" alt=""></div>
+            <div class="swiper-slide"><img src="{% static 'main/img/credo.jpeg'%}" alt=""></div>
+        </div>
+        <div class="swiper_text">
+            <h1 data-aos="fade-up" data-aos-duration="1000"  data-aos-delay="1000">Мебель тут</h1>
+        </div>
+    </div>
+    <div class="info_container">
+        <div class="info_item">
+            <div>
+                <h3 data-aos="fade-up" data-aos-duration="1000" id="h3">Мебель тут - ваш надежный партнер в создании комфортного и стильного интерьера!</h3>
+                <p data-aos="fade-up" data-aos-duration="2000">Наша мебель отличается высоким качеством и надежностью, что гарантирует долговечность и удобство использования.</p>
+            </div>
+            <img data-aos="fade-left" loading="lazy" data-aos-duration = "1000" src="{% static 'main/img/index_bed.jpg'%}" alt="Диваны">
+        </div>
+        <div class="info_item">
+            <div id="second_info">
+                <h3 data-aos="fade-up" data-aos-duration="1000">Наша мебель - это инвестиция в ваш дом или офис, которая прослужит долгие годы.</h3>
+                <p data-aos="fade-up" data-aos-duration="2000"> Мы предлагаем широкий выбор материалов и цветовых решений, чтобы удовлетворить даже самый изысканный вкус. Мы с радостью поможем вам выбрать идеальную мебель для вашего интерьера и предоставим индивидуальный подход к каждому клиенту</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="swiper mySwiper_index2" data-aos="fade-up">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide">
+                <div class="index_categories">
+                    <div>
+                        <a href="/catalog/spalni/collections">
+                            <div class="item">
+                                <span>Каталог</span>
+                                <h1>Спальни</h1>
+                            </div>
+                            <div class="bg lazy"></div>
+                        </a>
+                    </div>
+                    <div>
+                        <a href="/catalog/gostinnyie/collections">
+                            <div class="item">
+                                <span>Каталог</span>
+                                <h1>Гостинные</h1>
+                            </div>
+                            <div class="bg lazy"></div>
+                        </a>
+                    </div>
+                    <div>
+                        <a href="/catalog/kuhni">
+                            <div class="item">
+                                <span>Каталог</span>
+                                <h1>Кухни</h1>
+                            </div>
+                            <div class="bg lazy"></div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-slide">
+                <div class="index_categories">
+                    <div>
+                    </div>
+                    <div>
+                    </div>
+                    <div>
+                    </div>
+                    <div><a href="/catalog/divanyi-modulnyie">
+                            <div class="item">
+                                <span class="smaller_header">Каталог</span>
+                                <h1>Модульные диваны</h1>
+                            </div>
+                            <div class="bg lazy"></div>
+                        </a></div>
+                    <div><a href="/catalog/divanyi-pryamyie">
+                            <div class="item">
+                                <span>Каталог</span>
+                                <h1>Прямые диваны</h1>
+                            </div>
+                            <div class="bg lazy"></div>
+                        </a></div>
+                    <div><a href="/catalog/divanyi-uglovyie">
+                            <div class="item">
+                                <span class="smaller_header">Каталог</span>
+                                <h1>Угловые диваны</h1>
+                            </div>
+                            <div class="bg lazy"></div>
+                        </a></div>
+                </div>
+            </div>
+            <div class="swiper-slide">
+                <div class="index_categories">
+                    <div>
+                    </div>
+                    <div>
+                    </div>
+                    <div>
+                    </div>
+                    <div>
+                    </div>
+                    <div>
+                    </div>
+                    <div>
+                    </div>
+                    <div><a href="/catalog/prihozhie/collections">
+                            <div class="item">
+                                <span>Каталог</span>
+                                <h1>Прихожие</h1>
+                            </div>
+                            <div class="bg lazy"></div>
+                        </a></div>
+                    <div><a href="/catalog/molodyozhnyie/collections">
+                            <div class="item">
+                                <span>Каталог</span>
+                                <h1>Молодёжные</h1>
+                            </div>
+                            <div class="bg lazy"></div>
+                        </a></div>
+                </div>
+            </div>
+
+        </div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-scrollbar"></div>
+    </div>
+
+    <h1 id="last" data-aos="fade-up">Популярные товары:</h1>
+    <div class="popular_product">
+        {% for x in products %}
+            <div class="popular_item" data-aos="zoom-in-right" data-aos-delay="300" data-aos-duration="800">
+                {% if x.rating >= 900 %}
+                    <div class="bestseller">Хит продаж</div>
+                {% elif x.isOnSale %}
+                    <div class="sale">Акция</div>
+                {% else %}
+                    {% for key, value in new.items %}
+                        {% if key == x.name %}
+                            {% if value == True %}
+                                <div class="new">Новинка</div>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                    <img src="{% thumbnail x.mainImage 400x400 %}" alt="">
+                    <h3>{{ x.name }}</h3>
+                    <h4>{{ x.manufacturer.name}}
+                        {% if x.collection%}
+                            | {{ x.collection.name }}
+                    {% endif %}</h4>
+                    {% if x.price != 0 %}
+                        <h4 id="price_h4">{{ x.price }} <span>руб</span></h4>
+                    {% else %}
+                        <h4 id="price_h4">Под заказ</h4>
+                    {% endif %}
+                    <a href="{{ x.get_absolute_url }}" class="more">ПОДРОБНЕЕ</a>
+            </div>
+        {% endfor %}
+    </div>
+    <p id="index_warning">**Сайт не является интернет магазином. Цена представлена в ознокомительных целях.</p>
+</div>
+{% endblock %}
+
+
+{% block script %}
+<script src="{% static 'main/js/aos.js' %}"></script>
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var lazyloadImages;
+
+        if ("IntersectionObserver" in window) {
+            lazyloadImages = document.querySelectorAll(".lazy");
+            var imageObserver = new IntersectionObserver(function (entries, observer) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        var image = entry.target;
+                        image.src = image.dataset.src;
+                        image.classList.remove("lazy");
+                        imageObserver.unobserve(image);
+                    }
+                });
+            });
+
+            lazyloadImages.forEach(function (image) {
+                imageObserver.observe(image);
+            });
+        } else {
+            var lazyloadThrottleTimeout;
+            lazyloadImages = document.querySelectorAll(".lazy");
+
+            function lazyload() {
+                if (lazyloadThrottleTimeout) {
+                    clearTimeout(lazyloadThrottleTimeout);
+                }
+
+                lazyloadThrottleTimeout = setTimeout(function () {
+                    var scrollTop = window.pageYOffset;
+                    lazyloadImages.forEach(function (img) {
+                        if (img.offsetTop < (window.innerHeight + scrollTop)) {
+                            img.src = img.dataset.src;
+                            img.classList.remove('lazy');
+                        }
+                    });
+                    if (lazyloadImages.length == 0) {
+                        document.removeEventListener("scroll", lazyload);
+                        window.removeEventListener("resize", lazyload);
+                        window.removeEventListener("orientationChange", lazyload);
+                    }
+                }, 20);
+            }
+
+            document.addEventListener("scroll", lazyload);
+            window.addEventListener("resize", lazyload);
+            window.addEventListener("orientationChange", lazyload);
+        }
+    })
+    AOS.init();
+
+    const swiper = new Swiper('.mySwiper_index', {
+        direction: 'horizontal',
+        loop: true,
+
+        scrollbar: {
+            el: '.swiper-scrollbar',
+            draggable: true,
+            hide: true,
+        },
+
+        autoplay: {
+            delay: 5000,
+        },
+
+        effect: 'fade',
+        fadeEffect: {
+            crossFade: true
+        },
+    });
+
+    const swiper2 = new Swiper('.mySwiper_index2', {
+        // Optional parameters
+        direction: 'horizontal',
+        loop: true,
+
+        // Navigation arrows
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+
+        autoplay: {
+            delay: 7000,
+            pauseOnMouseEnter: true,
+            waitForTransition: true
+        },
+
+        // And if we need scrollbar
+        scrollbar: {
+            el: '.swiper-scrollbar',
+            draggable: true,
+            hide: false
+        },
+
+        effect: 'fade',
+        fadeEffect: {
+            crossFade: true
+        },
+    });
+
+
+</script>
+{% endblock %}

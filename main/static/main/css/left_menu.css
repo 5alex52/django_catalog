@@ -1,0 +1,62 @@
+.sidenav {
+  margin-top: 110px;
+  height: 86vh; 
+  width: 0; 
+  position: fixed; 
+  z-index: 8; 
+  top: 0;
+  left: 0;
+  background-color: #ffffff; 
+  overflow-y: scroll;
+  overflow-x: hidden; 
+  padding-top: 20px; 
+  transition: 0.5s; 
+  border-right: 2px solid var(--footer_color);
+}
+
+/* Ссылки в меню навигации */
+.sidenav a {
+  margin: 3px;
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 20px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+/* При наведении курсора мыши на навигационные ссылки измените их цвет */
+.sidenav a:hover {
+  color: #000000;
+}
+
+/* Положение и стиль кнопки закрытия (верхний правый угол) */
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 40px;
+  margin-left: 50px;
+}
+
+/* Стиль содержимого страницы - Используйте это, если вы хотите переместить содержимое страницы вправо при открытии боковой навигации */
+#main {
+  transition: margin-left .5s;
+  padding: 20px;
+}
+
+/* На небольших экранах, где высота меньше 450px, измените стиль sidenav (меньше отступов и меньший размер шрифта) */
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+
+#menu_btn{
+  z-index: 8;
+  position: fixed;
+  top: 120px;
+  width: 50px;
+  margin-left: 20px;
+  transition: .5s;
+  display: block;
+}

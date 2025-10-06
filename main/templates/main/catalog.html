@@ -1,0 +1,153 @@
+{% extends 'main/base.html'%}
+{% load static %}
+{% load thumbnail %}
+
+{% block head %}
+<meta name="keywords" content="Каталог, Барановичи, Мебель, Купить, {{ findCategory.name }}, {% if findCollection %} {{findCollection}}, {% endif %} {% if findManufacturer %} {{findManufacturer}} {% endif %}">
+<!-- Facebook Meta Tags -->
+<meta property="og:url" content="https://mebeltut24.by/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Мебель тут">
+<meta property="og:description" content="Магазины мебели в Барановичах. Телефоны:  {% for x in phones%} {{x.phone}} {% endfor %}  inst: @mebeltutbaranovichi">
+<meta property="og:image" content="https://mebeltut24.by/static/main/img/logo.png">
+
+<!-- Twitter Meta Tags -->
+<meta name="twitter:card" content="summary_large_image">
+<meta property="twitter:domain" content="mebeltut24.by">
+<meta property="twitter:url" content="https://mebeltut24.by/">
+<meta name="twitter:title" content="Мебель тут">
+<meta name="twitter:description" content="Магазины мебели в Барановичах. Телефоны:  {% for x in phones%} {{x.phone}} {% endfor %}  inst: @mebeltutbaranovichi">
+<meta name="twitter:image" content="https://mebeltut24.by/static/main/img/logo.png">
+
+<!-- Meta Tags Generated via https://www.opengraph.xyz -->
+{% endblock %}
+
+{% block title %}
+{{title}} | Мебель тут Барановичи
+{% endblock %}
+
+{% block body %}
+{% include "main/nav.html" %} 
+{% endblock %}
+
+{% block content %}
+<div class="content2">
+    <div class="items_list" id="main">
+        <span onclick="navHandler()"><img src="{% static 'main/img/chevron-right.svg' %}" alt="меню" id="menu_btn" ></span>
+        <div class="select_container">
+            {% if isSearch %}
+                <form action="{% url 'search' %}" method="get" id="sortProductByDate">
+                    <input type="hidden" name="orderby" value="-date" />
+                    <input type="hidden" name="search" value="{{ search_data }}"/>
+                </form>
+                <form action="{% url 'search' %}" method="get" id="sortProductByRating">
+                    <input type="hidden" name="orderby" value="-rating"/>
+                    <input type="hidden" name="search" value="{{ search_data }}"/>
+                </form>
+                <form action="{% url 'search' %}" method="get" id="sortProductByPriceUp">
+                    <input type="hidden" name="orderby" value="price"/>
+                    <input type="hidden" name="search" value="{{ search_data }}"/>
+                </form>
+                <form action="{% url 'search' %}" method="get" id="sortProductByPriceDown">
+                    <input type="hidden" name="orderby" value="-price"/>
+                    <input type="hidden" name="search" value="{{ search_data }}"/>
+                </form>
+            {% elif request.path == '/sales/' %}
+                <form action="{% url 'sales' %}" method="get" id="sortProductByDate">
+                    <input type="hidden" name="orderby" value="-date" />
+                </form>
+                <form action="{% url 'sales' %}" method="get" id="sortProductByRating">
+                    <input type="hidden" name="orderby" value="-rating"/>
+                </form>
+                <form action="{% url 'sales' %}" method="get" id="sortProductByPriceUp">
+                    <input type="hidden" name="orderby" value="price"/>
+                </form>
+                <form action="{% url 'sales' %}" method="get" id="sortProductByPriceDown">
+                    <input type="hidden" name="orderby" value="-price"/>
+                </form>
+            {% else %}
+                <form action="{% url 'catalog' %}" method="get" id="sortProductByDate">
+                    <input type="hidden" name="orderby" value="-date" />
+                </form>
+                <form action="{% url 'catalog' %}" method="get" id="sortProductByRating">
+                    <input type="hidden" name="orderby" value="-rating"/>
+                </form>
+                <form action="{% url 'catalog' %}" method="get" id="sortProductByPriceUp">
+                    <input type="hidden" name="orderby" value="price"/>
+                </form>
+                <form action="{% url 'catalog' %}" method="get" id="sortProductByPriceDown">
+                    <input type="hidden" name="orderby" value="-price"/>
+                </form>
+            {% endif %}
+                                            
+            <div class="dropdown">
+                <button onclick="myFunction()" class="dropbtn">Сортировка: </button>
+                <div id="myDropdown" class="dropdown-content">
+                    <a href="#" onclick="document.getElementById('sortProductByDate').submit();">По дате</a>
+                    <a href="#" onclick="document.getElementById('sortProductByRating').submit();">По рейтингу</a>
+                    <a href="#" onclick="document.getElementById('sortProductByPriceUp').submit();">По цене <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-up" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
+                      </svg></a>
+                    <a href="#" onclick="document.getElementById('sortProductByPriceDown').submit();">По цене <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+                      </svg></a>
+                </div>
+            </div>
+
+        </div>
+        <h1 id="category_name">{{ findCategory.name }}
+            {% if findCollection %}
+                {{findCollection}}
+            {% endif %}
+            {% if findManufacturer %}
+                {{findManufacturer}}
+            {% endif %}
+        </h1>
+        <div class="products">
+            {% if page_obj %}
+                {% for x in page_obj %}
+                <div class="product_item">
+                    {% if x.isOnSale %}
+                        <div class="sale">Акция</div>
+                    {% elif x.rating >= 900 %}
+                        <div class="bestseller">Хит продаж</div>
+                    {% else %}
+                        {% for key, value in new.items %}
+                            {% if key == x.slug %}
+                                {% if value == True %}
+                                    <div class="new">Новинка</div>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    <img src="{% thumbnail x.mainImage 400x400 %}" alt="Фото {{x.name}}">
+                    <h3>{{ x.name }}</h3>
+                    <h4>{{ x.manufacturer.name}} 
+                        {% if x.collection%}
+                        | {{ x.collection.name }}
+                        {% endif %}
+                    </h4>
+                    {% if x.price != 0 %}
+                        <h4 id="price_h4">{{ x.price }} <span>руб</span></h4>
+                    {% else %}
+                        <h4 id="price_h4">Под заказ</h4>
+                    {% endif %}
+                    <a href="{{ x.get_absolute_url }}" class="more">ПОДРОБНЕЕ</a>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div id="empty">
+                    <h1>Нет товаров</h1>
+                </div>
+            {% endif %}
+        </div>
+        {% include "main/pagination.html" %} 
+    </div>
+</div>
+{% endblock %}
+
+
+{% block script %}
+<script src="https://kit.fontawesome.com/406fbec51e.js" crossorigin="anonymous"></script>
+<script src="{% static 'main/js/select.js' %}"></script>
+{% endblock %}

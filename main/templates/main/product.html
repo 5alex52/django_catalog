@@ -1,0 +1,225 @@
+{% extends 'main/base.html'%}
+{% load static %}
+{% load thumbnail %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'main/css/product.css'%}">
+<link rel="stylesheet" href="{% static 'main/css/customAlert.css'%}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bigger-picture@1.1.7/dist/bigger-picture.min.css">
+<meta name="keywords" content="{{current.name}}, {{current.manufacturer}}, {{current.category}}, {% if current.collection %}{{current.collection}},{% endif %} Барановичи, Мебель, Купить">
+<!-- Facebook Meta Tags -->
+<meta property="og:url" content="https://mebeltut24.by/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Мебель тут">
+<meta property="og:description" content="{{current.name}}, {{current.manufacturer}}, {% if current.collection %}{{current.collection}},{% endif %} Магазины мебели в Барановичах. Телефоны:  {% for x in phones%} {{x.phone}} {% endfor %}  inst: @mebeltutbaranovichi">
+<meta property="og:image" content="{{current.mainImage.url}}">
+
+<!-- Twitter Meta Tags -->
+<meta name="twitter:card" content="summary_large_image">
+<meta property="twitter:domain" content="mebeltut24.by">
+<meta property="twitter:url" content="https://mebeltut24.by/">
+<meta name="twitter:title" content="Мебель тут">
+<meta name="twitter:description" content="{{current.name}}, {{current.manufacturer}}, {% if current.collection %}{{current.collection}},{% endif %} Магазины мебели в Барановичах. Телефоны:  {% for x in phones%} {{x.phone}} {% endfor %}  inst: @mebeltutbaranovichi">
+<meta name="twitter:image" content="{{current.mainImage.url}}">
+
+<!-- Meta Tags Generated via https://www.opengraph.xyz -->
+{% endblock %}
+
+{% block title %}
+{{title}} | Мебель тут Барановичи
+{% endblock %}
+
+{% block body %}
+{% include "main/nav.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="content2">
+    <div class="items_list" id="main">
+        <span onclick="navHandler()"><img src="{% static 'main/img/chevron-right.svg' %}" alt="меню"
+                id="menu_btn"></span>
+        <div class="product">
+            <div class="swiper-container">
+                <div class="swiper mySwiper2">
+                    <div class="swiper-wrapper" id="images">
+                            <div class="swiper-slide">
+                                <a
+                                    href="{{ current.mainImage.url }}"
+                                    data-img="{{ current.mainImage.url }}"
+                                    data-thumb="{% thumbnail current.mainImage 600x600 %}"
+                                    data-alt="Главное фото {{ current.name }}"
+                                    data-height="2000"
+                                    data-width="3000"
+                                >
+                                    <img
+                                    src="{% thumbnail current.mainImage 600x600 %}"
+                                        alt="Главное фото {{ current.name }}"
+                                    />
+                                </a>
+                            </div>
+                        {% for x in currentImages %}
+                            <div class="swiper-slide">
+                                <a
+                                    href="{{ x.image.url }}"
+                                    data-img="{{ x.image.url }}"
+                                    data-thumb="{% thumbnail x.image 600x600 %}"
+                                    data-alt="Фото {{ current.name }}"
+                                    data-height="2000"
+                                    data-width="3000"
+                                >
+                                    <img
+                                    src="{% thumbnail x.image 600x600 %}"
+                                        alt="Фото {{ current.name }}"
+                                    />
+                                </a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                </div>
+                <div thumbsSlider="" class="swiper mySwiper">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide"><img src="{{ current.mainImage.url }}" alt=""></div>
+                        {% for x in currentImages %}
+                            <div class="swiper-slide"><img src="{{ x.image.url }}" alt=""></div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="info_container">
+                <h1>{{current.name}}
+                    {% if current.rating >= 900 %}
+                        <div class="bestseller_product">Хит продаж</div>
+                    {% elif current.isOnSale %}
+                        <div class="sale_product">Акция</div>
+                    {% elif new %}
+                        <div class="new_product">Новинка</div>
+                    {% endif %}
+                </h1>
+                {% if current.price != 0 %}
+                    <h3 id="price">Цена: {{current.price}} <span>руб</span></h3>
+                {% else %}
+                    <h3 id="price">Под заказ</h3>
+                {% endif %}
+                <p id="manufacturer">Производитель: <a
+                        href="{{current.manufacturer.get_absolute_url}}">{{current.manufacturer}}</a></p>
+                {% if current.collection %}
+                <p id="collection">Коллекция: <a
+                        href="{{current.collection.get_absolute_url}}">{{current.collection}}</a></p>
+                {% endif %}
+                <hr>
+                <div class="info">
+                    <h2>Характеристики:</h2>
+                    {% for x in currentSpecs %}
+                        {% if x.param == 'Link' %}
+                             <p><span>{{ x.get_param_display }} {%if x.unit %}, {{x.get_unit_display}} {% endif %}</span><span><a href="{{x.value }}">Каталог</a></span></p>
+                        {% else %}
+                            <p><span>{{ x.get_param_display }} {%if x.unit %}, {{x.get_unit_display}} {% endif %}</span><span>{{x.value }}</span></p>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <hr>
+            </div>
+            <div class="feedback">
+                <h2>Заинтересовало?</h2>
+                <p>Оставьте свои данные, наш специалист перезвонит вам</p>
+                <form action="{{ current.get_absolute_url}}" method="post" novalidate enctype="multipart/form-data"
+                    id="feedback_form">
+                    {% csrf_token %}
+                    <div><label for="name">Имя:</label>
+                        {{ feedback.name }}
+                        <hr>
+                    </div>
+                    <div><label for="tel">Номер телефона:</label>
+                        {{ feedback.phone }}
+                        <hr>
+                    </div>
+                    <button type="submit">Перезвонить мне</button>
+                </form>
+            </div>
+            <div class="warning">
+                <p>*Цветопередача на фотографиях может не соответствовать оригиналу</p>
+                <p>**Сайт не является интернет магазином. Цена представлена в ознокомительных целях.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block script %}
+<script src="https://kit.fontawesome.com/406fbec51e.js" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"
+    integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+<script src="{% static 'main/js/maska-nomera.js' %}" type="text/javascript"></script>
+<script src="{% static 'main/js/customAlert.js' %}" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/npm/bigger-picture@1.1.7/dist/bigger-picture.min.js"></script>
+<script>
+    let swiper = new Swiper(".mySwiper", {
+        spaceBetween: 10,
+        slidesPerView: 4,
+        freeMode: true,
+        watchSlidesProgress: true,
+        loop: true,
+    });
+
+
+    let swiper2 = new Swiper(".mySwiper2", {
+        spaceBetween: 10,
+        loop: true,
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
+        thumbs: {
+            swiper: swiper,
+        },
+    });
+
+
+    $('.art-stranger').mask('+375 (99) 999-99-99');
+    $.fn.setCursorPosition = function (pos) {
+        if ($(this).get(0).setSelectionRange) {
+            $(this).get(0).setSelectionRange(pos, pos);
+        } else if ($(this).get(0).createTextRange) {
+            var range = $(this).get(0).createTextRange();
+            range.collapse(true);
+            range.moveEnd('character', pos);
+            range.moveStart('character', pos);
+            range.select();
+        }
+    };
+
+    $('input[type="tel"]').click(function () {
+        $(this).setCursorPosition(6);  // set position number
+    });    
+
+    if('{{ isFeedback }}' == 'true'){
+        customAlert.alert("{{feedback_message}}","{{feedback_title}}")
+        //window.location.replace('/product/{{ current.slug }}');
+    }
+
+    let bp = BiggerPicture({
+	    target: document.body,
+    })
+
+    // grab image links
+    let imageLinks = document.querySelectorAll('#images .swiper-slide > a')
+
+    // add click listener to open BiggerPicture
+    for (let link of imageLinks) {
+        link.addEventListener("click", openGallery);
+    }
+
+    // function to open BiggerPicture
+    function openGallery(e) {
+	    e.preventDefault()
+	    bp.open({
+		    items: imageLinks,
+		    el: e.currentTarget,
+            intro: 'fadeup'
+	    })
+    }
+</script>
+{% endblock %}
