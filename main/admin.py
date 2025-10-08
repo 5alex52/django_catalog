@@ -170,7 +170,6 @@ class ProductAdmin(ModelAdmin):
     form = ProductForm
     search_fields = (
         "name",
-        "manufacturer",
     )
     list_editable = ("rating", "isOnSale", "price")
     list_filter = (
