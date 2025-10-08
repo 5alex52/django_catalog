@@ -18,7 +18,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = str(os.getenv("SECRET_KEY"))
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["mebeltut24.by", "127.0.0.1"]
 
@@ -98,18 +98,18 @@ WSGI_APPLICATION = "django_catalog.wsgi.application"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.postgresql',
-    #     'NAME': 'yuma_db',
-    #     'USER': 'yuma_user',
-    #     'PASSWORD': 'django_user031203',
-    #     'HOST': 'localhost',
-    #     'PORT': '',
-    # }
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'yuma_db',
+        'USER': 'yuma_user',
+        'PASSWORD': 'django_user031203',
+        'HOST': 'localhost',
+        'PORT': '',
     }
+    # "default": {
+    #     "ENGINE": "django.db.backends.sqlite3",
+    #     "NAME": BASE_DIR / "db.sqlite3",
+    # }
 }
 
 
