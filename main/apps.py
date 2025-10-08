@@ -7,4 +7,4 @@ class MainConfig(AppConfig):
     verbose_name = "Главное"
 
     def ready(self):
-        pass
+        import main.signals
