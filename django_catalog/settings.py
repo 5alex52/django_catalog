@@ -31,8 +31,8 @@ STATIC_URL = "static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 MEDIA_URL = "media/"
-#MEDIA_ROOT = "/home/yuma/public_html/media"
-MEDIA_ROOT = "media"
+MEDIA_ROOT = "/home/yuma/public_html/media"
+#MEDIA_ROOT = "media"
 
 
 # Application definition
